@@ -142,6 +142,94 @@ html[lang="ar"] .eyebrow { letter-spacing: 0; font-size: 1.1rem; font-weight: 70
 .section--stacked { padding-block: 0; }
 .section--stacked + .section--stacked { padding-block-start: clamp(14px, 1.6vw, 20px); }
 
+/* ---------- Picture carousel ----------
+   A plain .gallery of <figure><img> is upgraded by JS into a carousel with
+   arrows; the incoming picture wipes across the outgoing one, matching the
+   page-transition curtain. Photos are shown whole (contain), never cropped,
+   so nothing is cut off the edge of a product shot. Without JS the gallery
+   stays the ordinary grid. */
+/* scoped under .gallery.is-carousel so these beat the plain .gallery grid
+   rules further down the sheet */
+.gallery.is-carousel { display: block; }
+.gallery.is-carousel .carousel { position: relative; border-radius: var(--r-md); overflow: hidden; background: var(--mint-soft); }
+.gallery.is-carousel .carousel__stage { position: relative; aspect-ratio: 4 / 3; }
+.gallery.is-carousel .carousel__stage figure {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  aspect-ratio: auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: hidden;
+  clip-path: inset(0 0 0 100%);
+  z-index: 1;
+}
+.gallery.is-carousel .carousel__stage figure.is-on {
+  clip-path: inset(0 0 0 0);
+  z-index: 2;
+  transition: clip-path 0.62s cubic-bezier(0.65, 0.02, 0.25, 1);
+}
+.gallery.is-carousel .carousel__stage figure.is-back { clip-path: inset(0 0 0 0); z-index: 1; transition: none; }
+.gallery.is-carousel .carousel[data-dir="prev"] .carousel__stage figure { clip-path: inset(0 100% 0 0); }
+.gallery.is-carousel .carousel[data-dir="prev"] .carousel__stage figure.is-on,
+.gallery.is-carousel .carousel[data-dir="prev"] .carousel__stage figure.is-back { clip-path: inset(0 0 0 0); }
+/* photos are shown whole, never cropped — and they do not zoom on hover */
+.gallery.is-carousel .carousel__stage img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 0;
+  transition: none;
+}
+.gallery.is-carousel .carousel__stage figure:hover img { transform: none; }
+
+.carousel__nav {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 5;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(33, 43, 20, 0.14);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--forest);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.22s ease, color 0.22s ease, transform 0.22s ease, border-color 0.22s ease;
+}
+.carousel__nav svg { width: 20px; height: 20px; }
+.carousel__nav:hover { background: var(--brand); color: var(--on-brand); border-color: var(--brand); transform: scale(1.08); }
+.carousel__nav:active { transform: scale(0.95); }
+.carousel__nav--prev { inset-inline-start: 12px; }
+.carousel__nav--next { inset-inline-end: 12px; }
+.carousel__nav--prev svg { transform: rotate(180deg); }
+[dir="rtl"] .carousel__nav--prev svg { transform: none; }
+[dir="rtl"] .carousel__nav--next svg { transform: rotate(180deg); }
+
+.carousel__dots { position: absolute; inset-inline: 0; bottom: 12px; z-index: 5; display: flex; gap: 7px; justify-content: center; }
+.carousel__dot {
+  width: 7px; height: 7px; border-radius: 50%; padding: 0; border: 0; cursor: pointer;
+  background: rgba(33, 43, 20, 0.28);
+  transition: width 0.3s ease, background 0.3s ease;
+}
+.carousel__dot.is-on { width: 22px; border-radius: 999px; background: var(--forest); }
+.carousel__count {
+  position: absolute; top: 12px; inset-inline-end: 12px; z-index: 5;
+  background: rgba(27, 42, 10, 0.55); color: #fff; border-radius: 999px;
+  padding: 5px 12px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em;
+}
+
+@media (max-width: 600px) {
+  .carousel__nav { width: 40px; height: 40px; }
+  .carousel__nav--prev { inset-inline-start: 8px; }
+  .carousel__nav--next { inset-inline-end: 8px; }
+}
+
 /* ---------- Layout ---------- */
 .container {
   width: min(100% - 48px, var(--container));

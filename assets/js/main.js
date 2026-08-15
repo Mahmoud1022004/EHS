@@ -306,6 +306,120 @@
     }
   });
 
+  /* Picture carousels.
+     Any .gallery marked data-carousel is upgraded from a plain grid into a
+     carousel: the incoming photo wipes across the outgoing one, the same
+     motion as the page-transition curtain. Photos are shown whole rather
+     than cropped. If this script never runs the gallery stays a grid, so
+     every picture is still reachable. */
+  var CAROUSEL_ARROW =
+    '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
+    '<path d="M5 12h14m-6-7 7 7-7 7" stroke="currentColor" stroke-width="2.2" ' +
+    'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  document.querySelectorAll('.gallery[data-carousel]').forEach(function (gallery) {
+    var figures = [].slice.call(gallery.children).filter(function (el) {
+      return el.tagName === 'FIGURE';
+    });
+    if (figures.length < 2) return;
+
+    var labels = {
+      prev: gallery.getAttribute('data-prev') || 'Previous picture',
+      next: gallery.getAttribute('data-next') || 'Next picture',
+      of: gallery.getAttribute('data-of') || 'Picture'
+    };
+
+    gallery.classList.add('is-carousel');
+    gallery.removeAttribute('style');           /* drop the grid-columns override */
+
+    var carousel = document.createElement('div');
+    carousel.className = 'carousel';
+    var stage = document.createElement('div');
+    stage.className = 'carousel__stage';
+    figures.forEach(function (fig, i) {
+      if (i === 0) fig.classList.add('is-on');
+      stage.appendChild(fig);
+    });
+    carousel.appendChild(stage);
+
+    var prevBtn = document.createElement('button');
+    prevBtn.type = 'button';
+    prevBtn.className = 'carousel__nav carousel__nav--prev';
+    prevBtn.setAttribute('aria-label', labels.prev);
+    prevBtn.innerHTML = CAROUSEL_ARROW;
+
+    var nextBtn = document.createElement('button');
+    nextBtn.type = 'button';
+    nextBtn.className = 'carousel__nav carousel__nav--next';
+    nextBtn.setAttribute('aria-label', labels.next);
+    nextBtn.innerHTML = CAROUSEL_ARROW;
+
+    var count = document.createElement('span');
+    count.className = 'carousel__count';
+    count.textContent = '1 / ' + figures.length;
+
+    var dots = document.createElement('div');
+    dots.className = 'carousel__dots';
+    figures.forEach(function (fig, i) {
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'carousel__dot' + (i ? '' : ' is-on');
+      dot.setAttribute('aria-label', labels.of + ' ' + (i + 1));
+      dot.addEventListener('click', function () { go(i, i > current ? 'next' : 'prev'); });
+      dots.appendChild(dot);
+    });
+
+    carousel.appendChild(count);
+    carousel.appendChild(prevBtn);
+    carousel.appendChild(nextBtn);
+    carousel.appendChild(dots);
+    gallery.appendChild(carousel);
+
+    var current = 0;
+    var moving = false;
+
+    function go(target, dir) {
+      if (moving) return;
+      target = (target + figures.length) % figures.length;
+      if (target === current) return;
+      moving = true;
+
+      var outgoing = figures[current];
+      var incoming = figures[target];
+
+      /* set the wipe direction, then force the browser to apply the new
+         start position before the transition to it begins */
+      carousel.setAttribute('data-dir', dir);
+      outgoing.classList.remove('is-on');
+      incoming.classList.remove('is-on', 'is-back');
+      void incoming.offsetWidth;
+
+      outgoing.classList.add('is-back');
+      incoming.classList.add('is-on');
+      window.setTimeout(function () { outgoing.classList.remove('is-back'); }, 700);
+
+      dots.children[current].classList.remove('is-on');
+      dots.children[target].classList.add('is-on');
+      current = target;
+      count.textContent = (current + 1) + ' / ' + figures.length;
+      window.setTimeout(function () { moving = false; }, 280);
+    }
+
+    nextBtn.addEventListener('click', function () { go(current + 1, 'next'); });
+    prevBtn.addEventListener('click', function () { go(current - 1, 'prev'); });
+
+    var touchX = null;
+    carousel.addEventListener('touchstart', function (e) {
+      touchX = e.touches[0].clientX;
+    }, { passive: true });
+    carousel.addEventListener('touchend', function (e) {
+      if (touchX === null) return;
+      var dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 40) { go(current + (dx < 0 ? 1 : -1), dx < 0 ? 'next' : 'prev'); }
+      touchX = null;
+    }, { passive: true });
+  });
+
   /* Curtain / blinds page transition on menu navigation. */
   var curtain = document.getElementById('ehs-curtain');
   if (curtain && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

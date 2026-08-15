@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gallery arrows — six samples | EHS</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="assets/logos/EHS-app-icon.svg">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<style>
+  :root{
+    --brand:#8DBE22; --brand-hover:#7CAA1C; --on-brand:#1B2A0A;
+    --forest:#4F7A12; --ink:#212B14; --muted:#5B6B49;
+    --paper:#F9FBF4; --mint:#E2F1C9; --mint-soft:#F0F8E2; --line:#DDE3D2;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+       font-family:"Manrope",system-ui,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{width:min(100% - 40px,1180px);margin-inline:auto;padding-block:56px 90px}
+
+  .lede{margin-block-end:52px}
+  .eyebrow{display:inline-flex;padding:9px 22px;border-radius:999px;background:var(--brand);
+           color:var(--on-brand);font-weight:800;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase}
+  h1{font-size:clamp(2rem,5vw,3rem);line-height:1.08;margin:18px 0 10px;letter-spacing:-.02em}
+  .lede p{color:var(--muted);font-size:1.05rem;max-width:60ch;margin:0}
+
+  .grid{display:grid;gap:34px;grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+
+  .sample{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;
+          display:flex;flex-direction:column}
+  .sample__head{padding:22px 24px 16px;display:flex;gap:14px;align-items:flex-start}
+  .num{flex:none;width:32px;height:32px;border-radius:50%;background:var(--mint);color:var(--forest);
+       display:grid;place-items:center;font-weight:800;font-size:.95rem}
+  .sample__head h2{font-size:1.15rem;margin:0 0 3px}
+  .sample__head p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.5}
+
+  /* ---------- the carousel ---------- */
+  .car{position:relative;background:var(--mint-soft);aspect-ratio:4/3;overflow:hidden;isolation:isolate}
+  .car img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+  /* 1 · slide */
+  .car--slide .track{position:absolute;inset:0;display:flex;
+                     transition:transform .62s cubic-bezier(.65,.02,.25,1)}
+  .car--slide .track img{position:relative;flex:0 0 100%}
+
+  /* 2 · crossfade */
+  .car--fade img{opacity:0;transition:opacity .55s ease}
+  .car--fade img.on{opacity:1}
+
+  /* 3 · zoom fade */
+  .car--zoom img{opacity:0;transform:scale(1.09);
+                 transition:opacity .6s ease,transform .9s cubic-bezier(.2,.7,.25,1)}
+  .car--zoom img.on{opacity:1;transform:scale(1)}
+
+  /* 4 · cover reveal — the new picture wipes in over the old one */
+  .car--cover img{clip-path:inset(0 0 0 100%);z-index:1}
+  .car--cover img.on{clip-path:inset(0 0 0 0);z-index:2;
+                     transition:clip-path .62s cubic-bezier(.65,.02,.25,1)}
+  .car--cover img.back{clip-path:inset(0 0 0 0);z-index:1;transition:none}
+  .car--cover[data-dir="prev"] img{clip-path:inset(0 100% 0 0)}
+
+  /* 5 · card stack */
+  .car--stack img{opacity:0;transform:scale(.9) translateY(16px) rotate(-1.5deg);
+                  border-radius:14px;transition:opacity .45s ease,transform .55s cubic-bezier(.2,.8,.25,1.05)}
+  .car--stack img.on{opacity:1;transform:none;z-index:2}
+  .car--stack img.back{opacity:.55;transform:scale(.94) translateY(10px);z-index:1}
+
+  /* 6 · parallax push */
+  .car--push .track{position:absolute;inset:0;display:flex;
+                    transition:transform .68s cubic-bezier(.72,0,.22,1)}
+  .car--push .track .cell{position:relative;flex:0 0 100%;overflow:hidden}
+  .car--push .track .cell img{transform:scale(1.14);
+                              transition:transform .68s cubic-bezier(.72,0,.22,1)}
+  .car--push .track .cell.on img{transform:scale(1)}
+
+  /* ---------- arrows ---------- */
+  .nav{position:absolute;top:50%;translate:0 -50%;z-index:5;
+       width:46px;height:46px;border-radius:50%;border:1.5px solid rgba(33,43,20,.14);
+       background:rgba(255,255,255,.92);backdrop-filter:blur(6px);color:var(--forest);
+       display:grid;place-items:center;cursor:pointer;padding:0;
+       transition:background .22s ease,color .22s ease,transform .22s ease,border-color .22s ease}
+  .nav svg{width:20px;height:20px}
+  .nav:hover{background:var(--brand);color:var(--on-brand);border-color:var(--brand);transform:scale(1.08)}
+  .nav:active{transform:scale(.95)}
+  .nav:focus-visible{outline:3px solid var(--forest);outline-offset:2px}
+  .prev{inset-inline-start:12px}
+  .next{inset-inline-end:12px}
+  .prev svg{transform:rotate(180deg)}
+
+  .dots{position:absolute;inset-inline:0;bottom:12px;z-index:5;
+        display:flex;gap:7px;justify-content:center}
+  .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.62);
+       border:0;padding:0;cursor:pointer;transition:width .3s ease,background .3s ease}
+  .dot.on{width:22px;border-radius:999px;background:#fff}
+
+  .count{position:absolute;top:12px;inset-inline-end:12px;z-index:5;
+         background:rgba(27,42,10,.55);color:#fff;border-radius:999px;
+         padding:5px 12px;font-size:.78rem;font-weight:700;letter-spacing:.04em}
+
+  .pick{padding:16px 24px 22px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+  .pick b{color:var(--ink)}
+  @media (prefers-reduced-motion:reduce){*{transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="lede">
+    <span class="eyebrow">Gallery arrows</span>
+    <h1>Six ways the pictures can move.</h1>
+    <p>Same photos, same buttons — only the animation differs. Click the arrows (or the dots)
+       on each one, then tell me the number you want and I will put it on the product pages.</p>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+(function () {
+  var PICS = [
+    ["assets/img/medpress-stocking-on-form.jpg", "Compression stocking on a display leg"],
+    ["assets/img/medpress-flatlay-square.jpg",   "Stockings beside the MedPress box"],
+    ["assets/img/medpress-box-front.jpg",        "Front of the MedPress box"],
+    ["assets/img/medpress-cuff-macro.jpg",       "Knitted cuff detail"],
+    ["assets/img/medpress-applying-sofa.jpg",    "Putting the stocking on at home"]
+  ];
+
+  var SAMPLES = [
+    {mode:"slide", name:"Slide",         desc:"The strip of photos slides sideways. The most familiar — you can feel which direction you moved."},
+    {mode:"fade",  name:"Crossfade",     desc:"One picture dissolves into the next. Quiet and neutral; no sense of direction."},
+    {mode:"zoom",  name:"Zoom fade",     desc:"The next picture eases back from slightly enlarged as it fades in. Soft and premium."},
+    {mode:"cover", name:"Cover reveal",  desc:"The new picture wipes across the old one like a curtain — matches the page transition already on the site."},
+    {mode:"stack", name:"Card stack",    desc:"Photos sit as a deck; the next card lifts into place. Playful, good on phones."},
+    {mode:"push",  name:"Parallax push", desc:"Both pictures move, the inner image drifting at a different speed. The most cinematic."}
+  ];
+
+  var ARROW = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-7 7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  var grid = document.getElementById("grid");
+
+  SAMPLES.forEach(function (s, si) {
+    var sec = document.createElement("section");
+    sec.className = "sample";
+
+    var stacked = (s.mode !== "slide" && s.mode !== "push");
+    var inner = "";
+    if (stacked) {
+      PICS.forEach(function (p, i) {
+        inner += '<img src="' + p[0] + '" alt="' + p[1] + '" class="' + (i === 0 ? "on" : "") + '" loading="lazy">';
+      });
+    } else if (s.mode === "slide") {
+      inner = '<div class="track">' + PICS.map(function (p) {
+        return '<img src="' + p[0] + '" alt="' + p[1] + '" loading="lazy">';
+      }).join("") + '</div>';
+    } else {
+      inner = '<div class="track">' + PICS.map(function (p, i) {
+        return '<div class="cell' + (i === 0 ? " on" : "") + '"><img src="' + p[0] + '" alt="' + p[1] + '" loading="lazy"></div>';
+      }).join("") + '</div>';
+    }
+
+    sec.innerHTML =
+      '<div class="sample__head">' +
+        '<span class="num">' + (si + 1) + '</span>' +
+        '<div><h2>' + s.name + '</h2><p>' + s.desc + '</p></div>' +
+      '</div>' +
+      '<div class="car car--' + s.mode + '" data-mode="' + s.mode + '">' +
+        inner +
+        '<span class="count"><span class="i">1</span> / ' + PICS.length + '</span>' +
+        '<button class="nav prev" aria-label="Previous picture">' + ARROW + '</button>' +
+        '<button class="nav next" aria-label="Next picture">' + ARROW + '</button>' +
+        '<div class="dots"></div>' +
+      '</div>' +
+      '<p class="pick">Sample <b>' + (si + 1) + '</b> — ' + s.name + '</p>';
+
+    grid.appendChild(sec);
+    wire(sec.querySelector(".car"), s.mode);
+  });
+
+  function wire(car, mode) {
+    var imgs  = car.querySelectorAll(mode === "push" ? ".cell" : "img");
+    var track = car.querySelector(".track");
+    var dots  = car.querySelector(".dots");
+    var count = car.querySelector(".count .i");
+    var n = imgs.length, cur = 0, busy = false;
+
+    for (var i = 0; i < n; i++) {
+      var d = document.createElement("button");
+      d.className = "dot" + (i ? "" : " on");
+      d.setAttribute("aria-label", "Picture " + (i + 1));
+      d.dataset.i = i;
+      dots.appendChild(d);
+    }
+
+    function show(next, dir) {
+      if (busy || next === cur) return;
+      next = (next + n) % n;
+      busy = true;
+      car.dataset.dir = dir;
+
+      if (track) {
+        track.style.transform = "translateX(" + (-100 * next) + "%)";
+        if (mode === "push") {
+          imgs[cur].classList.remove("on");
+          imgs[next].classList.add("on");
+        }
+      } else {
+        var prev = imgs[cur];
+        prev.classList.remove("on");
+        prev.classList.add("back");
+        imgs[next].classList.add("on");
+        window.setTimeout(function () { prev.classList.remove("back"); }, 650);
+      }
+
+      dots.children[cur].classList.remove("on");
+      dots.children[next].classList.add("on");
+      cur = next;
+      count.textContent = cur + 1;
+      window.setTimeout(function () { busy = false; }, 260);
+    }
+
+    car.querySelector(".next").addEventListener("click", function () { show(cur + 1, "next"); });
+    car.querySelector(".prev").addEventListener("click", function () { show(cur - 1, "prev"); });
+    dots.addEventListener("click", function (e) {
+      var d = e.target.closest(".dot");
+      if (d) show(+d.dataset.i, +d.dataset.i > cur ? "next" : "prev");
+    });
+
+    /* swipe on touch */
+    var x0 = null;
+    car.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, {passive:true});
+    car.addEventListener("touchend", function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 40) show(cur + (dx < 0 ? 1 : -1), dx < 0 ? "next" : "prev");
+      x0 = null;
+    }, {passive:true});
+  }
+})();
+</script>
+</body>
+</html>

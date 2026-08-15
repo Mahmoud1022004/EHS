@@ -129,10 +129,13 @@ html[lang="ar"] .eyebrow { letter-spacing: 0; font-size: 1.1rem; font-weight: 70
 }
 .brandmark img { width: clamp(132px, 16vw, 178px); height: auto; }
 .section-head--center .brandmark, .section-head .brandmark { justify-content: center; }
-/* a lockup sitting on its own above a band, centred over the full width */
-.brandmark--center { justify-content: center; margin-block-end: 0; }
+/* a lockup sitting on its own above a band, centred over the full width —
+   the section head is capped at 720px, so centring inside it would land
+   left of the band's true centre */
+.brandmark--center { justify-content: center; margin-block-end: clamp(18px, 2.4vw, 30px); }
 .brandmark--center img { width: clamp(150px, 19vw, 208px); }
-.band__brand { padding: clamp(28px, 4vw, 56px) clamp(28px, 4vw, 56px) clamp(18px, 2.4vw, 30px); }
+.band__brand { padding: clamp(28px, 4vw, 56px) clamp(28px, 4vw, 56px) 0; }
+.band__brand .brandmark { margin-block-end: clamp(18px, 2.4vw, 30px); }
 
 /* ---------- Layout ---------- */
 .container {

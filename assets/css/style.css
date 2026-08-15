@@ -943,21 +943,34 @@ html[lang="ar"] .yearscrub__year { letter-spacing: 0; font-weight: 700; }
   .orgtree .orgnode, .orgtree .cline, .orgtree__branches::before, .orgtree__branch::before { animation: none !important; opacity: 1 !important; transform: none !important; }
 }
 
+.orgtree-hint { display: none; }
+
 @media (max-width: 900px) {
-  .orgtree__branches { grid-template-columns: 1fr; gap: 14px; padding-block-start: 0; }
-  .orgtree__branches::before {
-    inset-inline: auto;
-    inset-inline-start: calc(50% - 1.5px);
-    width: 3px;
-    height: auto;
-    inset-block: 0 60px;
-    background: linear-gradient(180deg, var(--brand-hover), var(--brand));
+  /* The chart keeps its real shape rather than being rearranged: it scrolls
+     sideways inside its own box, so the connectors stay the ones that read
+     correctly and the page itself never scrolls sideways. */
+  .orgtree-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding-block-end: 10px;
+    /* fade the right edge so it is obvious there is more to see */
+    -webkit-mask-image: linear-gradient(to right, #000 88%, rgba(0, 0, 0, 0.25) 100%);
+            mask-image: linear-gradient(to right, #000 88%, rgba(0, 0, 0, 0.25) 100%);
   }
-  .orgtree.is-visible .orgtree__branches::before { animation-name: orgGrowY; }
-  .orgtree__branch { padding-block-start: 0; }
-  .orgtree__branch::before { display: none; }
-  .orgtree__branch .orgnode { z-index: 1; }
-  .orgnode { min-width: 0; width: 100%; max-width: 420px; }
+  [dir="rtl"] .orgtree-scroll {
+    -webkit-mask-image: linear-gradient(to left, #000 88%, rgba(0, 0, 0, 0.25) 100%);
+            mask-image: linear-gradient(to left, #000 88%, rgba(0, 0, 0, 0.25) 100%);
+  }
+  .orgtree { min-width: 660px; }
+  .orgtree-hint {
+    display: block;
+    margin-block-start: 10px;
+    text-align: center;
+  }
+  .orgnode { min-width: 0; padding: 16px 12px; }
+  .orgnode__name { font-size: 0.95rem; }
 }
 
 /* ---------- Feature list ---------- */

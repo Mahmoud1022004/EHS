@@ -337,64 +337,37 @@ html[lang="ar"] .btn { letter-spacing: 0; }
   place-items: center;
   transition: opacity 0.5s ease, visibility 0.5s ease;
 }
-/* Vital Pulse — a heartbeat traces the screen, a green pulse swells out of
-   the peak and the logo resolves through it. */
-.loader__ecg { position: absolute; inset: 0; width: 100%; height: 100%; }
-[dir="rtl"] .loader__ecg { transform: scaleX(-1); }
-.loader__ecg path {
-  fill: none;
-  stroke: var(--logo-green);
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 1500;
-  stroke-dashoffset: 1500;
-  animation: loaderTrace 2.2s cubic-bezier(0.4, 0.05, 0.3, 1) forwards,
-             loaderDim 0.9s 2.3s forwards;
-}
-.loader__pulse,
-.loader__ring {
-  position: absolute;
-  left: 50%;
-  top: 63%;
-  border-radius: 50%;
-  opacity: 0;
-}
-.loader__pulse {
-  width: 150px; height: 150px; margin: -75px 0 0 -75px;
-  background: radial-gradient(circle, rgba(141, 190, 34, 0.75) 0%, rgba(141, 190, 34, 0.28) 45%, transparent 72%);
-  animation: loaderSwell 1.5s 1.05s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
-}
-.loader__ring {
-  width: 110px; height: 110px; margin: -55px 0 0 -55px;
-  border: 2px solid rgba(141, 190, 34, 0.55);
-  animation: loaderRing 1.6s 1.15s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
-}
-@keyframes loaderTrace { to { stroke-dashoffset: 0; } }
-@keyframes loaderDim { to { opacity: 0.16; } }
-@keyframes loaderSwell {
-  0% { opacity: 0; transform: scale(0.35); }
-  30% { opacity: 1; }
-  100% { opacity: 0; transform: scale(6.5); }
-}
-@keyframes loaderRing {
-  0% { opacity: 0.9; transform: scale(0.4); }
-  60% { opacity: 0.25; }
-  100% { opacity: 0; transform: scale(7); }
-}
+/* Shine — the logo fades up on the deep green and a single band of
+   brand-green light passes across it. */
 .loader__center { position: relative; z-index: 2; display: grid; place-items: center; padding: 24px; }
 .loader__logo {
   width: min(88vw, 820px);
   height: auto;
   opacity: 0;
-  transform: translateY(26px) scale(0.94);
-  animation: loaderLogo 0.85s 1.35s cubic-bezier(0.2, 0.9, 0.25, 1.15) forwards;
+  animation: loaderLogo 0.7s 0.25s ease forwards;
+}
+.loader__shine {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(105deg,
+              transparent 38%,
+              rgba(141, 190, 34, 0.85) 50%,
+              transparent 62%);
+  transform: translateX(-100%);
+  animation: loaderShine 1.5s 0.6s cubic-bezier(0.5, 0, 0.3, 1) forwards;
+}
+[dir="rtl"] .loader__shine { animation-name: loaderShineRtl; }
+@keyframes loaderLogo { to { opacity: 1; } }
+@keyframes loaderShine { to { transform: translateX(100%); } }
+@keyframes loaderShineRtl {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-100%); }
 }
 .loader.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
 html.loader-active { overflow: hidden; }
 html.loader-skip .loader { display: none; }
-@keyframes loaderLogo { to { opacity: 1; transform: none; } }
-@keyframes loaderTag { to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .loader { display: none; } }
 
 /* ---------- Header ---------- */

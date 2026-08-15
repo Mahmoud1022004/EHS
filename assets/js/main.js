@@ -21,7 +21,7 @@
         loader.classList.add('is-done');
         root.classList.remove('loader-active');
         window.setTimeout(function () { loader.remove(); }, 600);
-      }, 3050);
+      }, 2350);   /* the shine lands at ~2.1s — hold briefly, then lift */
     }
   }
 

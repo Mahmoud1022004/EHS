@@ -46,6 +46,23 @@ cd _build && python3 build.py
 Editing the generated HTML directly also works — just remember the same change belongs in the
 `_build/content/` source, or a future rebuild will overwrite it.
 
+## Deploying a preview on Render
+
+The repo is a plain static site, committed pre-built, so Render needs no build
+step. `render.yaml` in the repo root already declares the service.
+
+1. Render dashboard → **New → Static Site** → connect the private GitHub repo
+   `Mahmoud1022004/EHS` (authorise Render for the repo if prompted).
+2. Settings Render should pick up from `render.yaml` (or enter manually):
+   - **Build command:** *(none / the placeholder echo)*
+   - **Publish directory:** `.`
+3. Deploy. Render gives a URL like `https://ehs-website.onrender.com` — share
+   that with the client for review.
+
+Every push to `main` redeploys automatically. After editing anything in
+`_build/content/`, run `python3 _build/build.py` and commit the regenerated
+HTML, otherwise the deployed pages stay unchanged.
+
 ## Local preview
 
 ```bash

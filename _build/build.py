@@ -22,7 +22,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "38"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "39"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -104,8 +104,8 @@ META = {
                              "Sterile and non-sterile gauze, gauze rolls, swabs, laparotomy sponges and cotton products — manufactured by EHS for hospitals, operating rooms, clinics and emergency care."),
         "medical-textiles": ("Medical Textiles &amp; Disposables | EHS",
                              "Laparotomy sponges, disposable products and medical textiles for clinical environments, manufactured by EHS since 1988."),
-        "orthopedic": ("Orthopedic Products | EHS",
-                       "Cast padding, stockinette, cast net, orthopedic cotton and splint accessories — orthopedic support manufactured by EHS."),
+        "orthopedic": ("MasterCast — Orthopedic Range | EHS",
+                       "Cast padding, stockinette, cast net, orthopedic cotton and splint accessories — the MasterCast orthopedic range manufactured by EHS."),
         "masks-ppe": ("Face Masks &amp; PPE | EHS",
                       "Surgical, procedure and protective face masks plus disposable medical PPE, manufactured by EHS."),
         "mastercast-tube-grip": ("MasterCast Tube Grip — Elasticated Tubular Bandage | EHS",
@@ -142,8 +142,8 @@ META = {
                              "شاش معقّم وغير معقّم ولفائف شاش وقطع شاش وفُوَط بطن جراحية ومنتجات قطنية — تصنّعها EHS للمستشفيات وغرف العمليات والعيادات والطوارئ."),
         "medical-textiles": ("المنسوجات الطبية والمنتجات أحادية الاستخدام | EHS",
                              "فُوَط بطن جراحية ومنتجات أحادية الاستخدام ومنسوجات طبية لبيئات العمل السريرية، تصنّعها EHS منذ عام 1988."),
-        "orthopedic": ("منتجات العظام | EHS",
-                       "حشوات الجبس والستوكينيت وشبك الجبس وقطن العظام ومستلزمات الجبائر — دعم عظام تصنّعه EHS."),
+        "orthopedic": ("ماستركاست — مجموعة العظام | EHS",
+                       "حشوات الجبس والستوكينيت وشبك الجبس وقطن العظام ومستلزمات الجبائر — مجموعة ماستركاست للعظام تصنّعها EHS."),
         "masks-ppe": ("الكمامات ومستلزمات الوقاية | EHS",
                       "كمامات جراحية وكمامات إجراءات وكمامات واقية ومستلزمات وقاية طبية أحادية الاستخدام من EHS."),
         "mastercast-tube-grip": ("ماستركاست تيوب جريب — رباط أنبوبي مرن | EHS",
@@ -193,7 +193,7 @@ STR = {
                     ("mastercast-elastic-bandage.html", "MasterCast Elastic Bandage"),
                     ("gauze-wound-care.html", "Gauze &amp; Wound Care"),
                     ("medical-textiles.html", "Medical Textiles &amp; Disposables"),
-                    ("orthopedic.html", "Orthopedic Products"),
+                    ("orthopedic.html", "MasterCast"),
                     ("masks-ppe.html", "Face Masks &amp; PPE"),
                 ]),
                 ("medpress", "medpress.html", "MedPress", [
@@ -247,7 +247,7 @@ STR = {
                     ("mastercast-elastic-bandage.html", "رباط ماستركاست المرن"),
                     ("gauze-wound-care.html", "الشاش والعناية بالجروح"),
                     ("medical-textiles.html", "المنسوجات الطبية"),
-                    ("orthopedic.html", "منتجات العظام"),
+                    ("orthopedic.html", "ماستركاست"),
                     ("masks-ppe.html", "الكمامات ومستلزمات الوقاية"),
                 ]),
                 ("medpress", "medpress.html", "ميدبريس", [

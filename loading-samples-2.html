@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loading screen — six new samples | EHS</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="assets/logos/EHS-app-icon.svg">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<style>
+  :root{
+    --brand:#8DBE22; --brand-hover:#7CAA1C; --on-brand:#1B2A0A;
+    --forest:#4F7A12; --forest-deep:#3A5A0C; --ink:#212B14;
+    --muted:#5B6B49; --paper:#F9FBF4; --mint:#E2F1C9; --mint-soft:#F0F8E2; --line:#DDE3D2;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+       font-family:"Manrope",system-ui,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{width:min(100% - 40px,1180px);margin-inline:auto;padding-block:56px 90px}
+
+  .lede{margin-block-end:48px}
+  .eyebrow{display:inline-flex;padding:9px 22px;border-radius:999px;background:var(--brand);
+           color:var(--on-brand);font-weight:800;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase}
+  h1{font-size:clamp(2rem,5vw,3rem);line-height:1.08;margin:18px 0 10px;letter-spacing:-.02em}
+  .lede p{color:var(--muted);font-size:1.05rem;max-width:62ch;margin:0}
+
+  .grid{display:grid;gap:30px;grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+  .card{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;
+        display:flex;flex-direction:column}
+  .card__head{padding:20px 22px 14px;display:flex;gap:13px;align-items:flex-start}
+  .num{flex:none;width:31px;height:31px;border-radius:50%;background:var(--mint);color:var(--forest);
+       display:grid;place-items:center;font-weight:800;font-size:.92rem}
+  .card__head h2{font-size:1.1rem;margin:0 0 3px}
+  .card__head p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.5}
+  .card__foot{padding:12px 22px 18px;display:flex;gap:10px;align-items:center;border-top:1px solid var(--line)}
+  .btn{font:inherit;font-weight:700;font-size:.85rem;padding:9px 18px;border-radius:999px;
+       border:1.5px solid var(--line);background:#fff;color:var(--forest);cursor:pointer;
+       transition:background .2s,color .2s,border-color .2s}
+  .btn:hover{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+  .tag{margin-inline-start:auto;font-size:.78rem;color:var(--muted)}
+
+  /* ---------- the stage every sample plays in ---------- */
+  .stage{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--paper)}
+  .stage img{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70%;height:auto}
+  .stage--dark{background:var(--ink)}
+
+  /* 1 · curtain lift */
+  .s1 .panel{position:absolute;inset:0;background:var(--brand);transform-origin:top}
+  .s1 .panel--b{background:var(--forest)}
+  .s1 img{opacity:0}
+  .s1.play .panel--a{animation:liftA 1s cubic-bezier(.7,0,.2,1) .35s both}
+  .s1.play .panel--b{animation:liftB 1s cubic-bezier(.7,0,.2,1) .2s both}
+  .s1.play img{animation:fadeUp .7s ease .95s both}
+  @keyframes liftA{to{transform:translateY(-101%)}}
+  @keyframes liftB{to{transform:translateY(-101%)}}
+
+  /* 2 · wipe reveal */
+  .s2 img{clip-path:inset(0 100% 0 0)}
+  .s2 .bar{position:absolute;top:0;bottom:0;width:14%;background:var(--brand);left:-14%}
+  .s2.play img{animation:wipeIn 1.15s cubic-bezier(.65,.02,.25,1) .3s both}
+  .s2.play .bar{animation:barSweep 1.5s cubic-bezier(.65,.02,.25,1) .25s both}
+  @keyframes wipeIn{to{clip-path:inset(0 0 0 0)}}
+  @keyframes barSweep{to{left:104%}}
+
+  /* 3 · shine */
+  .s3 img{opacity:0}
+  .s3 .shine{position:absolute;inset:0;
+    background:linear-gradient(105deg,transparent 38%,rgba(141,190,34,.85) 50%,transparent 62%);
+    transform:translateX(-100%)}
+  .s3.play img{animation:fadeIn .6s ease .25s both}
+  .s3.play .shine{animation:shineSweep 1.5s cubic-bezier(.5,0,.3,1) .55s both}
+  @keyframes shineSweep{to{transform:translateX(100%)}}
+
+  /* 4 · settle */
+  .s4 img{opacity:0;transform:translate(-50%,-50%) scale(1.13);filter:blur(7px)}
+  .s4 .rule{position:absolute;left:50%;bottom:22%;transform:translateX(-50%);height:3px;width:0;
+            border-radius:2px;background:var(--brand)}
+  .s4.play img{animation:settle 1.15s cubic-bezier(.2,.8,.25,1) .2s both}
+  .s4.play .rule{animation:ruleGrow .8s cubic-bezier(.5,0,.2,1) 1.05s both}
+  @keyframes settle{to{opacity:1;transform:translate(-50%,-50%) scale(1);filter:blur(0)}}
+  @keyframes ruleGrow{to{width:26%}}
+
+  /* 5 · progress */
+  .s5 img{opacity:0}
+  .s5 .track{position:absolute;left:50%;bottom:20%;transform:translateX(-50%);width:30%;height:4px;
+             border-radius:3px;background:var(--mint);overflow:hidden}
+  .s5 .fill{position:absolute;inset:0;background:var(--brand);transform-origin:left;transform:scaleX(0)}
+  .s5.play img{animation:fadeUp .6s ease .2s both}
+  .s5.play .fill{animation:fillUp 1.8s cubic-bezier(.5,.05,.2,1) .5s both}
+  @keyframes fillUp{to{transform:scaleX(1)}}
+
+  /* 6 · tiles */
+  .s6 .tiles{position:absolute;inset:0;display:grid;
+             grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(3,1fr)}
+  .s6 .tiles i{display:block;background:var(--brand)}
+  .s6 .tiles i:nth-child(even){background:var(--forest)}
+  .s6 img{opacity:0}
+  .s6.play .tiles i{animation:tileOut .55s cubic-bezier(.6,0,.3,1) both}
+  .s6.play img{animation:fadeIn .65s ease 1.15s both}
+
+  @keyframes tileOut{to{transform:scale(0);opacity:0}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes fadeUp{from{opacity:0;transform:translate(-50%,-44%)}
+                    to{opacity:1;transform:translate(-50%,-50%)}}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="lede">
+    <span class="eyebrow">Loading screen</span>
+    <h1>Six ways in, none of them a pulse.</h1>
+    <p>Each one plays on a loop so you can watch it a few times. Press <strong>Replay</strong> to run it
+       again, or <strong>Full screen</strong> to see it at real size the way a visitor would.
+       Tell me the number and I will put it on the site.</p>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+(function () {
+  var LOGO_DARK  = "assets/logos/EHS-logo.svg";
+  var LOGO_WHITE = "assets/logos/EHS-logo-white.svg";
+
+  var SAMPLES = [
+    {id:"s1", name:"Curtain lift", dark:false, dur:2100,
+     desc:"Two green panels lift away like a curtain. Uses the same motion as the page transitions already on the site.",
+     inner:'<span class="panel panel--b"></span><span class="panel panel--a"></span><img src="'+LOGO_DARK+'" alt="EHS">'},
+
+    {id:"s2", name:"Wipe reveal", dark:false, dur:2100,
+     desc:"A green bar sweeps across and paints the logo in behind it. Crisp and quick.",
+     inner:'<img src="'+LOGO_DARK+'" alt="EHS"><span class="bar"></span>'},
+
+    {id:"s3", name:"Shine", dark:true, dur:2200,
+     desc:"The logo sits on the deep green, and a band of brand-green light passes over it once.",
+     inner:'<img src="'+LOGO_WHITE+'" alt="EHS"><span class="shine"></span>'},
+
+    {id:"s4", name:"Settle", dark:false, dur:2100,
+     desc:"The logo eases out of a soft blur into focus, then a short green rule draws underneath. The quietest of the six.",
+     inner:'<img src="'+LOGO_DARK+'" alt="EHS"><span class="rule"></span>'},
+
+    {id:"s5", name:"Progress line", dark:false, dur:2500,
+     desc:"Logo with a thin filling bar beneath it. The most literal — the visitor can see how far along it is.",
+     inner:'<img src="'+LOGO_DARK+'" alt="EHS"><span class="track"><span class="fill"></span></span>'},
+
+    {id:"s6", name:"Tiles", dark:false, dur:2300,
+     desc:"A grid of green tiles pops away one after another to uncover the logo. The most energetic.",
+     inner:'<span class="tiles">' + Array.from({length:18}).map(function(){return "<i></i>";}).join("") +
+           '</span><img src="'+LOGO_DARK+'" alt="EHS">'}
+  ];
+
+  var grid = document.getElementById("grid");
+
+  SAMPLES.forEach(function (s, i) {
+    var card = document.createElement("section");
+    card.className = "card";
+    card.innerHTML =
+      '<div class="card__head">' +
+        '<span class="num">' + (i + 1) + '</span>' +
+        '<div><h2>' + s.name + '</h2><p>' + s.desc + '</p></div>' +
+      '</div>' +
+      '<div class="stage ' + s.id + (s.dark ? " stage--dark" : "") + '">' + s.inner + '</div>' +
+      '<div class="card__foot">' +
+        '<button class="btn" data-replay>Replay</button>' +
+        '<button class="btn" data-full>Full screen</button>' +
+        '<span class="tag">Sample ' + (i + 1) + '</span>' +
+      '</div>';
+    grid.appendChild(card);
+
+    var stage = card.querySelector(".stage");
+
+    /* the tiles need staggered delays */
+    if (s.id === "s6") {
+      [].forEach.call(stage.querySelectorAll(".tiles i"), function (t, n) {
+        t.style.animationDelay = (0.25 + (n % 6) * 0.05 + Math.floor(n / 6) * 0.08) + "s";
+      });
+    }
+
+    function play() {
+      stage.classList.remove("play");
+      void stage.offsetWidth;
+      stage.classList.add("play");
+    }
+    play();
+    window.setInterval(play, s.dur + 1500);
+    card.querySelector("[data-replay]").addEventListener("click", play);
+
+    card.querySelector("[data-full]").addEventListener("click", function () {
+      var full = document.createElement("div");
+      full.style.cssText = "position:fixed;inset:0;z-index:99;cursor:pointer";
+      full.className = "stage " + s.id + (s.dark ? " stage--dark" : "");
+      full.style.aspectRatio = "auto";
+      full.innerHTML = s.inner;
+      if (s.id === "s6") {
+        [].forEach.call(full.querySelectorAll(".tiles i"), function (t, n) {
+          t.style.animationDelay = (0.25 + (n % 6) * 0.05 + Math.floor(n / 6) * 0.08) + "s";
+        });
+      }
+      full.querySelector("img").style.width = "min(74vw, 720px)";
+      document.body.appendChild(full);
+      void full.offsetWidth;
+      full.classList.add("play");
+      full.addEventListener("click", function () { full.remove(); });
+      window.setTimeout(function () { if (full.parentNode) full.remove(); }, s.dur + 1200);
+    });
+  });
+})();
+</script>
+</body>
+</html>

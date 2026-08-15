@@ -21,7 +21,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "34"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "35"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -405,7 +405,6 @@ def footer_html(lang, slug=""):
   <span class="wa-fab__label">{s['wa_label']}</span>
 </a>
 <footer class="footer"{reveal_attr}>
-  <div class="footer__wave" aria-hidden="true">{WAVE}</div>
   <div class="container footer__inner">
     <div class="footer__grid">
       <div class="footer__brand">

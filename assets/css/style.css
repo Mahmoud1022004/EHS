@@ -1323,9 +1323,6 @@ table.spec--def tbody th { width: 38%; }
   position: relative;
   overflow: hidden;
 }
-.footer__wave { color: var(--heritage); opacity: 0.35; position: absolute; inset-block-start: 24px; inset-inline: 0; }
-.footer__wave svg { width: 100%; height: 90px; }
-[dir="rtl"] .footer__wave svg { transform: scaleX(-1); }
 .footer__inner { position: relative; padding-block: clamp(56px, 7vw, 88px) 0; }
 .footer__grid {
   display: grid;

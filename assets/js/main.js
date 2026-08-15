@@ -130,16 +130,58 @@
     }
   }
 
-  /* Enquiry / contact forms — demo mode.
-     TODO for launch: point data-endpoint at the confirmed form service
-     (e.g. a form backend or the ehs-med.com mail server) and remove the
-     demo notice. Until contact channels are confirmed by the owner, the
-     form intentionally does not send data anywhere. */
-  document.querySelectorAll('form[data-demo-form]').forEach(function (form) {
+  /* Enquiry / contact forms.
+     The form is composed into a single structured WhatsApp message and handed
+     to the visitor's own WhatsApp, where they press send — so enquiries arrive
+     as readable chats with no form backend in between. Field names come from
+     each input's own <label>, which keeps the message in the page's language.
+     Native validation runs first: the submit event only fires once required
+     fields are filled. */
+  document.querySelectorAll('form[data-wa-form]').forEach(function (form) {
+    var number = form.getAttribute('data-wa-form');
+    if (!number) return;
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+
+      var lines = [];
+      var heading = form.getAttribute('data-wa-heading');
+      if (heading) { lines.push(heading, ''); }
+
+      form.querySelectorAll('input[name], select[name], textarea[name]').forEach(function (field) {
+        if (field.type === 'hidden' || field.disabled) return;
+        var value;
+        if (field.tagName === 'SELECT') {
+          var opt = field.options[field.selectedIndex];
+          value = opt ? opt.text : '';           /* the label, never the value code */
+        } else if (field.type === 'checkbox' || field.type === 'radio') {
+          if (!field.checked) return;
+          value = field.value;
+        } else {
+          value = field.value;
+        }
+        value = (value || '').replace(/\s+$/, '').replace(/^\s+/, '');
+        if (!value) return;
+        var label = field.id ? form.querySelector('label[for="' + field.id + '"]') : null;
+        var name = label ? label.textContent.trim() : field.name;
+        lines.push(name + ': ' + value);
+      });
+
+      var source = form.getAttribute('data-wa-source');
+      if (source) { lines.push('', source); }
+
+      var text = lines.join('\n');
+      /* wa.me carries the message in the URL, so keep it comfortably short */
+      if (text.length > 1600) { text = text.slice(0, 1600) + '…'; }
+      var url = 'https://wa.me/' + number + '?text=' + encodeURIComponent(text);
+
+      window.open(url, '_blank', 'noopener');
+
       var success = form.querySelector('.form-success');
       if (success) {
+        /* also offer the link directly, in case the pop-up was blocked */
+        var manual = success.querySelector('[data-wa-manual]');
+        if (manual) { manual.setAttribute('href', url); }
         success.classList.add('is-visible');
         success.setAttribute('role', 'status');
         success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });

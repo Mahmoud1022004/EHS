@@ -8,6 +8,7 @@ Assembles the bilingual static site from shared templates + per-page content.
 
 Placeholders available inside content files:
   {{A}}            -> asset path prefix ("assets" or "../assets")
+  {{WA_NUMBER}}    -> WhatsApp number, digits only (for the enquiry forms)
   {{ICON:name}}    -> inline SVG icon
   {{WAVE}}         -> large support-line SVG
   {{WAVE_SMALL}}   -> small support-line divider SVG
@@ -21,7 +22,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "35"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "36"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -449,6 +450,7 @@ def build_page(lang, slug):
     a = "assets" if lang == "en" else "../assets"
     body = body.replace("{{A}}", a)
     body = body.replace("{{WA_URL}}", f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(STR[lang]['wa_prefill'])}")
+    body = body.replace("{{WA_NUMBER}}", WHATSAPP_NUMBER)
     body = WABULK_RE.sub(
         lambda m: f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(STR[lang]['wa_bulk_prefix'] + m.group(1))}",
         body)

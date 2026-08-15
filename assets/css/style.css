@@ -692,6 +692,8 @@ html[lang="ar"] .tbc { letter-spacing: 0; font-size: 0.82rem; }
 .notice__icon { flex: none; width: 24px; height: 24px; color: var(--forest); margin-block-start: 2px; }
 .notice--sand .notice__icon { color: #9A7F2E; }
 .notice strong { display: block; margin-block-end: 4px; }
+/* links sit inside running text here, so they need the underline to read as links */
+.notice a { text-decoration: underline; text-underline-offset: 3px; font-weight: 700; }
 
 /* ---------- Leadership / role cards ---------- */
 .role-label {

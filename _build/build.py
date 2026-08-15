@@ -22,7 +22,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "36"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "37"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -222,9 +222,8 @@ STR = {
         "addr_factory": "10th of Ramadan City, Industrial Zone A2,<br>Area No. 2/5/1, Egypt",
         "footer_disclaimer": "Product selection, compression level and usage should follow the recommendation of a qualified healthcare professional. Consult a healthcare professional before use if you have diabetes, circulatory disorders or another condition affecting leg health. Product details shown on this website are taken from current company materials and remain subject to confirmation by EHS.",
         "rights": "EHS — Egyptian Hospital Supplies. All rights reserved.",
-        "wa_label": "Chat on WhatsApp",
+        "wa_label": "Enquire on WhatsApp",
         "wa_prefill": "Hello EHS, I would like to ask about your products.",
-        "wa_bulk_prefix": "Hello EHS, I would like a bulk order quotation for: ",
     },
     "ar": {
         "dir": "rtl", "lang": "ar", "locale": "ar_EG",
@@ -276,9 +275,8 @@ STR = {
         "addr_factory": "مدينة العاشر من رمضان، المنطقة الصناعية A2،<br>القطعة رقم 2/5/1، مصر",
         "footer_disclaimer": "يجب أن يتم اختيار المنتج ومستوى الضغط وطريقة الاستخدام وفقًا لتوصية مختصّ رعاية صحية مؤهَّل. واستشر مختصّ رعاية صحية قبل الاستخدام إذا كنت تعاني من السكري أو اضطرابات الدورة الدموية أو أي حالة أخرى تؤثر على صحة الساقين. تفاصيل المنتجات المعروضة على هذا الموقع مأخوذة من مواد الشركة الحالية وتظل خاضعة للتأكيد من EHS.",
         "rights": "EHS — شركة مصر لإمداد المستشفيات. جميع الحقوق محفوظة.",
-        "wa_label": "راسلنا على واتساب",
+        "wa_label": "استفسر عبر واتساب",
         "wa_prefill": "مرحبًا EHS، أودّ الاستفسار عن منتجاتكم.",
-        "wa_bulk_prefix": "مرحبًا EHS، أودّ الحصول على عرض سعر لطلب كمية بالجملة من: ",
     },
 }
 
@@ -399,9 +397,10 @@ def footer_html(lang, slug=""):
     reveal_attr = " data-footer-reveal" if (FOOTER_REVEAL and slug == "index") else ""
     company = "".join(f'<li><a href="{h}">{t}</a></li>' for h, t in s["footer_company_links"])
     medpress = "".join(f'<li><a href="{h}">{t}</a></li>' for h, t in s["footer_medpress_links"])
-    wa_url = f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(s['wa_prefill'])}"
+    # Every WhatsApp route goes through the enquiry form, so the message
+    # arrives complete instead of as a bare "hello".
     return f"""</main>
-<a class="wa-fab" href="{wa_url}" target="_blank" rel="noopener" aria-label="{s['wa_label']}">
+<a class="wa-fab" href="contact.html#enquiry" aria-label="{s['wa_label']}">
   {WA_ICON}
   <span class="wa-fab__label">{s['wa_label']}</span>
 </a>
@@ -440,7 +439,6 @@ def footer_html(lang, slug=""):
 
 
 ICON_RE = re.compile(r"\{\{ICON:([a-z-]+)\}\}")
-WABULK_RE = re.compile(r"\{\{WABULK:([^}]+)\}\}")
 
 
 def build_page(lang, slug):
@@ -451,9 +449,6 @@ def build_page(lang, slug):
     body = body.replace("{{A}}", a)
     body = body.replace("{{WA_URL}}", f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(STR[lang]['wa_prefill'])}")
     body = body.replace("{{WA_NUMBER}}", WHATSAPP_NUMBER)
-    body = WABULK_RE.sub(
-        lambda m: f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(STR[lang]['wa_bulk_prefix'] + m.group(1))}",
-        body)
     body = body.replace("{{WAVE_SMALL}}", WAVE_SMALL)
     body = body.replace("{{WAVE}}", WAVE)
     body = ICON_RE.sub(lambda m: ICONS[m.group(1)], body)

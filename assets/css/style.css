@@ -943,34 +943,77 @@ html[lang="ar"] .yearscrub__year { letter-spacing: 0; font-weight: 700; }
   .orgtree .orgnode, .orgtree .cline, .orgtree__branches::before, .orgtree__branch::before { animation: none !important; opacity: 1 !important; transform: none !important; }
 }
 
-.orgtree-hint { display: none; }
-
 @media (max-width: 900px) {
-  /* The chart keeps its real shape rather than being rearranged: it scrolls
-     sideways inside its own box, so the connectors stay the ones that read
-     correctly and the page itself never scrolls sideways. */
-  .orgtree-scroll {
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    padding-block-end: 10px;
-    /* fade the right edge so it is obvious there is more to see */
-    -webkit-mask-image: linear-gradient(to right, #000 88%, rgba(0, 0, 0, 0.25) 100%);
-            mask-image: linear-gradient(to right, #000 88%, rgba(0, 0, 0, 0.25) 100%);
+  /* The whole chart fits the screen — no sideways scrolling. Cards shrink,
+     and `display: contents` lets the general manager's three reports break
+     out of his column so they sit side by side across the full width.
+     Note: display:contents changes layout but NOT selector matching, so the
+     placement rules below target the real DOM parents (.orgsub), not `>`
+     children of the grid. */
+
+  .orgnode { min-width: 0; width: 100%; max-width: none; padding: 13px 7px; gap: 6px; }
+  .orgnode__icon { width: 30px; height: 30px; border-radius: 10px; }
+  .orgnode__icon svg { width: 16px; height: 16px; }
+  .role-label { font-size: 0.52rem; letter-spacing: 0.02em; }
+  .orgnode__name { font-size: 0.74rem; line-height: 1.25; }
+  .orgtree__branch .orgnode { padding-inline: 6px; }
+
+  .orgtree__branch--parent, .orgsub { display: contents; }
+
+  .orgtree__branches { gap: 7px; padding-block-start: 0; }
+  .orgtree__branch { padding-block-start: 24px; }
+  .orgtree__branch::before { display: block; height: 24px; }
+
+  /* row 1 — the founder's two reports, side by side */
+  .orgtree__branches--2 { grid-template-columns: 1fr 1fr; max-width: none; row-gap: 0; }
+  .orgtree__branches--2::before { inset-inline: 25%; }
+  .orgtree__branches--2 > .orgtree__branch { grid-column: 2; grid-row: 1; }
+  .orgsub > .orgnode--gm {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+    margin-block-start: 24px;
+    position: relative;
   }
-  [dir="rtl"] .orgtree-scroll {
-    -webkit-mask-image: linear-gradient(to left, #000 88%, rgba(0, 0, 0, 0.25) 100%);
-            mask-image: linear-gradient(to left, #000 88%, rgba(0, 0, 0, 0.25) 100%);
+  .orgsub > .orgnode--gm::before {
+    content: "";
+    position: absolute;
+    top: -24px;
+    inset-inline-start: 50%;
+    margin-inline-start: -1.5px;
+    width: 3px;
+    height: 24px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, var(--brand), var(--brand-hover));
+    opacity: 0.45;
+    transform-origin: top;
   }
-  .orgtree { min-width: 660px; }
-  .orgtree-hint {
-    display: block;
-    margin-block-start: 10px;
-    text-align: center;
+  .orgtree.is-visible .orgsub > .orgnode--gm::before { animation: orgGrowY 0.25s ease 1.2s both; }
+
+  /* the drop out of the general manager */
+  .orgsub > .cline { grid-column: 1; grid-row: 2; justify-self: center; height: 20px; }
+
+  /* row 3 — his three reports, side by side across the full width */
+  .orgsub > .orgtree__branches--3 {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    margin-inline-start: 0;
+    padding-inline-start: 0;
   }
-  .orgnode { min-width: 0; padding: 16px 12px; }
-  .orgnode__name { font-size: 0.95rem; }
+  .orgsub > .orgtree__branches--3::before { inset-inline: calc(100% / 6); }
+  .orgsub > .orgtree__branches--3 .orgtree__branch { padding-block-start: 18px; }
+  .orgsub > .orgtree__branches--3 .orgtree__branch::before { height: 18px; }
+  .orgtree__branch .orgnode { z-index: 1; }
+}
+@media (max-width: 400px) {
+  .orgnode { padding: 11px 4px; }
+  .orgnode__icon { width: 26px; height: 26px; }
+  .orgnode__icon svg { width: 14px; height: 14px; }
+  .role-label { font-size: 0.47rem; }
+  .orgnode__name { font-size: 0.68rem; }
+  .orgtree__branch .orgnode { padding-inline: 3px; }
 }
 
 /* ---------- Feature list ---------- */

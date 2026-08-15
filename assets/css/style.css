@@ -118,6 +118,18 @@ html[lang="ar"] .h1, html[lang="ar"] .h2, html[lang="ar"] .h3, html[lang="ar"] .
 }
 html[lang="ar"] .eyebrow { letter-spacing: 0; font-size: 1.1rem; font-weight: 700; }
 
+/* Sub-brand lockups. MedPress and MasterCast carry their own supplied
+   artwork and their own green (#138443), so they sit as images rather than
+   in the EHS palette. Used in place of the eyebrow on their brand pages. */
+.brandmark {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-block-end: 20px;
+}
+.brandmark img { width: clamp(132px, 16vw, 178px); height: auto; }
+.section-head--center .brandmark, .section-head .brandmark { justify-content: center; }
+
 /* ---------- Layout ---------- */
 .container {
   width: min(100% - 48px, var(--container));

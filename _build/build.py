@@ -22,7 +22,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "39"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "42"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -187,13 +187,10 @@ STR = {
                 ]),
                 ("products", "products.html", "Products", [
                     ("products.html", "All products"),
-                    ("medpress.html", "MedPress Compression"),
-                    ("mastercast-tube-grip.html", "MasterCast Tube Grip"),
-                    ("mastercast-cast-net.html", "MasterCast Cast-Net"),
-                    ("mastercast-elastic-bandage.html", "MasterCast Elastic Bandage"),
+                    ("medpress.html", "MedPress"),
+                    ("orthopedic.html", "MasterCast"),
                     ("gauze-wound-care.html", "Gauze &amp; Wound Care"),
                     ("medical-textiles.html", "Medical Textiles &amp; Disposables"),
-                    ("orthopedic.html", "MasterCast"),
                     ("masks-ppe.html", "Face Masks &amp; PPE"),
                 ]),
                 ("medpress", "medpress.html", "MedPress", [
@@ -241,13 +238,10 @@ STR = {
                 ]),
                 ("products", "products.html", "المنتجات", [
                     ("products.html", "كل المنتجات"),
-                    ("medpress.html", "ميدبريس للضغط الطبي"),
-                    ("mastercast-tube-grip.html", "ماستركاست تيوب جريب"),
-                    ("mastercast-cast-net.html", "ماستركاست كاست-نت"),
-                    ("mastercast-elastic-bandage.html", "رباط ماستركاست المرن"),
+                    ("medpress.html", "ميدبريس"),
+                    ("orthopedic.html", "ماستركاست"),
                     ("gauze-wound-care.html", "الشاش والعناية بالجروح"),
                     ("medical-textiles.html", "المنسوجات الطبية"),
-                    ("orthopedic.html", "ماستركاست"),
                     ("masks-ppe.html", "الكمامات ومستلزمات الوقاية"),
                 ]),
                 ("medpress", "medpress.html", "ميدبريس", [

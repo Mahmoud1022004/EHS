@@ -283,6 +283,18 @@
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
         /* parent items in the mobile drawer only expand — handled elsewhere */
         if (drawerMq.matches && link.parentElement.classList.contains('nav__item')) return;
+        /* an anchor on the page we are already on just scrolls — running the
+           curtain would cover the screen with nothing to navigate to */
+        var samePage = false;
+        try {
+          var target = new URL(href, window.location.href);
+          samePage = !!target.hash && target.pathname === window.location.pathname;
+        } catch (err) {}
+        if (samePage) {
+          body.classList.remove('nav-open');
+          if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+          return;
+        }
         e.preventDefault();
         try { sessionStorage.setItem('ehsCurtain', '1'); } catch (err) {}
         curtain.classList.add('is-closing');

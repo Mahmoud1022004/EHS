@@ -21,7 +21,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "33"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "34"  # bump when css/js change so returning visitors get fresh assets
 
 # TODO before launch: replace with the company's CONFIRMED WhatsApp number
 # (international format, digits only, e.g. "201001234567"). Placeholder below
@@ -175,7 +175,14 @@ STR = {
         "skip": "Skip to content",
         "brand_name": "Egyptian Hospital Supplies",
         "brand_sub": "EHS · Medical manufacturer — Egypt",
-        "nav": [("about", "about.html", "About"),
+        "nav": [("about", "about.html", "About", [
+                    ("about.html", "About EHS"),
+                    ("about.html#story", "Our Story — since 1988"),
+                    ("about.html#values", "Our Values"),
+                    ("about.html#leadership", "Leadership"),
+                    ("about.html#locations", "Locations"),
+                    ("factory.html", "The Factory"),
+                ]),
                 ("products", "products.html", "Products", [
                     ("products.html", "All products"),
                     ("medpress.html", "MedPress Compression"),
@@ -222,7 +229,14 @@ STR = {
         "skip": "تخطَّ إلى المحتوى",
         "brand_name": "شركة مصر لإمداد المستشفيات",
         "brand_sub": "EHS · مصنّع مستلزمات طبية — مصر",
-        "nav": [("about", "about.html", "من نحن"),
+        "nav": [("about", "about.html", "من نحن", [
+                    ("about.html", "نبذة عن EHS"),
+                    ("about.html#story", "قصتنا — منذ 1988"),
+                    ("about.html#values", "قيمنا"),
+                    ("about.html#leadership", "فريق القيادة"),
+                    ("about.html#locations", "مواقعنا"),
+                    ("factory.html", "المصنع"),
+                ]),
                 ("products", "products.html", "المنتجات", [
                     ("products.html", "كل المنتجات"),
                     ("medpress.html", "ميدبريس للضغط الطبي"),

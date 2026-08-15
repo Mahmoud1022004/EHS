@@ -1410,7 +1410,10 @@ html[lang="ar"] .footer h4 { letter-spacing: 0; font-size: 0.95rem; }
 .maxw-820 { max-width: 820px; }
 .mx-auto { margin-inline: auto; }
 
-#enquiry { scroll-margin-top: calc(var(--header-h) + 24px); }
+/* keep anchored sections clear of the sticky header */
+#enquiry, [id="story"], [id="values"], [id="leadership"], [id="locations"] {
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
 
 /* Curtain / blinds page transition — vertical panels sweep up to cover the
    page on menu navigation, then retract on the next page. */

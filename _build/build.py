@@ -21,7 +21,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "24"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "28"  # bump when css/js change so returning visitors get fresh assets
 
 # TODO before launch: replace with the company's CONFIRMED WhatsApp number
 # (international format, digits only, e.g. "201001234567"). Placeholder below
@@ -319,7 +319,7 @@ def head(lang, slug):
 <div class="loader" id="ehs-loader" role="presentation" aria-hidden="true">
   <svg class="loader__wave" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true"><path d="M-40 150 C 160 30, 300 210, 520 120 S 860 20, 1040 110 S 1240 190, 1360 90"/></svg>
   <div class="loader__center">
-    <span class="loader__logo">{MONOGRAM}</span>
+    <img class="loader__logo" src="{a}/logos/EHS-logo-white.svg" alt="" width="850" height="114">
     <span class="loader__tag">{s['loader_tag']}</span>
   </div>
 </div>
@@ -353,7 +353,8 @@ def header_html(lang, slug):
     return f"""<header class="header">
   <div class="container container--wide header__inner">
     <a class="brand" href="index.html" aria-label="EHS — {s['brand_name']}">
-      <span class="brand__mark" style="color: var(--heritage);">{MONOGRAM}</span>
+      <img class="brand__lockup" src="{a}/logos/EHS-logo.svg" alt="EHS — {s['brand_name']}" width="850" height="114">
+      <img class="brand__markonly" src="{a}/logos/EHS-mark.svg" alt="" aria-hidden="true" width="190" height="84">
       <span class="brand__text">
         <span class="brand__name"><span class="brand__name-track"><span>{s['brand_name']}</span><span aria-hidden="true">{s['brand_name']}</span></span></span>
         <span class="brand__sub">{s['brand_sub']}</span>
@@ -394,7 +395,7 @@ def footer_html(lang, slug=""):
   <div class="container footer__inner">
     <div class="footer__grid">
       <div class="footer__brand">
-        <span class="brand__mark" style="color:#fff; display:block;">{MONOGRAM}</span>
+        <img class="footer__logo" src="{a}/logos/EHS-logo-white.svg" alt="EHS — {s['brand_name']}" width="850" height="114">
         <p>{s['footer_about']}</p>
       </div>
       <div>

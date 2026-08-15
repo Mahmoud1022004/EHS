@@ -30,7 +30,7 @@
   --shadow-md: 0 6px 24px rgba(31, 42, 37, 0.10);
   --shadow-lg: 0 18px 48px rgba(31, 42, 37, 0.16);
 
-  --header-h: 78px;
+  --header-h: 92px;
   --container: 1200px;
   --wide: 1440px;
 }
@@ -237,8 +237,8 @@ html[lang="ar"] .btn { letter-spacing: 0; }
 }
 .loader__center { position: relative; z-index: 2; display: grid; place-items: center; padding: 24px; }
 .loader__logo {
-  width: clamp(130px, 24vw, 230px);
-  color: #fff;
+  width: min(82vw, 580px);
+  height: auto;
   opacity: 0;
   transform: translateY(26px) scale(0.94);
   animation: loaderLogo 0.8s 1.3s cubic-bezier(0.2, 0.9, 0.25, 1.2) forwards;
@@ -290,6 +290,17 @@ html.loader-skip .loader { display: none; }
 }
 .brand:hover { color: var(--forest); }
 .brand__mark { width: 64px; flex: none; }
+/* Official lockup on wider screens; compact mark + name on phones */
+.brand__lockup { height: 58px; width: auto; flex: none; }
+.brand__markonly { display: none; height: 42px; width: auto; flex: none; }
+@media (max-width: 640px) {
+  .brand__lockup { display: none; }
+  .brand__markonly { display: block; }
+}
+/* .brand__text is defined further down, so this needs the extra specificity */
+@media (min-width: 641px) {
+  .header .brand__text { display: none; }
+}
 .brand__text { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
 .brand__name { font-weight: 800; font-size: 1.05rem; letter-spacing: 0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .brand__sub { font-size: 0.7rem; font-weight: 600; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -439,7 +450,10 @@ html[lang="ar"] .brand__sub { letter-spacing: 0; font-size: 0.78rem; }
    makes the loop seamless. Static (duplicate hidden) on wider screens. */
 .brand__name-track > span + span { display: none; }
 @media (max-width: 640px) {
-  .brand__name { text-overflow: clip; }
+  /* keep the scrolling name inside a fixed window so it can never push the
+     mark out of the header (Arabic wordmark is wider than the English one) */
+  .brand__text { min-width: 0; }
+  .brand__name { text-overflow: clip; overflow: hidden; max-width: min(54vw, 230px); }
   .brand__name-track {
     display: inline-flex;
     width: max-content;
@@ -1311,6 +1325,7 @@ html[lang="ar"] .footer h4 { letter-spacing: 0; font-size: 0.95rem; }
 .footer a { color: rgba(248, 250, 246, 0.82); }
 .footer a:hover { color: #fff; }
 .footer__brand .brand__mark { width: 74px; margin-block-end: 16px; }
+.footer__logo { width: min(100%, 290px); height: auto; margin-block-end: 18px; }
 .footer__brand p { font-size: 0.95rem; max-width: 300px; }
 .footer address { font-style: normal; font-size: 0.93rem; line-height: 1.7; }
 .footer address strong { color: #fff; display: block; margin-block-end: 2px; }

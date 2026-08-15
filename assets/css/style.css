@@ -137,6 +137,11 @@ html[lang="ar"] .eyebrow { letter-spacing: 0; font-size: 1.1rem; font-weight: 70
 .band__brand { padding: clamp(28px, 4vw, 56px) clamp(28px, 4vw, 56px) 0; }
 .band__brand .brandmark { margin-block-end: clamp(18px, 2.4vw, 30px); }
 
+/* Product ranges stack as one continuous run — the default section padding
+   would put ~130px of empty page between each range. */
+.section--stacked { padding-block: 0; }
+.section--stacked + .section--stacked { padding-block-start: clamp(14px, 1.6vw, 20px); }
+
 /* ---------- Layout ---------- */
 .container {
   width: min(100% - 48px, var(--container));

@@ -21,7 +21,7 @@
         loader.classList.add('is-done');
         root.classList.remove('loader-active');
         window.setTimeout(function () { loader.remove(); }, 600);
-      }, 2850);
+      }, 3050);
     }
   }
 

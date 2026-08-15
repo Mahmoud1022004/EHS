@@ -9,6 +9,7 @@
   --forest-deep: #0F4A2F;
   --forest-ink: #10291C;
   --heritage: #4C9B24;
+  --logo-green: #8DBE22; /* the official logo green */
   --mint: #DCEFD9;
   --mint-soft: #EAF5E8;
   --paper: #F8FAF6;
@@ -223,17 +224,50 @@ html[lang="ar"] .btn { letter-spacing: 0; }
   place-items: center;
   transition: opacity 0.5s ease, visibility 0.5s ease;
 }
-.loader__wave { position: absolute; inset-inline: 0; bottom: 16%; width: 100%; height: 26%; }
-[dir="rtl"] .loader__wave { transform: scaleX(-1); }
-.loader__wave path {
+/* Vital Pulse — a heartbeat traces the screen, a green pulse swells out of
+   the peak and the logo resolves through it. */
+.loader__ecg { position: absolute; inset: 0; width: 100%; height: 100%; }
+[dir="rtl"] .loader__ecg { transform: scaleX(-1); }
+.loader__ecg path {
   fill: none;
-  stroke: var(--heritage);
-  stroke-width: 22;
+  stroke: var(--logo-green);
+  stroke-width: 3;
   stroke-linecap: round;
-  opacity: 0.85;
-  stroke-dasharray: 1520;
-  stroke-dashoffset: 1520;
-  animation: loaderDraw 1.75s 0.1s cubic-bezier(0.55, 0.06, 0.28, 0.99) forwards;
+  stroke-linejoin: round;
+  stroke-dasharray: 1500;
+  stroke-dashoffset: 1500;
+  animation: loaderTrace 2.2s cubic-bezier(0.4, 0.05, 0.3, 1) forwards,
+             loaderDim 0.9s 2.3s forwards;
+}
+.loader__pulse,
+.loader__ring {
+  position: absolute;
+  left: 50%;
+  top: 63%;
+  border-radius: 50%;
+  opacity: 0;
+}
+.loader__pulse {
+  width: 150px; height: 150px; margin: -75px 0 0 -75px;
+  background: radial-gradient(circle, rgba(141, 190, 34, 0.75) 0%, rgba(141, 190, 34, 0.28) 45%, transparent 72%);
+  animation: loaderSwell 1.5s 1.05s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+.loader__ring {
+  width: 110px; height: 110px; margin: -55px 0 0 -55px;
+  border: 2px solid rgba(141, 190, 34, 0.55);
+  animation: loaderRing 1.6s 1.15s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+@keyframes loaderTrace { to { stroke-dashoffset: 0; } }
+@keyframes loaderDim { to { opacity: 0.16; } }
+@keyframes loaderSwell {
+  0% { opacity: 0; transform: scale(0.35); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: scale(6.5); }
+}
+@keyframes loaderRing {
+  0% { opacity: 0.9; transform: scale(0.4); }
+  60% { opacity: 0.25; }
+  100% { opacity: 0; transform: scale(7); }
 }
 .loader__center { position: relative; z-index: 2; display: grid; place-items: center; padding: 24px; }
 .loader__logo {
@@ -241,12 +275,11 @@ html[lang="ar"] .btn { letter-spacing: 0; }
   height: auto;
   opacity: 0;
   transform: translateY(26px) scale(0.94);
-  animation: loaderLogo 0.8s 1.15s cubic-bezier(0.2, 0.9, 0.25, 1.2) forwards;
+  animation: loaderLogo 0.85s 1.35s cubic-bezier(0.2, 0.9, 0.25, 1.15) forwards;
 }
 .loader.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
 html.loader-active { overflow: hidden; }
 html.loader-skip .loader { display: none; }
-@keyframes loaderDraw { to { stroke-dashoffset: 0; } }
 @keyframes loaderLogo { to { opacity: 1; transform: none; } }
 @keyframes loaderTag { to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .loader { display: none; } }

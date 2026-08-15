@@ -936,6 +936,21 @@ html[lang="ar"] .yearscrub__year { letter-spacing: 0; font-weight: 700; }
 }
 .orgtree__branch .orgnode { min-width: 0; width: 100%; padding-inline: 16px; }
 
+/* Two levels of reporting: the founder's two direct reports, and the three
+   who report to the general manager. The connector above a row of branches
+   spans from the centre of the first column to the centre of the last, so
+   its inset is half a column — 100 / (columns * 2). */
+.orgtree__branches--2 { grid-template-columns: 1.35fr 1fr; max-width: 900px; }
+.orgtree__branches--2::before { inset-inline: 25%; }
+.orgtree__branches--3 { grid-template-columns: repeat(3, 1fr); }
+.orgtree__branches--3::before { inset-inline: calc(100% / 6); }
+/* the general manager's branch is tall because it carries a sub-tree, so
+   both cards in that row top-align instead of stretching to the row height */
+.orgtree__branches--2 > .orgtree__branch { align-items: flex-start; }
+.orgtree__branches--2 > .orgtree__branch > .orgnode { flex: none; }
+.orgsub { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.orgsub .orgtree__branches { margin-block-start: 0; }
+
 /* staged entrance once the tree scrolls into view */
 @keyframes orgNodeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 @keyframes orgGrowY { from { transform: scaleY(0); } to { transform: scaleY(1); } }

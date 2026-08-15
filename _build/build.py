@@ -21,7 +21,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "30"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "31"  # bump when css/js change so returning visitors get fresh assets
 
 # TODO before launch: replace with the company's CONFIRMED WhatsApp number
 # (international format, digits only, e.g. "201001234567"). Placeholder below
@@ -294,7 +294,7 @@ def head(lang, slug):
 <meta property="og:url" content="{canonical}">
 <meta property="og:image" content="{og_img}">
 <meta property="og:locale" content="{s['locale']}">
-<meta name="theme-color" content="#176B45">
+<meta name="theme-color" content="#4F7A12">
 <link rel="icon" type="image/svg+xml" href="{a}/logos/EHS-app-icon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="{a}/logos/favicon-32.png">
 <link rel="apple-touch-icon" href="{a}/logos/apple-touch-icon.png">

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 1140 440"
+     role="img"
+     aria-labelledby="title desc">
+  <title id="title">EHS monogram</title>
+  <desc id="desc">Transparent green E H S monogram for Egyptian Hospital Supplies.</desc>
+
+  <!--
+    Clean vector reconstruction of the supplied EHS monogram.
+    Change the value below to recolor the entire mark.
+  -->
+  <g fill="#4C9B24">
+    <!-- Rounded geometric E -->
+    <path d="
+      M 410 103
+      C 374 48 306 20 220 20
+      C 110 20 20 110 20 220
+      C 20 330 110 420 220 420
+      C 306 420 374 392 410 337
+      L 332 287
+      C 310 320 270 340 220 340
+      C 154 340 100 286 100 220
+      C 100 154 154 100 220 100
+      C 270 100 310 120 332 153 Z"/>
+    <rect x="66" y="186" width="344" height="68" rx="4"/>
+
+    <!-- Clear geometric H -->
+    <path d="M 440 20 H 528 V 180 H 622 V 20 H 710 V 420 H 622 V 260 H 528 V 420 H 440 Z"/>
+
+    <!-- Clear curved S -->
+    <g transform="translate(35 0)">
+      <path d="
+      M 1082 92
+      C 1034 41 967 18 891 22
+      C 794 27 731 78 730 151
+      C 729 233 804 257 881 272
+      C 944 284 989 294 988 330
+      C 987 361 951 379 900 379
+      C 844 379 797 358 758 317
+      L 698 379
+      C 749 424 816 440 894 440
+      C 1007 440 1078 391 1080 318
+      C 1082 230 1003 204 915 187
+      C 857 176 820 165 820 135
+      C 820 108 850 87 897 85
+      C 943 83 986 101 1021 132 Z"/>
+    </g>
+  </g>
+</svg>

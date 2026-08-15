@@ -1,0 +1,141 @@
+<section class="page-hero">
+  <div class="support-line" aria-hidden="true">{{WAVE}}</div>
+  <div class="container">
+    <div class="page-hero__content">
+      <span class="eyebrow">Professional &amp; distributor enquiries</span>
+      <h1 class="h1">Partner with an Egyptian medical manufacturer.</h1>
+      <p class="lead">EHS supplies hospitals, clinics, pharmacies and medical-product distributors with dependable compression products, clear specifications and straightforward communication.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section--tight">
+  <div class="container">
+    <div class="grid grid--4">
+      <div class="card reveal">
+        <div class="card__icon">{{ICON:cross}}</div>
+        <h3 class="h4">Hospitals &amp; clinics</h3>
+        <p>Product information and supply for clinical environments.</p>
+      </div>
+      <div class="card reveal reveal-d1">
+        <div class="card__icon">{{ICON:steth}}</div>
+        <h3 class="h4">Healthcare professionals</h3>
+        <p>Documentation to support recommendation and patient guidance.</p>
+      </div>
+      <div class="card reveal reveal-d2">
+        <div class="card__icon">{{ICON:store}}</div>
+        <h3 class="h4">Pharmacies &amp; retailers</h3>
+        <p>A clearly presented range with simple sizing support.</p>
+      </div>
+      <div class="card reveal reveal-d3">
+        <div class="card__icon">{{ICON:truck}}</div>
+        <h3 class="h4">Distributors</h3>
+        <p>Commercial and product documentation for distribution partners.</p>
+      </div>
+    </div>
+    <div class="btn-row mt-24 reveal" style="gap:10px;">
+      <span class="badge">Markets we serve</span>
+      <span class="badge" style="background:var(--paper); border:1px solid var(--line);">UPA — Unified Procurement Authority</span>
+      <span class="badge" style="background:var(--paper); border:1px solid var(--line);">Government healthcare</span>
+      <span class="badge" style="background:var(--paper); border:1px solid var(--line);">Military medical services</span>
+      <span class="badge" style="background:var(--paper); border:1px solid var(--line);">Hospitals &amp; clinics</span>
+      <span class="badge" style="background:var(--paper); border:1px solid var(--line);">Pharmacies</span>
+      <span class="badge" style="background:var(--paper); border:1px solid var(--line);">Medical distributors</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid--split" style="align-items:start;">
+      <div class="stack stack--lg reveal">
+        <span class="eyebrow">Why EHS</span>
+        <h2 class="h2">What you can expect from us.</h2>
+        <ul class="feature-list">
+          <li><span class="tick">{{ICON:check}}</span><span><strong>Nearly four decades of experience</strong><span class="desc">Established in 1988, with a stable production base and proven market presence.</span></span></li>
+          <li><span class="tick">{{ICON:check}}</span><span><strong>Egyptian manufacturing</strong><span class="desc">Produced at our factory in 10th of Ramadan City — 10 production lines and an experienced team of 60+.</span></span></li>
+          <li><span class="tick">{{ICON:check}}</span><span><strong>Clear specifications</strong><span class="desc">Factual product data, stated plainly — nothing invented, nothing exaggerated.</span></span></li>
+          <li><span class="tick">{{ICON:check}}</span><span><strong>Consistent manufacturing</strong><span class="desc">Controlled processes designed to deliver the same product every time.</span></span></li>
+          <li><span class="tick">{{ICON:check}}</span><span><strong>Responsive communication</strong><span class="desc">A direct line to the manufacturer for documentation and commercial questions.</span></span></li>
+        </ul>
+        <div class="notice">
+          <span class="notice__icon">{{ICON:info}}</span>
+          <div>
+            <strong>Contact channels</strong>
+            Direct phone numbers and email addresses will be published once confirmed by the company. Until then, please use this form or visit our offices at the addresses below.
+          </div>
+        </div>
+        <address style="font-style:normal;" class="muted">
+          <strong>Cairo Office:</strong> El-Abour Buildings No. 7, Salah Salem Street, Cairo, Egypt.<br>
+          <strong>Factory:</strong> 10th of Ramadan City, Industrial Zone A2, Area No. 2/5/1, Egypt.
+        </address>
+      </div>
+
+      <div class="card card--flat reveal reveal-d1" id="enquiry">
+        <h2 class="h3 mb-24">Request documentation, a bulk order or a commercial discussion</h2>
+        <form data-demo-form data-bulk-line="Bulk order enquiry — product: " novalidate>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="pro-name">Full name</label>
+              <input id="pro-name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="form-field">
+              <label for="pro-org">Organisation</label>
+              <input id="pro-org" name="organisation" type="text" autocomplete="organization" required>
+            </div>
+            <div class="form-field">
+              <label for="pro-role">Your role</label>
+              <select id="pro-role" name="role">
+                <option>Hospital / clinic</option>
+                <option>Doctor / healthcare professional</option>
+                <option>Pharmacy / medical retailer</option>
+                <option>Distributor</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="pro-city">City / country</label>
+              <input id="pro-city" name="city" type="text" autocomplete="address-level2">
+            </div>
+            <div class="form-field form-field--full">
+              <label for="pro-interest">I’m interested in</label>
+              <select id="pro-interest" name="interest">
+                <option value="docs">Product documentation</option>
+                <option value="bulk">Bulk / wholesale order</option>
+                <option value="dist">Distribution partnership</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-field form-field--full">
+              <label for="pro-msg">Message</label>
+              <textarea id="pro-msg" name="message" required></textarea>
+            </div>
+          </div>
+          <div class="btn-row mt-24">
+            <button class="btn" type="submit">Send enquiry <span class="btn__arrow">{{ICON:arrow}}</span></button>
+            <a class="btn btn--outline" href="{{WA_URL}}" target="_blank" rel="noopener">{{ICON:wa}} WhatsApp us directly</a>
+          </div>
+          <p class="form-note mt-16">This form is in preview mode: submissions are not yet delivered. It will be activated once the company confirms its contact channels.</p>
+          <div class="form-success notice">
+            <span class="notice__icon">{{ICON:check}}</span>
+            <div><strong>Preview only — nothing was sent.</strong> Once EHS confirms its official contact channels, this form will deliver your enquiry directly to the team.</div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section--tight" style="padding-block-end: clamp(64px, 9vw, 110px);">
+  <div class="container">
+    <div class="cta-panel reveal">
+      <div class="support-line" aria-hidden="true">{{WAVE}}</div>
+      <h2 class="h2">See the product first.</h2>
+      <p class="mt-16">Review MedPress specifications, sizing and intended use before your enquiry.</p>
+      <div class="btn-row">
+        <a class="btn btn--light" href="medpress-stockings.html">Product details <span class="btn__arrow">{{ICON:arrow}}</span></a>
+        <a class="btn btn--ghost-light" href="factory.html">The factory</a>
+      </div>
+    </div>
+  </div>
+</section>

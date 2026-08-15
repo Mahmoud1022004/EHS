@@ -1,0 +1,18 @@
+# Render deployment — static site preview for the EHS website.
+# The site is plain HTML/CSS/JS and is committed pre-built, so no build step
+# is required. To regenerate pages after editing _build/content, run
+# `python3 _build/build.py` locally and commit the result.
+services:
+  - type: web
+    name: ehs-website
+    runtime: static
+    staticPublishPath: .
+    buildCommand: "echo 'Static site — no build step required'"
+    headers:
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=604800
+    routes:
+      - type: rewrite
+        source: /quality.html
+        destination: /factory.html

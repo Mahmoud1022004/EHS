@@ -21,7 +21,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "31"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "32"  # bump when css/js change so returning visitors get fresh assets
 
 # TODO before launch: replace with the company's CONFIRMED WhatsApp number
 # (international format, digits only, e.g. "201001234567"). Placeholder below

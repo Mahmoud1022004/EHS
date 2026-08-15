@@ -237,23 +237,12 @@ html[lang="ar"] .btn { letter-spacing: 0; }
 }
 .loader__center { position: relative; z-index: 2; display: grid; place-items: center; padding: 24px; }
 .loader__logo {
-  width: min(82vw, 580px);
+  width: min(88vw, 820px);
   height: auto;
   opacity: 0;
   transform: translateY(26px) scale(0.94);
-  animation: loaderLogo 0.8s 1.3s cubic-bezier(0.2, 0.9, 0.25, 1.2) forwards;
+  animation: loaderLogo 0.8s 1.15s cubic-bezier(0.2, 0.9, 0.25, 1.2) forwards;
 }
-.loader__tag {
-  margin-block-start: 20px;
-  color: var(--mint);
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-size: clamp(0.62rem, 1.4vw, 0.8rem);
-  opacity: 0;
-  animation: loaderTag 0.6s 1.95s ease forwards;
-}
-html[lang="ar"] .loader__tag { letter-spacing: 0; font-size: 0.95rem; }
 .loader.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
 html.loader-active { overflow: hidden; }
 html.loader-skip .loader { display: none; }

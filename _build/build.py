@@ -21,7 +21,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "28"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "29"  # bump when css/js change so returning visitors get fresh assets
 
 # TODO before launch: replace with the company's CONFIRMED WhatsApp number
 # (international format, digits only, e.g. "201001234567"). Placeholder below
@@ -213,7 +213,6 @@ STR = {
         "addr_factory": "10th of Ramadan City, Industrial Zone A2,<br>Area No. 2/5/1, Egypt",
         "footer_disclaimer": "Product selection, compression level and usage should follow the recommendation of a qualified healthcare professional. Consult a healthcare professional before use if you have diabetes, circulatory disorders or another condition affecting leg health. Product details shown on this website are taken from current company materials and remain subject to confirmation by EHS.",
         "rights": "EHS — Egyptian Hospital Supplies. All rights reserved.",
-        "loader_tag": "Engineered for better care",
         "wa_label": "Chat on WhatsApp",
         "wa_prefill": "Hello EHS, I would like to ask about your products.",
         "wa_bulk_prefix": "Hello EHS, I would like a bulk order quotation for: ",
@@ -261,7 +260,6 @@ STR = {
         "addr_factory": "مدينة العاشر من رمضان، المنطقة الصناعية A2،<br>القطعة رقم 2/5/1، مصر",
         "footer_disclaimer": "يجب أن يتم اختيار المنتج ومستوى الضغط وطريقة الاستخدام وفقًا لتوصية مختصّ رعاية صحية مؤهَّل. واستشر مختصّ رعاية صحية قبل الاستخدام إذا كنت تعاني من السكري أو اضطرابات الدورة الدموية أو أي حالة أخرى تؤثر على صحة الساقين. تفاصيل المنتجات المعروضة على هذا الموقع مأخوذة من مواد الشركة الحالية وتظل خاضعة للتأكيد من EHS.",
         "rights": "EHS — شركة مصر لإمداد المستشفيات. جميع الحقوق محفوظة.",
-        "loader_tag": "هندسة لرعاية أفضل",
         "wa_label": "راسلنا على واتساب",
         "wa_prefill": "مرحبًا EHS، أودّ الاستفسار عن منتجاتكم.",
         "wa_bulk_prefix": "مرحبًا EHS، أودّ الحصول على عرض سعر لطلب كمية بالجملة من: ",
@@ -320,7 +318,6 @@ def head(lang, slug):
   <svg class="loader__wave" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true"><path d="M-40 150 C 160 30, 300 210, 520 120 S 860 20, 1040 110 S 1240 190, 1360 90"/></svg>
   <div class="loader__center">
     <img class="loader__logo" src="{a}/logos/EHS-logo-white.svg" alt="" width="850" height="114">
-    <span class="loader__tag">{s['loader_tag']}</span>
   </div>
 </div>
 <a class="skip-link" href="#main">{s['skip']}</a>

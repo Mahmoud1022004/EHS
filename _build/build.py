@@ -22,7 +22,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "78"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "79"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -116,9 +116,9 @@ META = {
         "medpress": ("MedPress Compression Solutions | MedPress by EHS",
                      "MedPress by EHS is a medical compression-stocking range designed for graduated, comfortable leg support — for professional recommendation and everyday routines."),
         "medpress-stockings": ("MedPress Medical Compression Stockings — Product Details | EHS",
-                               "Specifications, sizes S–XXL, intended use, care and application guidance for MedPress medical compression stockings by EHS."),
+                               "Specifications, sizes S–XXXL, intended use, care and application guidance for MedPress medical compression stockings by EHS."),
         "size-guide": ("Size &amp; Measurement Guide | MedPress by EHS",
-                       "How to measure your ankle, calf and thigh for MedPress medical compression stockings, with the S–XXL size chart from the current packaging."),
+                       "How to measure your ankle, calf and thigh for MedPress medical compression stockings, with the S–XXXL size chart from the current packaging."),
         "how-to-wear": ("How to Wear Compression Stockings | MedPress by EHS",
                         "Step-by-step guidance for putting on, wearing and caring for MedPress medical compression stockings — with safety notes from healthcare guidance."),
         "professionals": ("Professional &amp; Distributor Enquiries | EHS",
@@ -154,9 +154,9 @@ META = {
         "medpress": ("حلول ميدبريس للضغط الطبي | ميدبريس من EHS",
                      "ميدبريس من EHS مجموعة جوارب ضغط طبية مصممة لدعم متدرّج ومريح للساقين — للتوصية المهنية والاستخدام اليومي."),
         "medpress-stockings": ("جوارب ميدبريس الطبية الضاغطة — تفاصيل المنتج | EHS",
-                               "المواصفات والمقاسات من S إلى XXL ودواعي الاستخدام وإرشادات العناية والارتداء لجوارب ميدبريس الطبية الضاغطة من EHS."),
+                               "المواصفات والمقاسات من S إلى XXXL ودواعي الاستخدام وإرشادات العناية والارتداء لجوارب ميدبريس الطبية الضاغطة من EHS."),
         "size-guide": ("دليل المقاسات والقياس | ميدبريس من EHS",
-                       "طريقة قياس محيط الكاحل وبطة الساق والفخذ لاختيار مقاس جوارب ميدبريس الطبية الضاغطة، مع جدول المقاسات من S إلى XXL كما هو مطبوع على العبوة الحالية."),
+                       "طريقة قياس محيط الكاحل وبطة الساق والفخذ لاختيار مقاس جوارب ميدبريس الطبية الضاغطة، مع جدول المقاسات من S إلى XXXL كما هو مطبوع على العبوة الحالية."),
         "how-to-wear": ("طريقة ارتداء الجوارب الضاغطة | ميدبريس من EHS",
                         "إرشادات خطوة بخطوة لارتداء جوارب ميدبريس الطبية الضاغطة والعناية بها، مع ملاحظات السلامة."),
         "professionals": ("استفسارات المؤسسات والموزّعين | EHS",

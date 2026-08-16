@@ -16,3 +16,40 @@ services:
       - type: rewrite
         source: /quality.html
         destination: /factory.html
+      # Render's static publish is additive: files deleted from the repo stay
+      # on the CDN until a cache-clearing deploy. These sample pages were
+      # removed in git but kept being served, so they are routed away here
+      # too — config beats leftover files.
+      - type: redirect
+        source: /gallery-samples.html
+        destination: /
+      - type: redirect
+        source: /leadership-samples.html
+        destination: /
+      - type: redirect
+        source: /loader-preview.html
+        destination: /
+      - type: redirect
+        source: /loading-concepts.html
+        destination: /
+      - type: redirect
+        source: /loading-samples.html
+        destination: /
+      - type: redirect
+        source: /loading-samples-2.html
+        destination: /
+      - type: redirect
+        source: /loading-samples-3.html
+        destination: /
+      - type: redirect
+        source: /loading-samples-4.html
+        destination: /
+      - type: redirect
+        source: /location-samples.html
+        destination: /
+      - type: redirect
+        source: /location-map-samples.html
+        destination: /
+      - type: redirect
+        source: /timeline-samples.html
+        destination: /

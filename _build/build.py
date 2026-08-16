@@ -22,7 +22,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "97"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "98"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -30,13 +30,16 @@ ASSET_V = "97"  # bump when css/js change so returning visitors get fresh assets
 # format, digits only: +20 100 679 0182.
 WHATSAPP_NUMBER = "201006790182"
 
-# Social profiles for the floating contact button. Empty on purpose: a network
-# only appears once its real URL is here, so no icon ever links somewhere that
-# does not exist. WhatsApp is not listed — it is always the first item.
-#   SOCIAL = {"instagram": "https://instagram.com/…",
-#             "tiktok":    "https://tiktok.com/@…",
-#             "facebook":  "https://facebook.com/…"}
-SOCIAL = {}
+# Social profiles for the floating contact button. WhatsApp is not listed —
+# it is always the first item. An empty string means the profile URL has not
+# been supplied yet: the icon still shows, but as a shape rather than a link,
+# so nothing ever points somewhere that does not exist. Paste the real URL in
+# and that icon becomes clickable with no other change.
+SOCIAL = {
+    "instagram": "",
+    "tiktok": "",
+    "facebook": "",
+}
 SOCIAL_NAMES = {"instagram": "Instagram", "tiktok": "TikTok", "facebook": "Facebook"}
 
 WA_ICON = """<svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.1 3C9.03 3 3.3 8.73 3.3 15.8c0 2.25.59 4.45 1.71 6.39L3.2 29l7-1.84a12.77 12.77 0 0 0 5.9 1.45h.01c7.07 0 12.8-5.73 12.8-12.8C28.9 8.73 23.17 3 16.1 3Zm0 23.47h-.01c-1.9 0-3.77-.51-5.4-1.48l-.39-.23-4.15 1.09 1.11-4.05-.25-.42a10.63 10.63 0 0 1-1.63-5.66c0-5.88 4.79-10.66 10.68-10.66 2.85 0 5.53 1.11 7.54 3.13a10.6 10.6 0 0 1 3.12 7.55c0 5.88-4.78 10.66-10.66 10.66Zm5.85-7.99c-.32-.16-1.9-.94-2.19-1.04-.29-.11-.51-.16-.72.16-.21.32-.83 1.04-1.01 1.25-.19.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.19-.32-.02-.49.14-.65.14-.14.32-.37.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.72-1.73-.98-2.37-.26-.62-.52-.54-.72-.55l-.61-.01c-.21 0-.56.08-.85.4-.29.32-1.12 1.09-1.12 2.66 0 1.57 1.14 3.08 1.3 3.29.16.21 2.25 3.44 5.45 4.82.76.33 1.36.53 1.82.67.77.24 1.46.21 2.01.13.61-.09 1.9-.78 2.16-1.53.27-.75.27-1.39.19-1.53-.08-.13-.29-.21-.61-.37Z"/></svg>"""
@@ -425,15 +428,24 @@ def footer_html(lang, slug=""):
                  '<span class="fab__label">%s</span><span class="fab__dot">%s</span></a>'
                  % (wa_url, s["wa_label"], s["wa_label"], WA_ICON)]
         for name, url in SOCIAL.items():
-            if name in ICONS:
+            if name not in ICONS:
+                continue
+            label = SOCIAL_NAMES.get(name, name.title())
+            if url:
                 items.append('<a class="fab__item" href="%s" target="_blank" rel="noopener" aria-label="%s">'
                              '<span class="fab__label">%s</span><span class="fab__dot">%s</span></a>'
-                             % (url, SOCIAL_NAMES.get(name, name.title()), SOCIAL_NAMES.get(name, name.title()), ICONS[name]))
+                             % (url, label, label, ICONS[name]))
+            else:
+                # profile not supplied yet — the icon shows but does not link
+                items.append('<span class="fab__item fab__item--soon" aria-disabled="true">'
+                             '<span class="fab__label">%s</span><span class="fab__dot">%s</span></span>'
+                             % (label, ICONS[name]))
         fab = ('<div class="fab" id="ehs-fab">'
                '<div class="fab__menu">%s</div>'
                '<button class="fab__toggle" type="button" aria-expanded="false" aria-label="%s">'
-               '<span class="fab__open">%s</span><span class="fab__close">%s</span></button>'
-               '</div>' % ("".join(items), s["fab_label"], ICONS["chat"], ICONS["plus"]))
+               '<span class="fab__open">%s</span><span class="fab__close">%s</span>'
+               '<span class="fab__toggle-label" aria-hidden="true">%s</span></button>'
+               '</div>' % ("".join(items), s["fab_label"], ICONS["chat"], ICONS["plus"], s["fab_label"]))
     else:
         fab = ('<a class="wa-fab" href="%s" target="_blank" rel="noopener" aria-label="%s">%s'
                '<span class="wa-fab__label">%s</span></a>'

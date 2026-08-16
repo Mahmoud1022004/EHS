@@ -1620,6 +1620,12 @@ html[lang="ar"] .footer h4 { letter-spacing: 0; font-size: 0.95rem; }
 .fab__item:hover .fab__dot { background: var(--brand); color: var(--on-brand); }
 .fab__dot svg { width: 22px; height: 22px; }
 .fab__item--wa .fab__dot { background: #25D366; color: #fff; border-color: #25D366; }
+/* channel whose profile URL has not been supplied yet: the icon is there as a
+   shape, but it is not a link and does not pretend to be one */
+.fab__item--soon { cursor: default; }
+.fab__item--soon .fab__dot { color: var(--muted); border-style: dashed; }
+.fab__item--soon .fab__label { color: var(--muted); }
+.fab__item--soon:hover .fab__dot { background: #fff; color: var(--muted); }
 
 .fab__toggle {
   width: 58px;
@@ -1640,8 +1646,38 @@ html[lang="ar"] .footer h4 { letter-spacing: 0; font-size: 0.95rem; }
 .fab__toggle .fab__close { display: none; }
 .fab.is-open .fab__toggle .fab__open { display: none; }
 .fab.is-open .fab__toggle .fab__close { display: block; }
+/* the closed button names itself only where hover cannot do it */
+.fab__toggle-label { display: none; }
+/* Phone and tablet: no hover, so the closed button spells out what it opens
+   and clears the iOS home indicator. It collapses back to a circle once the
+   menu is open, which is what makes the rotate-to-close read correctly. */
+@media (max-width: 1024px) {
+  .fab { inset-inline-end: 16px; inset-block-end: calc(16px + env(safe-area-inset-bottom, 0px)); }
+  .fab__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    width: auto;
+    height: 52px;
+    padding-inline: 18px;
+    border-radius: 999px;
+    transition: transform 0.24s cubic-bezier(0.2, 0.8, 0.25, 1.1), background 0.22s ease,
+                padding 0.26s ease, width 0.26s ease;
+  }
+  .fab__toggle svg { width: 24px; height: 24px; }
+  .fab__toggle-label {
+    display: block;
+    max-width: 240px;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: 700;
+    font-size: 0.88rem;
+    transition: max-width 0.26s ease, opacity 0.18s ease;
+  }
+  .fab.is-open .fab__toggle { width: 52px; padding-inline: 0; justify-content: center; }
+  .fab.is-open .fab__toggle-label { max-width: 0; opacity: 0; }
+}
 @media (max-width: 600px) {
-  .fab { inset-inline-end: 14px; inset-block-end: 14px; }
   .fab__label { font-size: 0.76rem; padding: 6px 12px; }
 }
 

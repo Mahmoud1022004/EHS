@@ -22,7 +22,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "73"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "74"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -79,7 +79,6 @@ PAGES = {
     "mastercast-cast-net":        {"nav": "products"},
     "mastercast-elastic-bandage": {"nav": "products"},
     "gauze-wound-care":           {"nav": "products"},
-    "medical-textiles":           {"nav": "products"},
     "orthopedic":                 {"nav": "products"},
     "masks-ppe":                  {"nav": "products"},
     "medpress":           {"nav": "medpress"},
@@ -100,8 +99,8 @@ META = {
                   "Founded in 1988, EHS combines practical medical engineering, dependable manufacturing and human comfort. Learn about the company, its leadership, values and locations."),
         "products": ("Products | EHS — Egyptian Hospital Supplies",
                      "Since 1988 EHS has manufactured gauze and wound care, elastic bandages, MedPress compression therapy, orthopedic products, face masks and PPE."),
-        "gauze-wound-care": ("Gauze &amp; Wound Care Products | EHS",
-                             "Sterile and non-sterile gauze, gauze rolls, swabs, laparotomy sponges and cotton products — manufactured by EHS for hospitals, operating rooms, clinics and emergency care."),
+        "gauze-wound-care": ("Gauze, Wound Care &amp; Medical Textiles | EHS",
+                             "Sterile and non-sterile gauze, gauze rolls, swabs, laparotomy sponges and disposable medical textiles — manufactured by EHS for hospitals, operating rooms, clinics and emergency care."),
         "medical-textiles": ("Medical Textiles &amp; Disposables | EHS",
                              "Laparotomy sponges, disposable products and medical textiles for clinical environments, manufactured by EHS since 1988."),
         "orthopedic": ("MasterCast — Orthopedic Range | EHS",
@@ -138,8 +137,8 @@ META = {
                   "منذ عام 1988 تجمع EHS بين الهندسة الطبية العملية والتصنيع الموثوق وراحة الإنسان. تعرّف على الشركة وقيادتها وقيمها ومواقعها."),
         "products": ("المنتجات | شركة مصر لإمداد المستشفيات EHS",
                      "منذ عام 1988 تصنّع EHS الشاش والعناية بالجروح والأربطة المرنة والعلاج بالضغط بقيادة ميدبريس ومنتجات العظام والكمامات ومستلزمات الوقاية."),
-        "gauze-wound-care": ("منتجات الشاش والعناية بالجروح | EHS",
-                             "شاش معقّم وغير معقّم ولفائف شاش وقطع شاش وفُوَط بطن جراحية ومنتجات قطنية — تصنّعها EHS للمستشفيات وغرف العمليات والعيادات والطوارئ."),
+        "gauze-wound-care": ("الشاش والعناية بالجروح والمنسوجات الطبية | EHS",
+                             "شاش معقّم وغير معقّم ولفائف شاش وفُوَط بطن جراحية ومنسوجات طبية أحادية الاستخدام — تصنّعها EHS للمستشفيات وغرف العمليات والعيادات والطوارئ."),
         "medical-textiles": ("المنسوجات الطبية والمنتجات أحادية الاستخدام | EHS",
                              "فُوَط بطن جراحية ومنتجات أحادية الاستخدام ومنسوجات طبية لبيئات العمل السريرية، تصنّعها EHS منذ عام 1988."),
         "orthopedic": ("ماستركاست — مجموعة العظام | EHS",
@@ -189,8 +188,7 @@ STR = {
                     ("products.html", "All products"),
                     ("medpress.html", "MedPress"),
                     ("orthopedic.html", "MasterCast"),
-                    ("gauze-wound-care.html", "Gauze &amp; Wound Care"),
-                    ("medical-textiles.html", "Medical Textiles &amp; Disposables"),
+                    ("gauze-wound-care.html", "Gauze, Wound Care &amp; Textiles"),
                     ("masks-ppe.html", "Face Masks &amp; PPE"),
                 ]),
                 ("medpress", "medpress.html", "MedPress", [
@@ -240,8 +238,7 @@ STR = {
                     ("products.html", "كل المنتجات"),
                     ("medpress.html", "ميدبريس"),
                     ("orthopedic.html", "ماستركاست"),
-                    ("gauze-wound-care.html", "الشاش والعناية بالجروح"),
-                    ("medical-textiles.html", "المنسوجات الطبية"),
+                    ("gauze-wound-care.html", "الشاش والعناية بالجروح والمنسوجات"),
                     ("masks-ppe.html", "الكمامات ومستلزمات الوقاية"),
                 ]),
                 ("medpress", "medpress.html", "ميدبريس", [
@@ -459,7 +456,8 @@ def build_page(lang, slug):
 
 
 # Old URLs that moved — each generates a tiny page that forwards to the new one
-REDIRECTS = {"quality.html": "factory.html"}
+REDIRECTS = {"quality.html": "factory.html",
+             "medical-textiles.html": "gauze-wound-care.html"}
 
 
 def write_redirects():

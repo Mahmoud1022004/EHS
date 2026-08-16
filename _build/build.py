@@ -21,8 +21,8 @@ from urllib.parse import quote
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
-BASE_URL = "https://ehs-med.com"
-ASSET_V = "117"  # bump when css/js change so returning visitors get fresh assets
+BASE_URL = "https://ehsmeds.com"
+ASSET_V = "118"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -481,7 +481,7 @@ def footer_html(lang, slug=""):
     <p class="footer__disclaimer">{s['footer_disclaimer']}</p>
     <div class="footer__bottom">
       <span>© <span data-year>2026</span> {s['rights']}</span>
-      <span class="domain">ehs-med.com</span>
+      <span class="domain">ehsmeds.com</span>
     </div>
   </div>
 </footer>

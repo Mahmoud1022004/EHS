@@ -230,6 +230,26 @@ html[lang="ar"] .eyebrow { letter-spacing: 0; font-size: 1.1rem; font-weight: 70
   .carousel__nav--next { inset-inline-end: 8px; }
 }
 
+/* Registered-trademark mark, set small and raised beside a logo. The mark
+   belongs to the artwork, so it stays on the logo's right in Arabic too —
+   reordering it to the head of the RTL flex row is what keeps it there. */
+.reg {
+  --reg-gap: 3px;
+  font-size: 0.55em;
+  line-height: 1;
+  vertical-align: super;
+  margin-inline-start: var(--reg-gap);
+  font-weight: 700;
+  opacity: 0.75;
+}
+[dir="rtl"] .reg { order: -1; margin-inline-start: 0; margin-inline-end: var(--reg-gap); }
+.brandmark .reg { --reg-gap: 1px; font-size: 0.72rem; align-self: flex-start; margin-block-start: 4px; }
+.brand .reg { --reg-gap: -6px; font-size: 0.62rem; align-self: center; margin-block-start: -14px; color: var(--muted); }
+.footer .reg { align-self: center; margin-block-start: -10px; color: rgba(249, 251, 244, 0.7); }
+/* the footer logo and its mark share a row so the mark can be reordered */
+.logo-reg { display: flex; align-items: flex-start; margin-block-end: 18px; }
+.logo-reg .footer__logo { margin-block-end: 0; }
+
 /* ---------- Layout ---------- */
 .container {
   width: min(100% - 48px, var(--container));
@@ -404,6 +424,9 @@ html.loader-skip .loader { display: none; }
 @media (max-width: 640px) {
   .brand__lockup { display: none; }
   .brand__markonly { display: block; }
+  /* the name marquee-scrolls here, so the mark rides the symbol instead */
+  .brand__text { order: 1; }
+  .brand .reg { --reg-gap: 2px; align-self: flex-start; margin-block-start: 6px; }
 }
 /* .brand__text is defined further down, so this needs the extra specificity */
 @media (min-width: 641px) {

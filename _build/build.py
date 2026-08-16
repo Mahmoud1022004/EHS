@@ -22,7 +22,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "90"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "96"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -351,7 +351,7 @@ def head(lang, slug):
 <body>
 <div class="loader" id="ehs-loader" role="presentation" aria-hidden="true">
   <div class="loader__center">
-    <img class="loader__logo" src="{a}/logos/EHS-logo-white.svg" alt="" width="850" height="114">
+    <img class="loader__logo" src="{a}/logos/EHS-logo-white.svg" alt="" width="800" height="114">
   </div>
   <span class="loader__shine" aria-hidden="true"></span>
 </div>
@@ -385,12 +385,13 @@ def header_html(lang, slug):
     return f"""<header class="header">
   <div class="container container--wide header__inner">
     <a class="brand" href="index.html" aria-label="EHS — {s['brand_name']}">
-      <img class="brand__lockup" src="{a}/logos/EHS-logo.svg" alt="EHS — {s['brand_name']}" width="850" height="114">
+      <img class="brand__lockup" src="{a}/logos/EHS-logo.svg" alt="EHS — {s['brand_name']}" width="800" height="114">
       <img class="brand__markonly" src="{a}/logos/EHS-mark.svg" alt="" aria-hidden="true" width="190" height="84">
       <span class="brand__text">
         <span class="brand__name"><span class="brand__name-track"><span>{s['brand_name']}</span><span aria-hidden="true">{s['brand_name']}</span></span></span>
         <span class="brand__sub">{s['brand_sub']}</span>
       </span>
+      <span class="reg" aria-hidden="true">&reg;</span>
     </a>
     <nav class="nav" aria-label="Main">
       <a href="index.html"{home_active}>{s['nav_home']}</a>
@@ -444,7 +445,7 @@ def footer_html(lang, slug=""):
   <div class="container footer__inner">
     <div class="footer__grid">
       <div class="footer__brand">
-        <img class="footer__logo" src="{a}/logos/EHS-logo-white.svg" alt="EHS — {s['brand_name']}" width="850" height="114">
+        <span class="logo-reg"><img class="footer__logo" src="{a}/logos/EHS-logo-white.svg" alt="EHS — {s['brand_name']}" width="800" height="114"><span class="reg" aria-hidden="true">&reg;</span></span>
         <p>{s['footer_about']}</p>
       </div>
       <div>

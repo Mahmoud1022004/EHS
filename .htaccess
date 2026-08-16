@@ -1,0 +1,74 @@
+# ===================================================================
+# EHS — ehsmeds.com  |  Apache config for GoDaddy cPanel (public_html)
+# ===================================================================
+
+Options -Indexes
+DirectoryIndex index.html
+
+# --- Force HTTPS and canonical non-www host -------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # http -> https
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://ehsmeds.com%{REQUEST_URI} [L,R=301]
+
+  # www -> non-www
+  RewriteCond %{HTTP_HOST} ^www\.ehsmeds\.com$ [NC]
+  RewriteRule ^ https://ehsmeds.com%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# --- Retired pages (were removed from the site) ---------------------
+Redirect 301 /gallery-samples.html      https://ehsmeds.com/
+Redirect 301 /leadership-samples.html   https://ehsmeds.com/
+Redirect 301 /loader-preview.html       https://ehsmeds.com/
+Redirect 301 /loading-concepts.html     https://ehsmeds.com/
+Redirect 301 /loading-samples.html      https://ehsmeds.com/
+Redirect 301 /loading-samples-2.html    https://ehsmeds.com/
+Redirect 301 /loading-samples-3.html    https://ehsmeds.com/
+Redirect 301 /loading-samples-4.html    https://ehsmeds.com/
+Redirect 301 /location-samples.html     https://ehsmeds.com/
+Redirect 301 /location-map-samples.html https://ehsmeds.com/
+Redirect 301 /timeline-samples.html     https://ehsmeds.com/
+
+# --- Error pages ----------------------------------------------------
+# Arabic visitors get the Arabic 404: /ar/ has its own .htaccess overriding this.
+ErrorDocument 404 /404.html
+ErrorDocument 403 /404.html
+
+# --- Caching --------------------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css                "access plus 7 days"
+  ExpiresByType application/javascript  "access plus 7 days"
+  ExpiresByType text/javascript         "access plus 7 days"
+  ExpiresByType image/jpeg              "access plus 30 days"
+  ExpiresByType image/png               "access plus 30 days"
+  ExpiresByType image/webp              "access plus 30 days"
+  ExpiresByType image/svg+xml           "access plus 30 days"
+  ExpiresByType image/x-icon            "access plus 30 days"
+  ExpiresByType video/mp4               "access plus 30 days"
+  ExpiresByType font/woff2              "access plus 1 year"
+  ExpiresByType text/html               "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|jpg|jpeg|png|webp|svg|ico|mp4|woff2?)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# --- Compression ----------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml \
+    application/javascript application/json image/svg+xml
+</IfModule>
+
+# --- MIME safety ----------------------------------------------------
+AddType font/woff2 .woff2
+AddType image/webp .webp
+AddType video/mp4  .mp4

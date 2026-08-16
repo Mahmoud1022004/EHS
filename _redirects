@@ -1,0 +1,15 @@
+# Cloudflare Pages redirect rules.
+# Mirrors the Apache .htaccess so behaviour is identical on either host.
+
+# Retired sample/preview pages — removed from the site, kept out of 404s.
+/gallery-samples.html       /   301
+/leadership-samples.html    /   301
+/loader-preview.html        /   301
+/loading-concepts.html      /   301
+/loading-samples.html       /   301
+/loading-samples-2.html     /   301
+/loading-samples-3.html     /   301
+/loading-samples-4.html     /   301
+/location-samples.html      /   301
+/location-map-samples.html  /   301
+/timeline-samples.html      /   301

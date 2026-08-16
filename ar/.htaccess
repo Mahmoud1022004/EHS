@@ -1,0 +1,3 @@
+# Arabic section — serve the Arabic error page instead of the English one.
+ErrorDocument 404 /ar/404.html
+ErrorDocument 403 /ar/404.html

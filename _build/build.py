@@ -14,6 +14,7 @@ Placeholders available inside content files:
   {{WAVE_SMALL}}   -> small support-line divider SVG
 Run:  python3 build.py
 """
+import json
 import os
 import re
 import sys
@@ -22,13 +23,18 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehsmeds.com"
-ASSET_V = "130"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "132"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
 # it is still the right destination before the public launch. International
 # format, digits only: +20 100 679 0182.
 WHATSAPP_NUMBER = "201006790182"
+
+# Company phone. Confirmed for publication by the company owner 17 Aug 2026.
+# The email address is still not cleared, so it stays unpublished.
+PHONE_E164 = "+201006790182"
+PHONE_DISPLAY = "+20 100 679 0182"
 
 # Social profiles for the floating contact button. WhatsApp is not listed —
 # it is always the first item. An empty string means the profile URL has not
@@ -154,6 +160,8 @@ META = {
                 "Answers to common questions about MedPress medical compression stockings — sizing, wearing, care and professional guidance."),
         "contact": ("Contact EHS | Egyptian Hospital Supplies",
                     "Contact EHS — Egyptian Hospital Supplies. Cairo office: El-Abour Buildings No. 7, Salah Salem Street. Factory: 10th of Ramadan City, Industrial Zone A2."),
+        "404": ("Page not found | EHS — Egyptian Hospital Supplies",
+                "This page could not be found. Browse the EHS product range or contact us for help."),
     },
     "ar": {
         "index": ("شركة مصر لإمداد المستشفيات EHS | هندسة لرعاية أفضل",
@@ -198,6 +206,8 @@ META = {
                 "إجابات عن الأسئلة الشائعة حول جوارب ميدبريس الطبية الضاغطة — المقاسات والارتداء والعناية والتوجيه المهني."),
         "contact": ("تواصل معنا | شركة مصر لإمداد المستشفيات EHS",
                     "تواصل مع EHS — شركة مصر لإمداد المستشفيات. مكتب القاهرة: عمارات العبور رقم 7، شارع صلاح سالم. المصنع: مدينة العاشر من رمضان، المنطقة الصناعية A2."),
+        "404": ("الصفحة غير موجودة | شركة مصر لإمداد المستشفيات EHS",
+                "تعذّر العثور على هذه الصفحة. تصفّح منتجات EHS أو تواصل معنا للمساعدة."),
     },
 }
 
@@ -307,7 +317,288 @@ STR = {
 }
 
 
-def head(lang, slug):
+# ------------------------------------------------------- structured data (JSON-LD)
+# Search engines read this to understand who EHS is, where it operates and what
+# it makes. It is generated from the same source of truth as the visible page,
+# so it can never drift out of sync with the content.
+
+ORG_ID = f"{BASE_URL}/#organization"
+WEBSITE_ID = f"{BASE_URL}/#website"
+FOUNDED = "1988"
+
+# Per-language organisation facts. Addresses mirror STR[lang]["addr_*"].
+SD_ORG = {
+    "en": {
+        "name": "EHS — Egyptian Hospital Supplies",
+        "legal": "Egyptian Hospital Supplies",
+        "desc": ("Egyptian manufacturer of medical supplies and healthcare support products "
+                 "since 1988 — gauze and wound care, MedPress medical compression stockings, "
+                 "the MasterCast orthopedic range, face masks and PPE."),
+        "office_name": "EHS Cairo Office",
+        "office_street": "El-Abour Buildings No. 7, Salah Salem Street",
+        "office_city": "Cairo",
+        "factory_name": "EHS Factory — 10th of Ramadan City",
+        "factory_street": "Industrial Zone A2, Area No. 2/5/1",
+        "factory_city": "10th of Ramadan City",
+        "region": "Sharqia",
+        "country": "EG",
+    },
+    "ar": {
+        "name": "EHS — شركة مصر لإمداد المستشفيات",
+        "legal": "شركة مصر لإمداد المستشفيات",
+        "desc": ("شركة مصرية لتصنيع المستلزمات الطبية ومنتجات الدعم الصحي منذ عام 1988 — "
+                 "الشاش والعناية بالجروح، وجوارب ميدبريس الطبية الضاغطة، "
+                 "ومجموعة ماستركاست للعظام، والكمامات ومستلزمات الوقاية."),
+        "office_name": "مكتب EHS بالقاهرة",
+        "office_street": "عمارات العبور رقم 7، شارع صلاح سالم",
+        "office_city": "القاهرة",
+        "factory_name": "مصنع EHS — مدينة العاشر من رمضان",
+        "factory_street": "المنطقة الصناعية A2، القطعة رقم 2/5/1",
+        "factory_city": "مدينة العاشر من رمضان",
+        "region": "الشرقية",
+        "country": "EG",
+    },
+}
+
+# Pages that describe one specific product get Product markup.
+# category: the medical device category shown to search engines.
+SD_PRODUCTS = {
+    "medpress-stockings": {
+        "brand": "MedPress",
+        "en": "MedPress Medical Compression Stockings",
+        "ar": "جوارب ميدبريس الطبية الضاغطة",
+        "img": "medpress-studio-wide.jpg",
+    },
+    "mastercast-tube-grip": {
+        "brand": "MasterCast",
+        "en": "MasterCast Tube Grip — Elasticated Tubular Bandage",
+        "ar": "ماستركاست تيوب جريب — رباط أنبوبي مرن",
+        "img": "mastercast/tube-grip-lifestyle-forearm.jpg",
+    },
+    "mastercast-cast-net": {
+        "brand": "MasterCast",
+        "en": "MasterCast Cast-Net — Tubular Elastic Net",
+        "ar": "ماستركاست كاست-نت — شبكة أنبوبية مرنة",
+        "img": "mastercast/cast-net-applied-knee.jpg",
+    },
+    "mastercast-elastic-bandage": {
+        "brand": "MasterCast",
+        "en": "MasterCast Elastic Bandage",
+        "ar": "ماستركاست الرباط المرن",
+        "img": "mastercast/elastic-bandage-lifestyle-ankle.jpg",
+    },
+    "mastercast-collar-cuff": {
+        "brand": "MasterCast",
+        "en": "MasterCast Collar & Cuff — Padded Arm Support",
+        "ar": "ماستركاست كولار آند كاف — دعامة ذراع مبطّنة",
+        "img": "mastercast/cast-net-applied-wrist.jpg",
+    },
+    "mastercast-skin-traction-kit": {
+        "brand": "MasterCast",
+        "en": "MasterCast Skin Traction Kit — Non-Adhesive",
+        "ar": "ماستركاست طقم الشد الجلدي — غير لاصق",
+        "img": "mastercast/tube-grip-lifestyle-forearm.jpg",
+    },
+    "mastercast-stockinet": {
+        "brand": "MasterCast",
+        "en": "MasterCast Stockinet — 100% Cotton Tubular",
+        "ar": "ماستركاست ستوكينيت — أنبوبي من القطن 100%",
+        "img": "mastercast/cast-net-lifestyle-forearm.jpg",
+    },
+}
+
+# Pages that list a range rather than one item.
+SD_COLLECTIONS = {"products", "medpress", "orthopedic", "gauze-wound-care", "masks-ppe"}
+
+# Breadcrumb parent for pages that sit under a section.
+SD_PARENT = {
+    "medpress-stockings": "medpress", "size-guide": "medpress", "how-to-wear": "medpress",
+    "faq": "medpress",
+    "mastercast-tube-grip": "orthopedic", "mastercast-cast-net": "orthopedic",
+    "mastercast-elastic-bandage": "orthopedic", "mastercast-collar-cuff": "orthopedic",
+    "mastercast-skin-traction-kit": "orthopedic", "mastercast-stockinet": "orthopedic",
+    "orthopedic": "products", "medpress": "products", "gauze-wound-care": "products",
+    "masks-ppe": "products", "factory": "about",
+}
+
+FAQ_RE = re.compile(
+    r"<summary>(?P<q>.*?)(?:<span class=\"acc-icon\">.*?</span>)?\s*</summary>\s*"
+    r"<div class=\"acc-body\">(?P<a>.*?)</div>",
+    re.S)
+TAG_RE = re.compile(r"<[^>]+>")
+
+
+def _plain(html_fragment):
+    """Strip tags/placeholders and collapse whitespace — JSON-LD wants plain text."""
+    txt = ICON_RE.sub("", html_fragment)
+    txt = TAG_RE.sub(" ", txt)
+    txt = (txt.replace("&amp;", "&").replace("&nbsp;", " ")
+              .replace("&rsquo;", "’").replace("&mdash;", "—"))
+    return re.sub(r"\s+", " ", txt).strip()
+
+
+def _page_url(lang, slug):
+    fname = "index.html" if slug == "index" else f"{slug}.html"
+    if lang == "en":
+        return f"{BASE_URL}/" + ("" if slug == "index" else fname)
+    return f"{BASE_URL}/ar/{fname}"
+
+
+def _nav_label(lang, slug):
+    """Human label for a slug, taken from the page title before its separator."""
+    title = META[lang][slug][0]
+    for sep in (" | ", " — "):
+        if sep in title:
+            title = title.split(sep)[0]
+            break
+    return _plain(title)
+
+
+def json_ld(lang, slug, body=""):
+    """Build the JSON-LD graph for one page. Returns a <script> block."""
+    o = SD_ORG[lang]
+    url = _page_url(lang, slug)
+    home = _page_url(lang, "index")
+    title, desc = _plain(META[lang][slug][0]), _plain(META[lang][slug][1])
+
+    def place(kind, name, street, city, sid):
+        return {
+            "@type": kind, "@id": f"{BASE_URL}/#{sid}", "name": name,
+            "parentOrganization": {"@id": ORG_ID},
+            "address": {"@type": "PostalAddress", "streetAddress": street,
+                        "addressLocality": city, "addressRegion": o["region"],
+                        "addressCountry": o["country"]},
+        }
+
+    org = {
+        "@type": ["Organization", "MedicalBusiness"], "@id": ORG_ID,
+        "name": o["name"], "legalName": o["legal"], "description": o["desc"],
+        "url": f"{BASE_URL}/", "foundingDate": FOUNDED,
+        "logo": {"@type": "ImageObject", "url": f"{BASE_URL}/assets/logos/EHS-app-icon.svg"},
+        "image": f"{BASE_URL}/assets/img/factory-exterior.jpg",
+        "address": {"@type": "PostalAddress", "streetAddress": o["office_street"],
+                    "addressLocality": o["office_city"], "addressCountry": o["country"]},
+        "areaServed": {"@type": "Country", "name": "Egypt"},
+        "knowsLanguage": ["ar", "en"],
+        "contactPoint": [{
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "telephone": PHONE_E164,
+            "url": f"https://wa.me/{WHATSAPP_NUMBER}",
+            "availableLanguage": ["ar", "en"],
+        }],
+        "location": [
+            place("Place", o["office_name"], o["office_street"], o["office_city"], "office"),
+            place("Place", o["factory_name"], o["factory_street"], o["factory_city"], "factory"),
+        ],
+    }
+    social = [u for u in SOCIAL.values() if u]
+    if social:
+        org["sameAs"] = social
+
+    website = {
+        "@type": "WebSite", "@id": WEBSITE_ID, "url": f"{BASE_URL}/",
+        "name": o["name"], "publisher": {"@id": ORG_ID},
+        "inLanguage": ["en", "ar"],
+    }
+
+    page_type = "CollectionPage" if slug in SD_COLLECTIONS else (
+        "FAQPage" if slug == "faq" else (
+            "ContactPage" if slug == "contact" else (
+                "AboutPage" if slug == "about" else "WebPage")))
+    webpage = {
+        "@type": page_type, "@id": f"{url}#webpage", "url": url,
+        "name": title, "description": desc,
+        "isPartOf": {"@id": WEBSITE_ID}, "about": {"@id": ORG_ID},
+        "inLanguage": STR[lang]["lang"],
+    }
+
+    graph = [org, website, webpage]
+
+    # Breadcrumbs — home > (section) > page
+    if slug != "index":
+        trail, cur = [], slug
+        while cur in SD_PARENT:
+            cur = SD_PARENT[cur]
+            trail.insert(0, cur)
+        items, pos = [], 1
+        items.append({"@type": "ListItem", "position": pos,
+                      "name": STR[lang]["nav_home"], "item": home})
+        for step in trail:
+            pos += 1
+            items.append({"@type": "ListItem", "position": pos,
+                          "name": _nav_label(lang, step), "item": _page_url(lang, step)})
+        pos += 1
+        items.append({"@type": "ListItem", "position": pos, "name": _nav_label(lang, slug)})
+        graph.append({"@type": "BreadcrumbList", "@id": f"{url}#breadcrumb",
+                      "itemListElement": items})
+        webpage["breadcrumb"] = {"@id": f"{url}#breadcrumb"}
+
+    # Product pages
+    if slug in SD_PRODUCTS:
+        p = SD_PRODUCTS[slug]
+        graph.append({
+            "@type": "Product", "@id": f"{url}#product", "name": p[lang],
+            "description": desc,
+            "image": f"{BASE_URL}/assets/img/{p['img']}",
+            "brand": {"@type": "Brand", "name": p["brand"]},
+            "manufacturer": {"@id": ORG_ID},
+            "countryOfOrigin": {"@type": "Country", "name": "Egypt"},
+            "category": "Medical device",
+            "isRelatedTo": {"@id": ORG_ID},
+            "mainEntityOfPage": {"@id": f"{url}#webpage"},
+        })
+
+    # FAQ page — questions and answers lifted straight from the page content
+    if slug == "faq" and body:
+        qa = []
+        for m in FAQ_RE.finditer(body):
+            q, a = _plain(m.group("q")), _plain(m.group("a"))
+            if q and a:
+                qa.append({"@type": "Question", "name": q,
+                           "acceptedAnswer": {"@type": "Answer", "text": a}})
+        if qa:
+            webpage["mainEntity"] = qa
+
+    payload = {"@context": "https://schema.org", "@graph": graph}
+    return ('<script type="application/ld+json">'
+            + json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+            + "</script>\n")
+
+
+# --------------------------------------------------------------- WebP delivery
+# Every photo is shipped as both .jpg and .webp. Browsers that understand WebP
+# take the smaller file; everything else falls back to the original JPEG, so no
+# visitor is ever left without an image.
+IMG_TAG_RE = re.compile(r"<img\b[^>]*>", re.I)
+IMG_SRC_RE = re.compile(r'\ssrc="([^"]+)"', re.I)
+
+
+def webp_sources(html):
+    """Wrap each JPEG <img> in a <picture> offering a WebP alternative.
+    Only rewrites when the .webp file actually exists on disk."""
+    def repl(m):
+        tag = m.group(0)
+        src_m = IMG_SRC_RE.search(tag)
+        if not src_m:
+            return tag
+        src = src_m.group(1)
+        if not src.lower().endswith((".jpg", ".jpeg")):
+            return tag
+        idx = src.find("assets/")
+        if idx == -1:
+            return tag
+        rel = src[idx:]
+        stem = os.path.splitext(rel)[0]
+        if not os.path.exists(os.path.join(SITE, stem + ".webp")):
+            return tag
+        webp_src = os.path.splitext(src)[0] + ".webp"
+        return (f'<picture><source srcset="{webp_src}" type="image/webp">'
+                f"{tag}</picture>")
+    return IMG_TAG_RE.sub(repl, html)
+
+
+def head(lang, slug, jsonld="", robots=""):
     s = STR[lang]
     title, desc = META[lang][slug]
     a = "assets" if lang == "en" else "../assets"
@@ -323,7 +614,7 @@ def head(lang, slug):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
 <meta name="description" content="{desc}">
-<link rel="canonical" href="{canonical}">
+{robots}<link rel="canonical" href="{canonical}">
 <link rel="alternate" hreflang="en" href="{en_url}">
 <link rel="alternate" hreflang="ar" href="{ar_url}">
 <link rel="alternate" hreflang="x-default" href="{en_url}">
@@ -352,7 +643,7 @@ def head(lang, slug):
 }} catch (e) {{ document.documentElement.classList.add('loader-skip'); }} }})();
 </script>
 <noscript><style>.loader {{ display: none; }} .reveal {{ opacity: 1 !important; transform: none !important; }}</style></noscript>
-</head>
+{jsonld}</head>
 <body>
 <div class="loader" id="ehs-loader" role="presentation" aria-hidden="true">
   <svg class="loader__ribbon" viewBox="0 0 1200 620" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
@@ -370,7 +661,7 @@ def head(lang, slug):
 def header_html(lang, slug):
     s = STR[lang]
     a = "assets" if lang == "en" else "../assets"
-    active = PAGES[slug]["nav"]
+    active = PAGES.get(slug, {}).get("nav", "")
     caret = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
     links = []
     for entry in s["nav"]:
@@ -503,13 +794,17 @@ def build_page(lang, slug):
     body = body.replace("{{A}}", a)
     body = body.replace("{{WA_URL}}", f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(STR[lang]['wa_prefill'])}")
     body = body.replace("{{WA_NUMBER}}", WHATSAPP_NUMBER)
+    body = body.replace("{{PHONE}}", PHONE_DISPLAY)
+    body = body.replace("{{PHONE_HREF}}", f"tel:{PHONE_E164}")
     body = WABULK_RE.sub(
         lambda m: f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(STR[lang]['wa_bulk_prefix'] + m.group(1))}",
         body)
     body = body.replace("{{WAVE_SMALL}}", WAVE_SMALL)
     body = body.replace("{{WAVE}}", WAVE)
     body = ICON_RE.sub(lambda m: ICONS[m.group(1)], body)
-    html = head(lang, slug) + header_html(lang, slug) + body + footer_html(lang, slug)
+    html = (head(lang, slug, jsonld=json_ld(lang, slug, body))
+            + header_html(lang, slug) + body + footer_html(lang, slug))
+    html = webp_sources(html)
     outdir = SITE if lang == "en" else os.path.join(SITE, "ar")
     os.makedirs(outdir, exist_ok=True)
     out = os.path.join(outdir, "index.html" if slug == "index" else f"{slug}.html")
@@ -541,6 +836,112 @@ def write_redirects():
             with open(os.path.join(outdir, old), "w", encoding="utf-8") as f:
                 f.write(html)
             count += 1
+    return count
+
+
+# ------------------------------------------------------------------- 404 page
+# Apache serves this file for any unknown URL (see .htaccess ErrorDocument).
+# Because the browser's address bar still shows the URL the visitor typed,
+# every link and asset path on this one page has to be absolute — relative
+# paths would resolve against the missing URL and the page would load unstyled.
+
+BODY_404 = {
+    "en": """
+<main id="main">
+<section class="page-hero">
+  <div class="support-line" aria-hidden="true">{WAVE}</div>
+  <div class="container">
+    <div class="page-hero__content">
+      <span class="eyebrow">Error 404</span>
+      <h1 class="h1">This page isn't here.</h1>
+      <p class="lead">The link may be out of date, or the address slightly mistyped.
+         Everything below will get you back on track.</p>
+      <div class="hero__actions" style="display:flex; flex-wrap:wrap; gap:12px; margin-block-start:28px;">
+        <a class="btn btn--primary" href="index.html">Back to home</a>
+        <a class="btn btn--outline" href="products.html">Browse products</a>
+        <a class="btn btn--outline" href="contact.html">Contact EHS</a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section--tight" style="padding-block-end: clamp(64px, 9vw, 110px);">
+  <div class="container maxw-820">
+    <h2 class="h3">Popular pages</h2>
+    <ul class="link-list" style="margin-block-start:16px; line-height:2.2;">
+      <li><a href="medpress.html">MedPress — compression solutions</a></li>
+      <li><a href="orthopedic.html">MasterCast — orthopedic range</a></li>
+      <li><a href="size-guide.html">Size &amp; measurement guide</a></li>
+      <li><a href="factory.html">The factory</a></li>
+      <li><a href="professionals.html">Professional &amp; distributor enquiries</a></li>
+    </ul>
+  </div>
+</section>
+</main>
+""",
+    "ar": """
+<main id="main">
+<section class="page-hero">
+  <div class="support-line" aria-hidden="true">{WAVE}</div>
+  <div class="container">
+    <div class="page-hero__content">
+      <span class="eyebrow">خطأ 404</span>
+      <h1 class="h1">هذه الصفحة غير موجودة.</h1>
+      <p class="lead">قد يكون الرابط قديمًا أو به خطأ بسيط في الكتابة.
+         الروابط التالية ستعيدك إلى المسار الصحيح.</p>
+      <div class="hero__actions" style="display:flex; flex-wrap:wrap; gap:12px; margin-block-start:28px;">
+        <a class="btn btn--primary" href="index.html">العودة للرئيسية</a>
+        <a class="btn btn--outline" href="products.html">تصفّح المنتجات</a>
+        <a class="btn btn--outline" href="contact.html">تواصل معنا</a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section--tight" style="padding-block-end: clamp(64px, 9vw, 110px);">
+  <div class="container maxw-820">
+    <h2 class="h3">صفحات مهمة</h2>
+    <ul class="link-list" style="margin-block-start:16px; line-height:2.2;">
+      <li><a href="medpress.html">ميدبريس — حلول الضغط الطبي</a></li>
+      <li><a href="orthopedic.html">ماستركاست — مجموعة العظام</a></li>
+      <li><a href="size-guide.html">دليل المقاسات والقياس</a></li>
+      <li><a href="factory.html">المصنع</a></li>
+      <li><a href="professionals.html">استفسارات المؤسسات والموزّعين</a></li>
+    </ul>
+  </div>
+</section>
+</main>
+""",
+}
+
+
+def _absolutize(html, lang):
+    """Rewrite every relative link/asset path to a root-absolute one."""
+    if lang == "en":
+        html = re.sub(r'(href|src|srcset)="assets/', r'\1="/assets/', html)
+        html = re.sub(r'href="ar/', 'href="/ar/', html)
+        html = re.sub(r'(href|src)="(?!/|https?:|#|mailto:|tel:|data:)([\w.-]+\.html)',
+                      r'\1="/\2', html)
+    else:
+        html = re.sub(r'(href|src|srcset)="\.\./assets/', r'\1="/assets/', html)
+        html = re.sub(r'href="\.\./([\w.-]+\.html)', r'href="/\1', html)
+        html = re.sub(r'(href|src)="(?!/|https?:|#|mailto:|tel:|data:|\.\./)([\w.-]+\.html)',
+                      r'\1="/ar/\2', html)
+    return html
+
+
+def write_404():
+    count = 0
+    for lang in ("en", "ar"):
+        body = BODY_404[lang].replace("{WAVE}", WAVE)
+        html = (head(lang, "404", jsonld="",
+                     robots='<meta name="robots" content="noindex, follow">\n')
+                + header_html(lang, "404") + body + footer_html(lang, "404"))
+        html = webp_sources(html)
+        html = _absolutize(html, lang)
+        outdir = SITE if lang == "en" else os.path.join(SITE, "ar")
+        os.makedirs(outdir, exist_ok=True)
+        with open(os.path.join(outdir, "404.html"), "w", encoding="utf-8") as f:
+            f.write(html)
+        count += 1
     return count
 
 
@@ -586,6 +987,8 @@ if __name__ == "__main__":
                 continue
             built.append(build_page(lang, slug))
     stubs = write_redirects()
+    errpages = write_404()
     urls = write_sitemap()
     write_robots()
-    print(f"Built {len(built)} pages + {stubs} redirect stubs, {urls} sitemap URLs, robots.txt.")
+    print(f"Built {len(built)} pages + {stubs} redirect stubs + {errpages} error pages, "
+          f"{urls} sitemap URLs, robots.txt.")

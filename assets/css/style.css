@@ -1964,3 +1964,6 @@ html[lang="ar"] .footer h4 { letter-spacing: 0; font-size: 0.95rem; }
 .loctabs__name { font-weight: 800; font-size: 1.15rem; line-height: 1.25; margin: 3px 0 6px; }
 .loctabs__addr { color: var(--muted); font-size: 0.94rem; line-height: 1.55; margin: 0 0 10px; }
 @media (prefers-reduced-motion: reduce) { .loctabs__pane.is-on { animation: none; } }
+
+/* WebP delivery: <picture> wraps every photo but must not create a box. */
+picture { display: contents; }

@@ -1911,3 +1911,56 @@ html[lang="ar"] .footer h4 { letter-spacing: 0; font-size: 0.95rem; }
   background: rgba(249, 251, 244, 0.92) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234F7A12' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.6-3.6M11 8v6M8 11h6'/%3E%3C/svg%3E") center/19px no-repeat;
   box-shadow: 0 2px 10px rgba(33, 43, 20, 0.14);
 }
+
+/* ---------- Office / factory tabs ---------- */
+.loctabs {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: clamp(16px, 2.2vw, 24px);
+  box-shadow: var(--shadow-sm);
+}
+.loctabs__tabs { display: flex; gap: 8px; margin-block-end: clamp(14px, 2vw, 22px); }
+.loctabs__tab {
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.86rem;
+  padding: 9px 20px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  color: var(--forest);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.loctabs__tab:hover { border-color: var(--brand); }
+.loctabs__tab[aria-selected="true"] {
+  background: var(--brand);
+  color: var(--on-brand);
+  border-color: var(--brand);
+}
+.loctabs__pane { display: none; gap: 14px; align-items: flex-start; }
+.loctabs__pane.is-on { display: flex; animation: loctabsIn 0.32s cubic-bezier(0.2, 0.8, 0.25, 1); }
+@keyframes loctabsIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.loctabs__ico {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: var(--mint);
+  color: var(--forest);
+  display: grid;
+  place-items: center;
+}
+.loctabs__ico svg { width: 23px; height: 23px; }
+.loctabs__label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--forest);
+}
+.loctabs__name { font-weight: 800; font-size: 1.15rem; line-height: 1.25; margin: 3px 0 6px; }
+.loctabs__addr { color: var(--muted); font-size: 0.94rem; line-height: 1.55; margin: 0 0 10px; }
+@media (prefers-reduced-motion: reduce) { .loctabs__pane.is-on { animation: none; } }

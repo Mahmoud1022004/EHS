@@ -561,4 +561,35 @@
   document.querySelectorAll('[data-year]').forEach(function (el) {
     el.textContent = String(new Date().getFullYear());
   });
+
+  /* Office / factory tabs. Progressive enhancement: without JS both panes are
+     just stacked content, so the addresses are never hidden behind a script. */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-loctabs]'), function (box) {
+    var tabs = [].slice.call(box.querySelectorAll('.loctabs__tab'));
+    var panes = [].slice.call(box.querySelectorAll('.loctabs__pane'));
+    if (tabs.length !== panes.length) return;
+
+    function select(i) {
+      tabs.forEach(function (t, n) {
+        t.setAttribute('aria-selected', String(n === i));
+        t.tabIndex = n === i ? 0 : -1;
+      });
+      panes.forEach(function (p, n) { p.classList.toggle('is-on', n === i); });
+    }
+
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { select(i); });
+      t.addEventListener('keydown', function (e) {
+        var step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!step) return;
+        e.preventDefault();
+        var next = (i + step + tabs.length) % tabs.length;
+        select(next);
+        tabs[next].focus();
+      });
+    });
+
+    select(0);
+  });
+
 })();

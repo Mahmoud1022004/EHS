@@ -22,7 +22,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehsmeds.com"
-ASSET_V = "129"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "130"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -544,6 +544,38 @@ def write_redirects():
     return count
 
 
+def write_sitemap():
+    """Sitemap listing every real page in both languages, each carrying its
+    hreflang alternates. Redirect stubs are left out on purpose — they are
+    noindex and only exist to forward old URLs."""
+    lines = ['<?xml version="1.0" encoding="UTF-8"?>',
+             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+             '        xmlns:xhtml="http://www.w3.org/1999/xhtml">']
+    for slug in PAGES:
+        fname = "index.html" if slug == "index" else f"{slug}.html"
+        en = f"{BASE_URL}/" + ("" if slug == "index" else fname)
+        ar = f"{BASE_URL}/ar/{fname}"
+        for url in (en, ar):
+            lines.append("  <url>")
+            lines.append(f"    <loc>{url}</loc>")
+            lines.append(f'    <xhtml:link rel="alternate" hreflang="en" href="{en}"/>')
+            lines.append(f'    <xhtml:link rel="alternate" hreflang="ar" href="{ar}"/>')
+            lines.append(f'    <xhtml:link rel="alternate" hreflang="x-default" href="{en}"/>')
+            lines.append("  </url>")
+    lines.append("</urlset>")
+    with open(os.path.join(SITE, "sitemap.xml"), "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+    return len(PAGES) * 2
+
+
+def write_robots():
+    txt = ("User-agent: *\n"
+           "Allow: /\n\n"
+           f"Sitemap: {BASE_URL}/sitemap.xml\n")
+    with open(os.path.join(SITE, "robots.txt"), "w", encoding="utf-8") as f:
+        f.write(txt)
+
+
 if __name__ == "__main__":
     built = []
     for lang in ("en", "ar"):
@@ -553,4 +585,7 @@ if __name__ == "__main__":
                 print(f"!! missing content: {lang}/{slug}.html", file=sys.stderr)
                 continue
             built.append(build_page(lang, slug))
-    print(f"Built {len(built)} pages + {write_redirects()} redirect stubs.")
+    stubs = write_redirects()
+    urls = write_sitemap()
+    write_robots()
+    print(f"Built {len(built)} pages + {stubs} redirect stubs, {urls} sitemap URLs, robots.txt.")

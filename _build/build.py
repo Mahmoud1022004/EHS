@@ -22,7 +22,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "79"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "80"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -188,8 +188,7 @@ STR = {
                     ("products.html", "All products"),
                     ("medpress.html", "MedPress"),
                     ("orthopedic.html", "MasterCast"),
-                    ("gauze-wound-care.html", "Gauze, Wound Care &amp; Textiles"),
-                    ("masks-ppe.html", "Face Masks &amp; PPE"),
+                    ("products.html#prevent", "Prevent"),
                 ]),
                 ("medpress", "medpress.html", "MedPress", [
                     ("medpress.html", "Compression Solutions"),
@@ -238,8 +237,7 @@ STR = {
                     ("products.html", "كل المنتجات"),
                     ("medpress.html", "ميدبريس"),
                     ("orthopedic.html", "ماستركاست"),
-                    ("gauze-wound-care.html", "الشاش والعناية بالجروح والمنسوجات"),
-                    ("masks-ppe.html", "الكمامات ومستلزمات الوقاية"),
+                    ("products.html#prevent", "بريفنت"),
                 ]),
                 ("medpress", "medpress.html", "ميدبريس", [
                     ("medpress.html", "حلول الضغط الطبي"),

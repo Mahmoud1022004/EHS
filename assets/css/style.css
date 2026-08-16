@@ -1028,6 +1028,33 @@ html[lang="ar"] .yearscrub__year { letter-spacing: 0; font-weight: 700; }
 .range-intro { padding-block: clamp(26px, 3.2vw, 40px) 0; }
 .range-intro .section-head { margin-block-end: 0; }
 
+/* ---------- Client ticker ----------
+   The same scrolling track as the brand ticker, but on paper with each
+   organisation set as a pill, so it reads as a list of customers rather
+   than a slogan strip. Names are text: no third-party logos are used. */
+.marquee.marquee--clients {
+  background: transparent;
+  transform: none;
+  box-shadow: none;
+  border-block: 1px solid var(--line);
+  margin-block: clamp(18px, 2.4vw, 28px);
+}
+.marquee.marquee--clients .marquee__track { animation-duration: 65s; }
+.marquee.marquee--clients .marquee__group { gap: 14px; padding-block: 18px; }
+.clientmark {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 11px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
 /* ---------- Feature list ---------- */
 .feature-list { list-style: none; display: grid; gap: 14px; }
 .feature-list li { display: flex; gap: 14px; align-items: flex-start; }
@@ -1255,6 +1282,7 @@ html[lang="ar"] .year-badge { letter-spacing: 0; }
   box-shadow: var(--shadow-md);
 }
 [dir="rtl"] .marquee { transform: rotate(1.1deg) scale(1.02); }
+[dir="rtl"] .marquee.marquee--clients { transform: none; }
 .marquee__track { display: flex; width: max-content; will-change: transform; animation: marquee 30s linear infinite; }
 [dir="rtl"] .marquee__track { animation-name: marquee-rtl; }
 .marquee:hover .marquee__track { animation-play-state: paused; }
@@ -1282,6 +1310,8 @@ html[lang="ar"] .marquee__item { letter-spacing: 0; }
 @media (max-width: 640px) {
   .marquee { transform: rotate(-1.1deg); }
   [dir="rtl"] .marquee { transform: rotate(1.1deg); }
+  .marquee.marquee--clients,
+  [dir="rtl"] .marquee.marquee--clients { transform: none; }
   .gallery { grid-template-columns: repeat(2, 1fr) !important; }
   .btn { padding: 14px 22px; font-size: 0.94rem; }
   .container { width: min(100% - 36px, var(--container)); }

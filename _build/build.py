@@ -22,7 +22,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "102"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "109"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -353,11 +353,11 @@ def head(lang, slug):
 </head>
 <body>
 <div class="loader" id="ehs-loader" role="presentation" aria-hidden="true">
+  <svg class="loader__ribbon" viewBox="0 0 1200 620" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+    <path pathLength="1" d="M-120 400C140 190 320 180 520 330S770 560 930 400S1140 180 1340 300"/>
+  </svg>
   <div class="loader__center">
     <img class="loader__logo" src="{a}/logos/EHS-logo-white.svg" alt="" width="800" height="114">
-    <svg class="loader__wave" viewBox="0 0 600 100" aria-hidden="true" focusable="false">
-      <path pathLength="1" d="M14 60C80 10 150 96 220 54C290 12 360 96 430 54C490 18 545 78 586 48"/>
-    </svg>
   </div>
 </div>
 <a class="skip-link" href="#main">{s['skip']}</a>

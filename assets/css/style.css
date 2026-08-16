@@ -357,35 +357,39 @@ html[lang="ar"] .btn { letter-spacing: 0; }
   place-items: center;
   transition: opacity 0.5s ease, visibility 0.5s ease;
 }
-/* The logo settles on the deep green, then the ribbon from the packaging
-   draws itself underneath. Stacked, so the line never crosses the wordmark. */
-.loader__center {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  justify-items: center;
-  gap: clamp(20px, 4vw, 42px);
-  padding: 24px;
+/* The ribbon from the packaging sweeps across the whole screen and runs
+   through the logo, then the lockup settles on top of it. The ribbon opens
+   around the lockup so it reads as threading behind it — without that gap a
+   white ribbon swallows the white wordmark where the two cross. */
+.loader__ribbon {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse min(46vw, 400px) min(10vw, 72px) at 50% 50%, transparent 86%, #000 100%);
+  mask-image: radial-gradient(ellipse min(46vw, 400px) min(10vw, 72px) at 50% 50%, transparent 86%, #000 100%);
 }
-.loader__logo {
-  width: min(80vw, 700px);
-  height: auto;
-  opacity: 0;
-  animation: loaderLogo 0.7s 0.25s cubic-bezier(0.2, 0.8, 0.25, 1) both;
-}
-.loader__wave { width: min(64vw, 560px); height: auto; overflow: visible; }
-.loader__wave path {
+.loader__ribbon path {
   fill: none;
   stroke: #fff;
-  stroke-width: 15;
+  stroke-width: 58;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  animation: loaderWave 1.25s 0.55s cubic-bezier(0.5, 0, 0.3, 1) forwards;
+  animation: loaderWave 1.3s 0.15s cubic-bezier(0.5, 0, 0.3, 1) forwards;
 }
-/* the line should run with the reading direction */
-[dir="rtl"] .loader__wave { transform: scaleX(-1); }
+/* the ribbon should run with the reading direction */
+[dir="rtl"] .loader__ribbon { transform: scaleX(-1); }
+.loader__center { position: relative; z-index: 3; display: grid; place-items: center; padding: 24px; }
+.loader__logo {
+  width: min(76vw, 660px);
+  height: auto;
+  opacity: 0;
+  animation: loaderLogo 0.7s 0.55s cubic-bezier(0.2, 0.8, 0.25, 1) both;
+}
 @keyframes loaderLogo { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @keyframes loaderWave { to { stroke-dashoffset: 0; } }
 .loader.is-done { opacity: 0; visibility: hidden; pointer-events: none; }

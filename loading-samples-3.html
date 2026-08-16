@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loading screen — the box ribbon | EHS</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="assets/logos/EHS-app-icon.svg">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<style>
+  :root{
+    --brand:#8DBE22; --on-brand:#1B2A0A; --forest:#4F7A12; --forest-ink:#1B2A0A;
+    --ink:#212B14; --muted:#5B6B49; --paper:#F9FBF4; --mint:#E2F1C9; --line:#DDE3D2;
+    --box-green:#138443;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+       font-family:"Manrope",system-ui,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{width:min(100% - 40px,1180px);margin-inline:auto;padding-block:56px 90px}
+
+  .lede{margin-block-end:20px}
+  .eyebrow{display:inline-flex;padding:9px 22px;border-radius:999px;background:var(--brand);
+           color:var(--on-brand);font-weight:800;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase}
+  h1{font-size:clamp(2rem,5vw,3rem);line-height:1.08;margin:18px 0 10px;letter-spacing:-.02em}
+  .lede p{color:var(--muted);font-size:1.05rem;max-width:64ch;margin:0}
+
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-block-end:40px;
+       padding:14px 18px;border:1px solid var(--line);border-radius:16px;background:#fff}
+  .bar strong{font-size:.86rem}
+  .bar .sp{margin-inline-start:auto;font-size:.82rem;color:var(--muted)}
+
+  .grid{display:grid;gap:30px;grid-template-columns:repeat(auto-fit,minmax(430px,1fr))}
+  @media (max-width:520px){.grid{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;
+        display:flex;flex-direction:column}
+  .card__head{padding:20px 22px 14px;display:flex;gap:13px;align-items:flex-start}
+  .num{flex:none;width:31px;height:31px;border-radius:50%;background:var(--mint);color:var(--forest);
+       display:grid;place-items:center;font-weight:800;font-size:.92rem}
+  .card__head h2{font-size:1.1rem;margin:0 0 3px}
+  .card__head p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.5}
+  .card__foot{padding:12px 22px 18px;display:flex;gap:10px;align-items:center;border-top:1px solid var(--line)}
+  .btn{font:inherit;font-weight:700;font-size:.85rem;padding:9px 18px;border-radius:999px;
+       border:1.5px solid var(--line);background:#fff;color:var(--forest);cursor:pointer;
+       transition:background .2s,color .2s,border-color .2s}
+  .btn:hover{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+  .btn[aria-pressed="true"]{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+  .tag{margin-inline-start:auto;font-size:.78rem;color:var(--muted)}
+
+  /* ---------- the preview stage ---------- */
+  .stage{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--forest-ink);
+         display:grid;place-items:center;cursor:pointer}
+  .stage--box{background:var(--box-green)}
+  .lg{position:relative;z-index:3;width:min(64%,430px);height:auto;opacity:0}
+  .ribbon{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  /* every sample path is a stroke, never a filled shape */
+  .stage svg path{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round}
+
+  /* nothing animates until the stage is told to play, so a replay always
+     restarts from frame one */
+  .stage .lg,.stage svg path,.stage .rv,.stage .sheen,.stage .corner{animation-play-state:paused}
+  .stage.is-playing .lg,.stage.is-playing svg path,
+  .stage.is-playing .rv,.stage.is-playing .sheen,.stage.is-playing .corner{animation-play-state:running}
+
+  @keyframes drawIn{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes fadeIn{to{opacity:1}}
+  @keyframes wipeLtr{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+  @keyframes wipeRtl{from{clip-path:inset(0 0 0 100%)}to{clip-path:inset(0 0 0 0)}}
+  @keyframes sweepLtr{from{transform:translateX(-115%)}to{transform:translateX(115%)}}
+  @keyframes sweepRtl{from{transform:translateX(115%)}to{transform:translateX(-115%)}}
+  @keyframes cornerIn{from{opacity:0;transform:scale(.82) rotate(-8deg)}to{opacity:1;transform:none}}
+
+  /* 1 — Ribbon draw: the logo settles, then the ribbon draws itself underneath.
+     Stacked, so the ribbon never crosses the wordmark. */
+  .s1 .stack{position:relative;z-index:3;display:grid;justify-items:center;
+             gap:clamp(14px,3.4%,30px);width:100%}
+  .s1 .lg{width:min(64%,430px);animation:fadeUp .7s .25s cubic-bezier(.2,.8,.25,1) forwards}
+  .s1 .wave{width:min(56%,380px);height:auto;overflow:visible}
+  .s1 .wave path{stroke-width:15;stroke-dasharray:1;stroke-dashoffset:1;
+                 animation:drawIn 1.25s .55s cubic-bezier(.5,0,.3,1) forwards}
+
+  /* 2 — Corner ribbons: the packaging's own corner motif closes around the logo */
+  .s2 .corner{position:absolute;width:46%;opacity:0}
+  .s2 .corner path{stroke-width:30}
+  .s2 .corner--tl{inset-block-start:-6%;inset-inline-start:-4%;
+                  animation:cornerIn .8s .05s cubic-bezier(.2,.8,.25,1) forwards}
+  .s2 .corner--br{inset-block-end:-6%;inset-inline-end:-4%;transform-origin:70% 70%;rotate:180deg;
+                  animation:cornerIn .8s .22s cubic-bezier(.2,.8,.25,1) forwards}
+  .s2 .lg{animation:fadeUp .7s .6s cubic-bezier(.2,.8,.25,1) forwards}
+
+  /* 3 — Single line: the delicate one-stroke line from the box illustration */
+  .s3 .stack{position:relative;z-index:3;display:grid;justify-items:center;gap:5%;width:100%}
+  .s3 .lg{width:min(60%,400px)}
+  .s3 .line{width:min(66%,440px);overflow:visible}
+  .s3 .line path{stroke-width:2.6;stroke-dasharray:1;stroke-dashoffset:1;
+                 animation:drawIn 1.5s .55s cubic-bezier(.5,0,.3,1) forwards}
+  .s3 .lg{animation:fadeIn .8s .1s ease forwards}
+
+  /* 4 — Ribbon wipe: the ribbon sweeps past and leaves the logo in its wake */
+  .s4 .lg{opacity:1;animation:wipeLtr .9s .3s cubic-bezier(.65,0,.35,1) both}
+  .s4 .sheen{position:absolute;inset-block:-14%;inset-inline-start:0;width:38%;height:128%;z-index:4;
+             pointer-events:none;animation:sweepLtr 1.4s .05s cubic-bezier(.5,0,.35,1) forwards}
+  .s4 .sheen path{stroke-width:52}
+
+  [dir="rtl"] .s4 .lg{animation-name:wipeRtl}
+  [dir="rtl"] .s4 .sheen{animation-name:sweepRtl}
+  [dir="rtl"] .s1 .wave,[dir="rtl"] .s3 .line{transform:scaleX(-1)}
+
+  /* ---------- full-screen player ---------- */
+  .fs{position:fixed;inset:0;z-index:100;display:none;place-items:center;background:var(--forest-ink)}
+  .fs.is-on{display:grid}
+  .fs .stage{position:absolute;inset:0;aspect-ratio:auto;border-radius:0;cursor:default}
+  .fs .lg{width:min(78vw,760px)}
+  .fs .s1 .lg,.fs .s3 .lg{width:min(72vw,680px)}
+  .fs .s1 .wave{width:min(62vw,580px)}
+  .fs__close{position:fixed;inset-block-start:18px;inset-inline-end:18px;z-index:101;
+             font:inherit;font-weight:700;font-size:.85rem;padding:10px 20px;border-radius:999px;
+             border:0;background:#fff;color:var(--ink);cursor:pointer}
+  .note{margin-block-start:44px;padding:18px 22px;border:1px solid var(--line);border-radius:16px;
+        background:#fff;color:var(--muted);font-size:.9rem;line-height:1.6;max-width:78ch}
+  .note b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="lede">
+    <span class="eyebrow">Loading screen</span>
+    <h1>Four takes on the box ribbon.</h1>
+    <p>Each one uses the white ribbon printed on the MedPress and EHS packaging, paired with the
+       EHS logo on the deep green. Click any panel to replay it, or open it full screen to see it
+       at real size. Nothing is live on the site yet — pick one and I will wire it in.</p>
+  </div>
+
+  <div class="bar">
+    <strong>Preview in:</strong>
+    <button class="btn" id="dir-ltr" aria-pressed="true">English (LTR)</button>
+    <button class="btn" id="dir-rtl" aria-pressed="false">Arabic (RTL)</button>
+    <button class="btn" id="play-all">Replay all</button>
+    <span class="sp">Current loader runs 2.35s before lifting</span>
+  </div>
+
+  <div class="grid" id="grid">
+
+    <!-- 1 -->
+    <article class="card">
+      <div class="card__head">
+        <span class="num">1</span>
+        <div>
+          <h2>Ribbon draw</h2>
+          <p>The logo settles first, then the ribbon draws itself underneath — stacked, so it never
+             crosses the wordmark. <b>This is the one now live on the site.</b></p>
+        </div>
+      </div>
+      <div class="stage s1" data-stage>
+        <div class="stack">
+          <img class="lg" src="assets/logos/EHS-logo-white.svg" alt="" width="800" height="114">
+          <svg class="wave" viewBox="0 0 600 100" aria-hidden="true">
+            <path pathLength="1" d="M14 60C80 10 150 96 220 54C290 12 360 96 430 54C490 18 545 78 586 48"/>
+          </svg>
+        </div>
+      </div>
+      <div class="card__foot">
+        <button class="btn" data-replay>Replay</button>
+        <button class="btn" data-full>Full screen</button>
+        <span class="tag">1.45s</span>
+      </div>
+    </article>
+
+    <!-- 2 -->
+    <article class="card">
+      <div class="card__head">
+        <span class="num">2</span>
+        <div>
+          <h2>Corner ribbons</h2>
+          <p>The packaging's own corner motif, top-left and bottom-right, closing around the logo.
+             Closest to what is actually printed on the boxes.</p>
+        </div>
+      </div>
+      <div class="stage s2 stage--box" data-stage>
+        <svg class="ribbon corner corner--tl" viewBox="0 0 400 400" aria-hidden="true">
+          <path d="M232 -24C210 78 78 62 52 156C28 244 152 278 186 206C218 138 108 106 22 148"/>
+        </svg>
+        <svg class="ribbon corner corner--br" viewBox="0 0 400 400" aria-hidden="true">
+          <path d="M232 -24C210 78 78 62 52 156C28 244 152 278 186 206C218 138 108 106 22 148"/>
+        </svg>
+        <img class="lg" src="assets/logos/EHS-logo-white.svg" alt="" width="800" height="114">
+      </div>
+      <div class="card__foot">
+        <button class="btn" data-replay>Replay</button>
+        <button class="btn" data-full>Full screen</button>
+        <span class="tag">1.30s</span>
+      </div>
+    </article>
+
+    <!-- 3 -->
+    <article class="card">
+      <div class="card__head">
+        <span class="num">3</span>
+        <div>
+          <h2>Single line</h2>
+          <p>The thin unbroken line from the sock illustration, drawn under the logo. The quietest
+             of the four and the closest to the printed line art.</p>
+        </div>
+      </div>
+      <div class="stage s3" data-stage>
+        <div class="stack">
+          <img class="lg" src="assets/logos/EHS-logo-white.svg" alt="" width="800" height="114">
+          <svg class="line" viewBox="0 0 600 90" aria-hidden="true">
+            <path pathLength="1" d="M8 58C70 12 128 88 196 52S320 4 380 46S470 92 530 50S576 22 592 34"/>
+          </svg>
+        </div>
+      </div>
+      <div class="card__foot">
+        <button class="btn" data-replay>Replay</button>
+        <button class="btn" data-full>Full screen</button>
+        <span class="tag">2.05s</span>
+      </div>
+    </article>
+
+    <!-- 4 -->
+    <article class="card">
+      <div class="card__head">
+        <span class="num">4</span>
+        <div>
+          <h2>Ribbon wipe</h2>
+          <p>A broad ribbon sweeps across and leaves the logo behind it — the ribbon is the reveal,
+             not decoration around it.</p>
+        </div>
+      </div>
+      <div class="stage s4" data-stage>
+        <img class="lg" src="assets/logos/EHS-logo-white.svg" alt="" width="800" height="114">
+        <svg class="ribbon sheen" viewBox="0 0 400 750" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M120 -40C190 140 60 250 130 400S250 600 170 790"/>
+        </svg>
+      </div>
+      <div class="card__foot">
+        <button class="btn" data-replay>Replay</button>
+        <button class="btn" data-full>Full screen</button>
+        <span class="tag">1.40s</span>
+      </div>
+    </article>
+
+  </div>
+
+  <p class="note">
+    <b>All four reuse what is already there:</b> the same deep green as the current loader, the
+    white EHS lockup, and no new assets — the ribbon is drawn in SVG, so it stays sharp at any size
+    and costs nothing to load. Number 2 sits on the box green (#138443) instead, since that is the
+    colour the ribbon actually appears on. Every one respects <b>reduced motion</b> and plays once
+    per session, exactly like the current screen.
+  </p>
+</div>
+
+<div class="fs" id="fs" aria-hidden="true"></div>
+<button class="fs__close" id="fs-close" hidden>Close</button>
+
+<script>
+(function () {
+  var grid = document.getElementById('grid');
+  var fs = document.getElementById('fs');
+  var fsClose = document.getElementById('fs-close');
+
+  /* Restarting a CSS animation needs the class off, a forced reflow, then on. */
+  function play(stage) {
+    stage.classList.remove('is-playing');
+    void stage.offsetWidth;
+    stage.classList.add('is-playing');
+  }
+
+  var stages = [].slice.call(document.querySelectorAll('[data-stage]'));
+  stages.forEach(function (s) { s.addEventListener('click', function () { play(s); }); });
+
+  grid.addEventListener('click', function (e) {
+    var card = e.target.closest('.card');
+    if (!card) return;
+    var stage = card.querySelector('[data-stage]');
+    if (e.target.matches('[data-replay]')) { play(stage); }
+    if (e.target.matches('[data-full]')) {
+      fs.innerHTML = '';
+      var clone = stage.cloneNode(true);
+      clone.classList.remove('is-playing');
+      fs.appendChild(clone);
+      fs.classList.add('is-on');
+      fs.setAttribute('aria-hidden', 'false');
+      fsClose.hidden = false;
+      play(clone);
+    }
+  });
+
+  function closeFs() {
+    fs.classList.remove('is-on');
+    fs.setAttribute('aria-hidden', 'true');
+    fs.innerHTML = '';
+    fsClose.hidden = true;
+  }
+  fsClose.addEventListener('click', closeFs);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeFs(); });
+
+  var ltr = document.getElementById('dir-ltr'), rtl = document.getElementById('dir-rtl');
+  function setDir(d) {
+    document.documentElement.dir = d;
+    ltr.setAttribute('aria-pressed', String(d === 'ltr'));
+    rtl.setAttribute('aria-pressed', String(d === 'rtl'));
+    stages.forEach(play);
+  }
+  ltr.addEventListener('click', function () { setDir('ltr'); });
+  rtl.addEventListener('click', function () { setDir('rtl'); });
+
+  document.getElementById('play-all').addEventListener('click', function () { stages.forEach(play); });
+
+  /* play each one as it scrolls into view, then leave it alone */
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { play(en.target); io.unobserve(en.target); }
+      });
+    }, {threshold: 0.4});
+    stages.forEach(function (s) { io.observe(s); });
+  } else {
+    stages.forEach(play);
+  }
+})();
+</script>
+</body>
+</html>

@@ -1895,3 +1895,19 @@ html[lang="ar"] .footer h4 { letter-spacing: 0; font-size: 0.95rem; }
 @media print {
   .header, .footer, .hero__video, .nav-toggle, .btn-row, .cta-panel { display: none !important; }
 }
+
+/* A dense diagram that has to be openable at full size to be readable. */
+.img-frame--zoom { display: block; cursor: zoom-in; position: relative; }
+.img-frame--zoom img { transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.25, 1); }
+.img-frame--zoom:hover img { transform: scale(1.015); }
+.img-frame--zoom::after {
+  content: "";
+  position: absolute;
+  inset-block-end: 12px;
+  inset-inline-end: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(249, 251, 244, 0.92) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234F7A12' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.6-3.6M11 8v6M8 11h6'/%3E%3C/svg%3E") center/19px no-repeat;
+  box-shadow: 0 2px 10px rgba(33, 43, 20, 0.14);
+}

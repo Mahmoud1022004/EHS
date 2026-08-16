@@ -1748,7 +1748,7 @@ html[lang="ar"] .footer h4 { letter-spacing: 0; font-size: 0.95rem; }
 .mx-auto { margin-inline: auto; }
 
 /* keep anchored sections clear of the sticky header */
-#enquiry, #prevent, [id="story"], [id="values"], [id="leadership"], [id="locations"] {
+#enquiry, #prevent, [id="story"], [id="values"], [id="clients"], [id="leadership"], [id="locations"] {
   scroll-margin-top: calc(var(--header-h) + 24px);
 }
 

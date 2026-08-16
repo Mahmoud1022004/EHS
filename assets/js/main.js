@@ -420,6 +420,32 @@
     }, { passive: true });
   });
 
+  /* Floating contact button — one button that opens the channel list.
+     Only present once social profiles are configured; otherwise the button
+     is a plain WhatsApp link and needs no script. */
+  var fab = document.getElementById('ehs-fab');
+  if (fab) {
+    var fabToggle = fab.querySelector('.fab__toggle');
+    var setFab = function (open) {
+      fab.classList.toggle('is-open', open);
+      fabToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+    fabToggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setFab(!fab.classList.contains('is-open'));
+    });
+    document.addEventListener('click', function (e) {
+      if (!fab.contains(e.target)) setFab(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') setFab(false);
+    });
+    /* choosing a channel closes it behind you */
+    fab.querySelectorAll('.fab__item').forEach(function (a) {
+      a.addEventListener('click', function () { setFab(false); });
+    });
+  }
+
   /* Curtain / blinds page transition on menu navigation. */
   var curtain = document.getElementById('ehs-curtain');
   if (curtain && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

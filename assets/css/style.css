@@ -1550,6 +1550,78 @@ html[lang="ar"] .footer h4 { letter-spacing: 0; font-size: 0.95rem; }
 .footer address { font-style: normal; font-size: 0.93rem; line-height: 1.7; }
 .footer address strong { color: #fff; display: block; margin-block-end: 2px; }
 .footer address + address { margin-block-start: 18px; }
+/* ---------- Floating contact button ----------
+   One button, labelled "contact & follow", that opens a stack of channels.
+   Rendered as a plain WhatsApp link when no social profiles are configured,
+   so the button never opens onto an empty menu. */
+.fab { position: fixed; inset-inline-end: 20px; inset-block-end: 20px; z-index: 60; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.fab__menu { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.fab__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(12px) scale(0.9);
+  pointer-events: none;
+  transition: opacity 0.24s ease, transform 0.24s cubic-bezier(0.2, 0.8, 0.25, 1.1);
+}
+.fab.is-open .fab__item { opacity: 1; transform: none; pointer-events: auto; }
+.fab.is-open .fab__item:nth-child(1) { transition-delay: 0.02s; }
+.fab.is-open .fab__item:nth-child(2) { transition-delay: 0.06s; }
+.fab.is-open .fab__item:nth-child(3) { transition-delay: 0.10s; }
+.fab.is-open .fab__item:nth-child(4) { transition-delay: 0.14s; }
+.fab__label {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+}
+.fab__dot {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  color: var(--forest);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+  flex: none;
+  transition: background 0.22s ease, color 0.22s ease;
+}
+.fab__item:hover .fab__dot { background: var(--brand); color: var(--on-brand); }
+.fab__dot svg { width: 22px; height: 22px; }
+.fab__item--wa .fab__dot { background: #25D366; color: #fff; border-color: #25D366; }
+
+.fab__toggle {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--brand);
+  color: var(--on-brand);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.24s cubic-bezier(0.2, 0.8, 0.25, 1.1), background 0.22s ease;
+}
+.fab__toggle svg { width: 26px; height: 26px; }
+.fab__toggle:hover { background: var(--brand-hover); }
+.fab.is-open .fab__toggle { transform: rotate(135deg); }
+.fab__toggle .fab__close { display: none; }
+.fab.is-open .fab__toggle .fab__open { display: none; }
+.fab.is-open .fab__toggle .fab__close { display: block; }
+@media (max-width: 600px) {
+  .fab { inset-inline-end: 14px; inset-block-end: 14px; }
+  .fab__label { font-size: 0.76rem; padding: 6px 12px; }
+}
+
 .footer__disclaimer {
   border-top: 1px solid rgba(249, 251, 244, 0.14);
   padding-block: 22px;

@@ -22,13 +22,22 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "87"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "90"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
 # it is still the right destination before the public launch. International
 # format, digits only: +20 100 679 0182.
 WHATSAPP_NUMBER = "201006790182"
+
+# Social profiles for the floating contact button. Empty on purpose: a network
+# only appears once its real URL is here, so no icon ever links somewhere that
+# does not exist. WhatsApp is not listed — it is always the first item.
+#   SOCIAL = {"instagram": "https://instagram.com/…",
+#             "tiktok":    "https://tiktok.com/@…",
+#             "facebook":  "https://facebook.com/…"}
+SOCIAL = {}
+SOCIAL_NAMES = {"instagram": "Instagram", "tiktok": "TikTok", "facebook": "Facebook"}
 
 WA_ICON = """<svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.1 3C9.03 3 3.3 8.73 3.3 15.8c0 2.25.59 4.45 1.71 6.39L3.2 29l7-1.84a12.77 12.77 0 0 0 5.9 1.45h.01c7.07 0 12.8-5.73 12.8-12.8C28.9 8.73 23.17 3 16.1 3Zm0 23.47h-.01c-1.9 0-3.77-.51-5.4-1.48l-.39-.23-4.15 1.09 1.11-4.05-.25-.42a10.63 10.63 0 0 1-1.63-5.66c0-5.88 4.79-10.66 10.68-10.66 2.85 0 5.53 1.11 7.54 3.13a10.6 10.6 0 0 1 3.12 7.55c0 5.88-4.78 10.66-10.66 10.66Zm5.85-7.99c-.32-.16-1.9-.94-2.19-1.04-.29-.11-.51-.16-.72.16-.21.32-.83 1.04-1.01 1.25-.19.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.19-.32-.02-.49.14-.65.14-.14.32-.37.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.72-1.73-.98-2.37-.26-.62-.52-.54-.72-.55l-.61-.01c-.21 0-.56.08-.85.4-.29.32-1.12 1.09-1.12 2.66 0 1.57 1.14 3.08 1.3 3.29.16.21 2.25 3.44 5.45 4.82.76.33 1.36.53 1.82.67.77.24 1.46.21 2.01.13.61-.09 1.9-.78 2.16-1.53.27-.75.27-1.39.19-1.53-.08-.13-.29-.21-.61-.37Z"/></svg>"""
 
@@ -41,6 +50,10 @@ WAVE = """<svg viewBox="0 0 1200 200" fill="none" preserveAspectRatio="none" ari
 WAVE_SMALL = """<svg viewBox="0 0 130 22" fill="none" aria-hidden="true" focusable="false"><path d="M4 14 C 22 2, 38 22, 60 12 S 100 2, 126 12" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>"""
 
 ICONS = {
+    "instagram": '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="12" r="4.1" stroke="currentColor" stroke-width="1.9"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/></svg>',
+    "facebook": '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14.5 8.5h2.2V5.6h-2.6c-2.5 0-4 1.5-4 4.1v2H8v3h2.1V21h3.1v-6.3h2.3l.4-3h-2.7v-1.6c0-1 .4-1.6 1.3-1.6Z"/></svg>',
+    "tiktok": '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14.3 3h2.6a4.9 4.9 0 0 0 4.1 4.1v2.6a7.4 7.4 0 0 1-4.1-1.4v5.9a5.9 5.9 0 1 1-5.9-5.9c.3 0 .6 0 .9.1v2.7a3.2 3.2 0 1 0 2.3 3.1V3Z"/></svg>',
+    "chat": '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3.5 20.5l1.4-5A8.5 8.5 0 1 1 21 11.5Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><circle cx="8.5" cy="11.5" r="1.1" fill="currentColor"/><circle cx="12" cy="11.5" r="1.1" fill="currentColor"/><circle cx="15.5" cy="11.5" r="1.1" fill="currentColor"/></svg>',
     "arrow": '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-7 7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     "check": '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     "plus": '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>',
@@ -232,6 +245,7 @@ STR = {
         "footer_disclaimer": "Product selection, compression level and usage should follow the recommendation of a qualified healthcare professional. Consult a healthcare professional before use if you have diabetes, circulatory disorders or another condition affecting leg health. Product details shown on this website are taken from current company materials and remain subject to confirmation by EHS.",
         "rights": "EHS — Egyptian Hospital Supplies. All rights reserved.",
         "wa_label": "Chat on WhatsApp",
+        "fab_label": "Contact &amp; follow us",
         "wa_prefill": "Hello EHS, I would like to ask about your products.",
         "wa_bulk_prefix": "Hello EHS, I would like a bulk order quotation for: ",
     },
@@ -281,6 +295,7 @@ STR = {
         "footer_disclaimer": "يجب أن يتم اختيار المنتج ومستوى الضغط وطريقة الاستخدام وفقًا لتوصية مختصّ رعاية صحية مؤهَّل. واستشر مختصّ رعاية صحية قبل الاستخدام إذا كنت تعاني من السكري أو اضطرابات الدورة الدموية أو أي حالة أخرى تؤثر على صحة الساقين. تفاصيل المنتجات المعروضة على هذا الموقع مأخوذة من مواد الشركة الحالية وتظل خاضعة للتأكيد من EHS.",
         "rights": "EHS — شركة مصر لإمداد المستشفيات. جميع الحقوق محفوظة.",
         "wa_label": "راسلنا على واتساب",
+        "fab_label": "تواصل معنا وتابعنا",
         "wa_prefill": "مرحبًا EHS، أودّ الاستفسار عن منتجاتكم.",
         "wa_bulk_prefix": "مرحبًا EHS، أودّ الحصول على عرض سعر لطلب كمية بالجملة من: ",
     },
@@ -402,11 +417,29 @@ def footer_html(lang, slug=""):
     company = "".join(f'<li><a href="{h}">{t}</a></li>' for h, t in s["footer_company_links"])
     medpress = "".join(f'<li><a href="{h}">{t}</a></li>' for h, t in s["footer_medpress_links"])
     wa_url = f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(s['wa_prefill'])}"
+    # Floating contact button. Without social profiles it stays the plain
+    # WhatsApp button; once they are configured it opens into a channel list.
+    if SOCIAL:
+        items = ['<a class="fab__item fab__item--wa" href="%s" target="_blank" rel="noopener" aria-label="%s">'
+                 '<span class="fab__label">%s</span><span class="fab__dot">%s</span></a>'
+                 % (wa_url, s["wa_label"], s["wa_label"], WA_ICON)]
+        for name, url in SOCIAL.items():
+            if name in ICONS:
+                items.append('<a class="fab__item" href="%s" target="_blank" rel="noopener" aria-label="%s">'
+                             '<span class="fab__label">%s</span><span class="fab__dot">%s</span></a>'
+                             % (url, SOCIAL_NAMES.get(name, name.title()), SOCIAL_NAMES.get(name, name.title()), ICONS[name]))
+        fab = ('<div class="fab" id="ehs-fab">'
+               '<div class="fab__menu">%s</div>'
+               '<button class="fab__toggle" type="button" aria-expanded="false" aria-label="%s">'
+               '<span class="fab__open">%s</span><span class="fab__close">%s</span></button>'
+               '</div>' % ("".join(items), s["fab_label"], ICONS["chat"], ICONS["plus"]))
+    else:
+        fab = ('<a class="wa-fab" href="%s" target="_blank" rel="noopener" aria-label="%s">%s'
+               '<span class="wa-fab__label">%s</span></a>'
+               % (wa_url, s["wa_label"], WA_ICON, s["wa_label"]))
+
     return f"""</main>
-<a class="wa-fab" href="{wa_url}" target="_blank" rel="noopener" aria-label="{s['wa_label']}">
-  {WA_ICON}
-  <span class="wa-fab__label">{s['wa_label']}</span>
-</a>
+{fab}
 <footer class="footer"{reveal_attr}>
   <div class="container footer__inner">
     <div class="footer__grid">

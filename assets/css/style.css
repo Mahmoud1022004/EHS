@@ -1656,7 +1656,6 @@ html[lang="ar"] .footer h4 { letter-spacing: 0; font-size: 0.95rem; }
   .fab__toggle {
     display: inline-flex;
     align-items: center;
-    gap: 9px;
     width: auto;
     height: 52px;
     padding-inline: 18px;
@@ -1665,17 +1664,20 @@ html[lang="ar"] .footer h4 { letter-spacing: 0; font-size: 0.95rem; }
                 padding 0.26s ease, width 0.26s ease;
   }
   .fab__toggle svg { width: 24px; height: 24px; }
+  /* the spacing lives on the label, not as a flex gap: a gap would survive the
+     label collapsing and shove the close icon off the button's centre */
   .fab__toggle-label {
     display: block;
     max-width: 240px;
+    margin-inline-start: 9px;
     overflow: hidden;
     white-space: nowrap;
     font-weight: 700;
     font-size: 0.88rem;
-    transition: max-width 0.26s ease, opacity 0.18s ease;
+    transition: max-width 0.26s ease, margin 0.26s ease, opacity 0.18s ease;
   }
   .fab.is-open .fab__toggle { width: 52px; padding-inline: 0; justify-content: center; }
-  .fab.is-open .fab__toggle-label { max-width: 0; opacity: 0; }
+  .fab.is-open .fab__toggle-label { max-width: 0; margin-inline-start: 0; opacity: 0; }
 }
 @media (max-width: 600px) {
   .fab__label { font-size: 0.76rem; padding: 6px 12px; }

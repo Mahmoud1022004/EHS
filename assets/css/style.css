@@ -1815,7 +1815,21 @@ html[lang="ar"] .footer h4 { letter-spacing: 0; font-size: 0.95rem; }
   transition: max-width 0.3s ease;
 }
 .wa-fab:hover .wa-fab__label { max-width: 200px; }
-@media (max-width: 640px) { .wa-fab { inset-block-end: 16px; inset-inline-end: 16px; } }
+/* Phone and tablet have no hover, so the label can never reveal itself there
+   and the button would sit as an unexplained green dot. It carries the label
+   instead, and clears the iOS home indicator. */
+@media (max-width: 1024px) {
+  .wa-fab {
+    inset-block-end: calc(16px + env(safe-area-inset-bottom, 0px));
+    inset-inline-end: 16px;
+    padding: 12px 18px;
+    gap: 9px;
+  }
+  .wa-fab svg { width: 24px; height: 24px; }
+  .wa-fab__label { max-width: 220px; font-size: 0.88rem; }
+  .wa-fab:hover { transform: none; padding-inline: 18px; gap: 9px; }
+  .fab { inset-block-end: calc(16px + env(safe-area-inset-bottom, 0px)); inset-inline-end: 16px; }
+}
 @media print { .wa-fab { display: none !important; } }
 
 .skip-link {

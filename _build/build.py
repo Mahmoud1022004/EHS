@@ -22,7 +22,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehs-med.com"
-ASSET_V = "85"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "86"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -79,6 +79,8 @@ PAGES = {
     "mastercast-cast-net":        {"nav": "products"},
     "mastercast-elastic-bandage": {"nav": "products"},
     "mastercast-collar-cuff":     {"nav": "products"},
+    "mastercast-skin-traction-kit": {"nav": "products"},
+    "mastercast-stockinet":       {"nav": "products"},
     "gauze-wound-care":           {"nav": "products"},
     "orthopedic":                 {"nav": "products"},
     "masks-ppe":                  {"nav": "products"},
@@ -112,6 +114,10 @@ META = {
                                  "MasterCast Tube Grip by EHS: a dense, smooth white knitted tubular sleeve for even support around the arm, elbow, knee or lower leg. Gallery and details."),
         "mastercast-cast-net": ("MasterCast Cast-Net — Tubular Elastic Net | EHS",
                                 "MasterCast Cast-Net by EHS: a white open diamond-pattern tubular elastic mesh designed to hold dressings securely in place. Gallery and details."),
+        "mastercast-skin-traction-kit": ("MasterCast Skin Traction Kit — Non-Adhesive | EHS",
+                                   "A non-adhesive skin traction kit supporting limb alignment and immobilization — ventilated components, foam foot protection and a cotton crepe bandage. Adult and child. By EHS."),
+        "mastercast-stockinet": ("MasterCast Stockinet — 100% Cotton Tubular | EHS",
+                                   "Smooth 100% cotton tubular stockinet, open at both ends, protecting skin beneath casts and rigid supports. 10 m rolls in five widths. By EHS."),
         "mastercast-collar-cuff": ("MasterCast Collar &amp; Cuff — Padded Arm Support | EHS",
                                    "A soft, adaptable support for arm slings, clavicle braces and shoulder immobilizers — foam core in a 100% cotton sleeve, cut to length. By EHS."),
         "mastercast-elastic-bandage": ("MasterCast Elastic Bandage | EHS",
@@ -152,6 +158,10 @@ META = {
                                  "ماستركاست تيوب جريب من EHS: كُمّ أنبوبي أبيض بحياكة كثيفة وناعمة لدعم متساوٍ حول الذراع أو المرفق أو الركبة أو أسفل الساق. المعرض والتفاصيل."),
         "mastercast-cast-net": ("ماستركاست كاست-نت — شبكة أنبوبية مرنة | EHS",
                                 "ماستركاست كاست-نت من EHS: شبكة أنبوبية مرنة بيضاء بنقشة معينات مفتوحة مصممة لتثبيت الضمادات في مكانها بأمان. المعرض والتفاصيل."),
+        "mastercast-skin-traction-kit": ("ماستركاست طقم الشد الجلدي — غير لاصق | EHS",
+                                   "طقم شد جلدي غير لاصق لدعم استقامة الطرف وتثبيته — مكوّنات مثقّبة وحماية إسفنجية للقدم ورباط كريب قطني. للبالغين والأطفال. من EHS."),
+        "mastercast-stockinet": ("ماستركاست ستوكينيت — أنبوبي من القطن 100% | EHS",
+                                   "رباط أنبوبي ناعم من القطن 100% مفتوح من الطرفين، يحمي الجلد تحت الجبس والدعامات الصلبة. لفات 10 أمتار بخمسة عروض. من EHS."),
         "mastercast-collar-cuff": ("ماستركاست كولار آند كاف — دعامة ذراع مبطّنة | EHS",
                                    "نظام دعم طري لعمل حمّالات ذراع ودعامات ترقوة ومثبّتات كتف — قلب إسفنجي داخل غلاف قطن 100%، يُقصّ بالطول المطلوب. من EHS."),
         "mastercast-elastic-bandage": ("ماستركاست الرباط المرن | EHS",

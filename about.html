@@ -22,7 +22,7 @@
 <link rel="apple-touch-icon" href="assets/logos/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/manrope-latin-800.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/fonts/fonts.css">
-<link rel="stylesheet" href="assets/css/style.css?v=132">
+<link rel="stylesheet" href="assets/css/style.css?v=133">
 <script>
 (function () { try {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || sessionStorage.getItem('ehsSeenLoader') || /[?&]noloader/.test(location.search)) {
@@ -83,9 +83,43 @@
 
 <section class="section--tight" style="padding-block-end: 0;">
   <div class="container">
-    <a class="img-frame img-frame--lg img-frame--zoom reveal" href="assets/img/logistics-port-access.jpg" target="_blank" rel="noopener" aria-label="Open the logistics diagram full size">
-      <picture><source srcset="assets/img/logistics-port-access.webp" type="image/webp"><img src="assets/img/logistics-port-access.jpg" alt="Diagram of road access from the EHS factory in 10th of Ramadan City to Ain Sokhna Port about 140 km, Port Said Port about 145 km and Damietta Port about 183 km, with Ismailia about 69 km away on the Suez Canal" width="2000" height="1125" loading="lazy"></picture>
-    </a>
+    <div class="portaccess reveal">
+      <div class="portaccess__head">
+        <span class="portaccess__eyebrow">Logistics</span>
+        <h2 class="portaccess__title">Factory-to-port access.</h2>
+        <p class="portaccess__sub">Road distance from the factory to Egypt&rsquo;s nearest deep-sea ports.</p>
+      </div>
+      <div class="portaccess__origin">
+        <span class="ico-well" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 21V9l6 4V9l6 4V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v17M3 21h18M7 17h2m4 0h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div>
+          <span class="portaccess__olabel">From</span>
+          <p class="portaccess__oname">EHS factory &mdash; 10th of Ramadan City</p>
+          <p class="portaccess__oaddr">Industrial Zone A2, Area No. 2/5/1.</p>
+        </div>
+      </div>
+      <ol class="portaccess__list">
+        <li class="port">
+          <span class="port__rank">01</span>
+          <span class="port__name">Ain Sokhna Port</span>
+          <span class="port__dist">~140 km</span>
+          <span class="port__note">On the Red Sea, south of the Suez Canal.</span>
+        </li>
+        <li class="port">
+          <span class="port__rank">02</span>
+          <span class="port__name">Port Said Port</span>
+          <span class="port__dist">~145 km</span>
+          <span class="port__note">On the Mediterranean, at the northern entrance to the Suez Canal.</span>
+        </li>
+        <li class="port">
+          <span class="port__rank">03</span>
+          <span class="port__name">Damietta Port</span>
+          <span class="port__dist">~183 km</span>
+          <span class="port__note">On the Mediterranean, west of Port Said.</span>
+        </li>
+      </ol>
+      <p class="portaccess__aside">Ismailia is the nearest point on the Suez Canal, about 69&nbsp;km away. It is not a loading terminal.</p>
+      <p class="portaccess__foot">Indicative city-level road distances from Industrial Zone A2. The actual route, terminal and transit time depend on the carrier and freight forwarder.</p>
+    </div>
   </div>
 </section>
 
@@ -400,6 +434,6 @@
     </div>
   </div>
 </footer>
-<script src="assets/js/main.js?v=132" defer></script>
+<script src="assets/js/main.js?v=133" defer></script>
 </body>
 </html>

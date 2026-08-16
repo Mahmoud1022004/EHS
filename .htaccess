@@ -1,74 +1,68 @@
-# ===================================================================
-# EHS — ehsmeds.com  |  Apache config for GoDaddy cPanel (public_html)
-# ===================================================================
+# EHS — Apache config for GoDaddy cPanel hosting.
+# This replaces render.yaml, which only Render reads. Upload it alongside the
+# site into public_html. Files here are pre-built: there is no build step.
 
 Options -Indexes
 DirectoryIndex index.html
 
-# --- Force HTTPS and canonical non-www host -------------------------
+# ---------- Canonical host and scheme ----------
+# Every canonical URL, hreflang tag and sitemap entry says https://ehsmeds.com
+# with no www, so send everything there once rather than letting both answer.
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # http -> https
   RewriteCond %{HTTPS} !=on
-  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
-  RewriteRule ^ https://ehsmeds.com%{REQUEST_URI} [L,R=301]
+  RewriteRule ^(.*)$ https://ehsmeds.com/$1 [R=301,L]
 
-  # www -> non-www
   RewriteCond %{HTTP_HOST} ^www\.ehsmeds\.com$ [NC]
-  RewriteRule ^ https://ehsmeds.com%{REQUEST_URI} [L,R=301]
+  RewriteRule ^(.*)$ https://ehsmeds.com/$1 [R=301,L]
+
+  # Retired preview pages. The files are gone, but old links should land
+  # somewhere useful rather than on a 404.
+  RewriteRule ^(gallery|leadership|timeline|loading|location|location-map)-samples\.html$ / [R=301,L]
+  RewriteRule ^loading-samples-[0-9]+\.html$ / [R=301,L]
+  RewriteRule ^(loader-preview|loading-concepts)\.html$ / [R=301,L]
 </IfModule>
 
-# --- Retired pages (were removed from the site) ---------------------
-Redirect 301 /gallery-samples.html      https://ehsmeds.com/
-Redirect 301 /leadership-samples.html   https://ehsmeds.com/
-Redirect 301 /loader-preview.html       https://ehsmeds.com/
-Redirect 301 /loading-concepts.html     https://ehsmeds.com/
-Redirect 301 /loading-samples.html      https://ehsmeds.com/
-Redirect 301 /loading-samples-2.html    https://ehsmeds.com/
-Redirect 301 /loading-samples-3.html    https://ehsmeds.com/
-Redirect 301 /loading-samples-4.html    https://ehsmeds.com/
-Redirect 301 /location-samples.html     https://ehsmeds.com/
-Redirect 301 /location-map-samples.html https://ehsmeds.com/
-Redirect 301 /timeline-samples.html     https://ehsmeds.com/
-
-# --- Error pages ----------------------------------------------------
-# Arabic visitors get the Arabic 404: /ar/ has its own .htaccess overriding this.
+# ---------- Error page ----------
 ErrorDocument 404 /404.html
-ErrorDocument 403 /404.html
 
-# --- Caching --------------------------------------------------------
+# ---------- Caching ----------
+# Assets carry a ?v= stamp that changes whenever the CSS or JS does, so they
+# can be cached hard. Pages must not be, or edits would take a week to appear.
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresByType text/css                "access plus 7 days"
-  ExpiresByType application/javascript  "access plus 7 days"
-  ExpiresByType text/javascript         "access plus 7 days"
-  ExpiresByType image/jpeg              "access plus 30 days"
-  ExpiresByType image/png               "access plus 30 days"
-  ExpiresByType image/webp              "access plus 30 days"
-  ExpiresByType image/svg+xml           "access plus 30 days"
-  ExpiresByType image/x-icon            "access plus 30 days"
-  ExpiresByType video/mp4               "access plus 30 days"
-  ExpiresByType font/woff2              "access plus 1 year"
-  ExpiresByType text/html               "access plus 0 seconds"
+  ExpiresByType text/html                 "access plus 0 seconds"
+  ExpiresByType text/css                  "access plus 1 year"
+  ExpiresByType application/javascript    "access plus 1 year"
+  ExpiresByType image/jpeg                "access plus 1 year"
+  ExpiresByType image/png                 "access plus 1 year"
+  ExpiresByType image/webp                "access plus 1 year"
+  ExpiresByType image/svg+xml             "access plus 1 year"
+  ExpiresByType font/woff2                "access plus 1 year"
 </IfModule>
 
 <IfModule mod_headers.c>
-  <FilesMatch "\.(css|js|jpg|jpeg|png|webp|svg|ico|mp4|woff2?)$">
-    Header set Cache-Control "public, max-age=604800"
+  <FilesMatch "\.(css|js|jpg|jpeg|png|webp|svg|woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
   </FilesMatch>
   Header always set X-Content-Type-Options "nosniff"
-  Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
 
-# --- Compression ----------------------------------------------------
+# ---------- Compression ----------
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml \
-    application/javascript application/json image/svg+xml
+                                application/javascript application/json image/svg+xml
 </IfModule>
 
-# --- MIME safety ----------------------------------------------------
-AddType font/woff2 .woff2
-AddType image/webp .webp
-AddType video/mp4  .mp4
+# ---------- MIME types ----------
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+  AddType image/svg+xml .svg
+  AddType font/woff2 .woff2
+  AddCharset UTF-8 .html .css .js .json .xml
+</IfModule>

@@ -23,7 +23,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehsmeds.com"
-ASSET_V = "154"  # bump when css/js/logo change so returning visitors get fresh assets
+ASSET_V = "155"  # bump when css/js/logo change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -262,6 +262,9 @@ STR = {
         "fab_label": "Contact &amp; follow us",
         "wa_prefill": "Hello EHS, I would like to ask about your products.",
         "wa_bulk_prefix": "Hello EHS, I would like a bulk order quotation for: ",
+        "mail_label": "Email us",
+        "mail_subject": "Product enquiry",
+        "mail_bulk_subject": "Bulk order enquiry",
     },
     "ar": {
         "dir": "rtl", "lang": "ar", "locale": "ar_EG",
@@ -306,6 +309,9 @@ STR = {
         "fab_label": "تواصل معنا وتابعنا",
         "wa_prefill": "مرحبًا EHS، أودّ الاستفسار عن منتجاتكم.",
         "wa_bulk_prefix": "مرحبًا EHS، أودّ الحصول على عرض سعر لطلب كمية بالجملة من: ",
+        "mail_label": "راسلنا بالبريد",
+        "mail_subject": "استفسار عن المنتجات",
+        "mail_bulk_subject": "استفسار عن طلب بالجملة",
     },
 }
 
@@ -744,6 +750,10 @@ def footer_html(lang, slug=""):
         items = ['<a class="fab__item fab__item--wa" href="%s" target="_blank" rel="noopener" aria-label="%s">'
                  '<span class="fab__label">%s</span><span class="fab__dot">%s</span></a>'
                  % (wa_url, s["wa_label"], s["wa_label"], WA_ICON)]
+        items.append('<a class="fab__item" href="%s" aria-label="%s">'
+                     '<span class="fab__label">%s</span><span class="fab__dot">%s</span></a>'
+                     % (mailto(s["mail_subject"], s["wa_prefill"]),
+                        s["mail_label"], s["mail_label"], ICONS["mail"]))
         for name, url in SOCIAL.items():
             if name not in ICONS:
                 continue
@@ -806,6 +816,14 @@ def footer_html(lang, slug=""):
 
 ICON_RE = re.compile(r"\{\{ICON:([a-z-]+)\}\}")
 WABULK_RE = re.compile(r"\{\{WABULK:([^}]+)\}\}")
+MAILBULK_RE = re.compile(r"\{\{MAILBULK:([^}]+)\}\}")
+
+
+def mailto(subject, body):
+    """mailto: URL for an href. The separator is written as &amp; because the
+    result goes straight into an HTML attribute."""
+    return (f"mailto:{EMAIL_ADDRESS}?subject={quote(subject, safe='')}"
+            f"&amp;body={quote(body, safe='')}")
 
 
 def build_page(lang, slug):
@@ -820,6 +838,11 @@ def build_page(lang, slug):
     body = body.replace("{{PHONE_HREF}}", f"tel:{PHONE_E164}")
     body = body.replace("{{EMAIL}}", EMAIL_ADDRESS)
     body = body.replace("{{EMAIL_HREF}}", f"mailto:{EMAIL_ADDRESS}")
+    body = body.replace("{{MAIL_URL}}", mailto(STR[lang]["mail_subject"], STR[lang]["wa_prefill"]))
+    body = MAILBULK_RE.sub(
+        lambda m: mailto(f"{STR[lang]['mail_bulk_subject']} — {m.group(1)}",
+                         STR[lang]["wa_bulk_prefix"] + m.group(1)),
+        body)
     body = WABULK_RE.sub(
         lambda m: f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(STR[lang]['wa_bulk_prefix'] + m.group(1))}",
         body)

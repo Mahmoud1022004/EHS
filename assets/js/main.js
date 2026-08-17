@@ -141,9 +141,10 @@
     var number = form.getAttribute('data-wa-form');
     if (!number) return;
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-
+    /* WhatsApp and email carry the same answers; only the transport differs,
+       so the message is built once here and handed to whichever the visitor
+       picked. */
+    function compose() {
       var lines = [];
       var heading = form.getAttribute('data-wa-heading');
       if (heading) { lines.push(heading, ''); }
@@ -171,22 +172,47 @@
       if (source) { lines.push('', source); }
 
       var text = lines.join('\n');
-      /* wa.me carries the message in the URL, so keep it comfortably short */
+      /* both wa.me and mailto: carry the message in the URL, so keep it short */
       if (text.length > 1600) { text = text.slice(0, 1600) + '…'; }
-      var url = 'https://wa.me/' + number + '?text=' + encodeURIComponent(text);
+      return text;
+    }
 
-      window.open(url, '_blank', 'noopener');
-
+    /* Show the confirmation for the channel used, and point its fallback link
+       at the same URL in case the hand-off was blocked. */
+    function confirm(channel, url) {
       var success = form.querySelector('.form-success');
-      if (success) {
-        /* also offer the link directly, in case the pop-up was blocked */
-        var manual = success.querySelector('[data-wa-manual]');
-        if (manual) { manual.setAttribute('href', url); }
-        success.classList.add('is-visible');
-        success.setAttribute('role', 'status');
-        success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
+      if (!success) return;
+      success.querySelectorAll('[data-success]').forEach(function (variant) {
+        variant.hidden = variant.getAttribute('data-success') !== channel;
+      });
+      var manual = success.querySelector('[data-' + channel + '-manual]');
+      if (manual) { manual.setAttribute('href', url); }
+      success.classList.add('is-visible');
+      success.setAttribute('role', 'status');
+      success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var url = 'https://wa.me/' + number + '?text=' + encodeURIComponent(compose());
+      window.open(url, '_blank', 'noopener');
+      confirm('wa', url);
     });
+
+    var mailBtn = form.querySelector('[data-mail-send]');
+    var mailTo = form.getAttribute('data-mail-to');
+    if (mailBtn && mailTo) {
+      mailBtn.addEventListener('click', function () {
+        /* type="button" skips the browser's own required-field check, so ask
+           for it here rather than composing a half-empty enquiry */
+        if (typeof form.reportValidity === 'function' && !form.reportValidity()) return;
+        var url = 'mailto:' + mailTo
+                + '?subject=' + encodeURIComponent(form.getAttribute('data-mail-subject') || '')
+                + '&body=' + encodeURIComponent(compose());
+        confirm('mail', url);
+        window.location.href = url;
+      });
+    }
   });
 
   /* Count-up stats. Elements carry their final value as text (the no-JS

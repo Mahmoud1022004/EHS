@@ -39,7 +39,7 @@ PHONE_DISPLAY = "+20 100 679 0182"
 # Company email. Chosen by the client 17 Aug 2026 after being shown that this is
 # an individual's address rather than a role address like info@ — his call.
 # The mailbox is Microsoft 365; MX and SPF were corrected the same day.
-EMAIL_ADDRESS = "mostafaremah@ehsmeds.com"
+EMAIL_ADDRESS = "info@ehsmeds.com"
 
 # Social profiles for the floating contact button. WhatsApp is not listed —
 # it is always the first item. An empty string means the profile URL has not

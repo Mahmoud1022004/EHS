@@ -1624,31 +1624,47 @@ html[lang="ar"] .footer h4 { letter-spacing: 0; font-size: 0.95rem; }
   flex: none;
   transition: background 0.22s ease, color 0.22s ease;
 }
-.fab__item:hover .fab__dot { background: var(--brand); color: var(--on-brand); }
+/* Hover is a mouse-only event, so a tap used to change nothing. :active covers
+   the touch press, :focus-visible the keyboard. */
+.fab__item:hover .fab__dot,
+.fab__item:active .fab__dot,
+.fab__item:focus-visible .fab__dot {
+  background: var(--brand);
+  color: var(--on-brand);
+  border-color: var(--brand);
+}
 .fab__dot svg { width: 22px; height: 22px; }
-.fab__item--wa .fab__dot { background: #25D366; color: #fff; border-color: #25D366; }
 /* channel whose profile URL has not been supplied yet: the icon is there as a
    shape, but it is not a link and does not pretend to be one */
 .fab__item--soon { cursor: default; }
 .fab__item--soon .fab__dot { color: var(--muted); border-style: dashed; }
 .fab__item--soon .fab__label { color: var(--muted); }
-.fab__item--soon:hover .fab__dot { background: #fff; color: var(--muted); }
+.fab__item--soon:hover .fab__dot,
+.fab__item--soon:active .fab__dot { background: #fff; color: var(--muted); border-color: var(--line); }
 
 .fab__toggle {
   width: 58px;
   height: 58px;
   border-radius: 50%;
-  border: 0;
-  background: var(--brand);
-  color: var(--on-brand);
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--forest);
   display: grid;
   place-items: center;
   cursor: pointer;
   box-shadow: var(--shadow-md);
-  transition: transform 0.24s cubic-bezier(0.2, 0.8, 0.25, 1.1), background 0.22s ease;
+  transition: transform 0.24s cubic-bezier(0.2, 0.8, 0.25, 1.1), background 0.22s ease,
+              color 0.22s ease, border-color 0.22s ease;
 }
 .fab__toggle svg { width: 26px; height: 26px; }
-.fab__toggle:hover { background: var(--brand-hover); }
+.fab__toggle:hover,
+.fab__toggle:active,
+.fab__toggle:focus-visible,
+.fab.is-open .fab__toggle {
+  background: var(--brand);
+  color: var(--on-brand);
+  border-color: var(--brand);
+}
 .fab.is-open .fab__toggle { transform: rotate(135deg); }
 .fab__toggle .fab__close { display: none; }
 .fab.is-open .fab__toggle .fab__open { display: none; }

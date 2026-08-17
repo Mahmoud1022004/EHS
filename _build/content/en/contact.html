@@ -64,6 +64,8 @@
       </div>
       <div class="card card--flat reveal reveal-d1">
         <form data-wa-form="{{WA_NUMBER}}"
+              data-mail-to="{{EMAIL}}"
+              data-mail-subject="Website enquiry"
               data-wa-heading="EHS website — new enquiry"
               data-wa-source="Sent from the contact page on ehsmeds.com">
           <div class="form-grid">
@@ -87,11 +89,15 @@
           </div>
           <div class="btn-row mt-24">
             <button class="btn" type="submit">{{ICON:wa}} Send on WhatsApp <span class="btn__arrow">{{ICON:arrow}}</span></button>
+            <button class="btn btn--outline" type="button" data-mail-send>{{ICON:mail}} Send by email <span class="btn__arrow">{{ICON:arrow}}</span></button>
           </div>
-          <p class="form-note mt-16">Your answers are gathered into one WhatsApp message. WhatsApp opens with it written out — you read it over and press send.</p>
+          <p class="form-note mt-16">Your answers are gathered into one message. Choose WhatsApp or email — either opens with it written out, and nothing is sent until you press send.</p>
           <div class="form-success notice">
             <span class="notice__icon">{{ICON:check}}</span>
-            <div><strong>WhatsApp is opening with your message ready.</strong> Nothing is sent until you press send there. If WhatsApp did not open, <a data-wa-manual href="{{WA_URL}}" target="_blank" rel="noopener">open the chat here</a>.</div>
+            <div>
+              <span data-success="wa"><strong>WhatsApp is opening with your message ready.</strong> Nothing is sent until you press send there. If WhatsApp did not open, <a data-wa-manual href="{{WA_URL}}" target="_blank" rel="noopener">open the chat here</a>.</span>
+              <span data-success="mail" hidden><strong>Your email app is opening with the message ready.</strong> Nothing is sent until you press send there. If nothing opened, <a data-mail-manual href="{{EMAIL_HREF}}">write to us directly</a>.</span>
+            </div>
           </div>
         </form>
       </div>

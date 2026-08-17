@@ -1,5 +1,19 @@
 # Cloudflare Pages redirect rules.
 # Mirrors the Apache .htaccess so behaviour is identical on either host.
+#
+# Repository internals. The site publishes from the repository root, so .git
+# and the build sources sit on the CDN beside the pages and are reachable.
+# Until the publish directory is narrowed these rules keep them unreadable.
+# First match wins, so they stay at the top.
+/.git/*        /404.html  404
+/.git          /404.html  404
+/_build/*      /404.html  404
+/_build        /404.html  404
+/_to_delete/*  /404.html  404
+/README.md     /404.html  404
+/render.yaml   /404.html  404
+/.htaccess     /404.html  404
+/.gitignore    /404.html  404
 
 # Retired sample/preview pages — removed from the site, kept out of 404s.
 /gallery-samples.html       /   301

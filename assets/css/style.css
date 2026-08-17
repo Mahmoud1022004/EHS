@@ -1774,12 +1774,21 @@ html[lang="ar"] .footer h4 { letter-spacing: 0; font-size: 0.95rem; }
   z-index: 300;
   display: flex;
   pointer-events: none;
+  overflow: hidden;
 }
 .curtain span {
   flex: 1 1 20%;
   transform: scaleY(0);
   transform-origin: bottom;
   will-change: transform;
+  /* will-change puts every blind on its own compositor layer, and each layer
+     is snapped to whole device pixels on its own. At the many viewport widths
+     that do not divide by five the boundaries land on half pixels, so two
+     neighbours can round apart and leave a hairline of the page showing
+     through mid-sweep. The two side shadows paint a pixel of the same green
+     past each edge, so overlapping neighbours cover any seam. No layout
+     change: shadows take no space. */
+  box-shadow: 1px 0 0 0 var(--brand), -1px 0 0 0 var(--brand);
 }
 /* every blind is the one logo green — no other shades */
 .curtain span { background: var(--brand); }

@@ -400,7 +400,7 @@ SD_PRODUCTS = {
         "brand": "MasterCast",
         "en": "MasterCast Collar & Cuff — Padded Arm Support",
         "ar": "ماستركاست كولار آند كاف — دعامة ذراع مبطّنة",
-        "img": "mastercast/collar-cuff-hero.jpg",
+        "img": "mastercast/collar-cuff-hero-clinic.jpg",
     },
     "mastercast-skin-traction-kit": {
         "brand": "MasterCast",

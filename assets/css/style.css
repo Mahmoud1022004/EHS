@@ -1051,8 +1051,6 @@ html[lang="ar"] .yearscrub__year { letter-spacing: 0; font-weight: 700; }
    padding (53px top and bottom) plus each section head's own bottom margin
    left ~150px of empty page between a label and the products beneath it.
    These keep each label attached to the range it introduces. */
-.range-label { padding-block: clamp(30px, 4vw, 52px) 0; }
-.range-label .section-head { margin-block-end: 0; }
 .range-body { padding-block: clamp(20px, 2.4vw, 28px) 0; }
 .range-body + .range-body { padding-block-start: clamp(26px, 3vw, 36px); }
 .range-intro { padding-block: clamp(26px, 3.2vw, 40px) 0; }

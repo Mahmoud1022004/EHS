@@ -23,7 +23,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehsmeds.com"
-ASSET_V = "138"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "139"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -46,9 +46,7 @@ SOCIAL = {
     # no ?lang= param: the profile should open in the visitor's own language,
     # not be forced to English on an Arabic page
     "tiktok": "https://www.tiktok.com/@ehsmeds",
-    # supplied as bare facebook.com, which is the site's front page rather than
-    # an EHS page — left empty so the icon stays a shape instead of a dead link
-    "facebook": "",
+    "facebook": "https://www.facebook.com/profile.php?id=61593060106191",
 }
 SOCIAL_NAMES = {"instagram": "Instagram", "tiktok": "TikTok", "facebook": "Facebook"}
 

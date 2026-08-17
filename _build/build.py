@@ -23,7 +23,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehsmeds.com"
-ASSET_V = "139"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "140"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -35,6 +35,11 @@ WHATSAPP_NUMBER = "201006790182"
 # The email address is still not cleared, so it stays unpublished.
 PHONE_E164 = "+201006790182"
 PHONE_DISPLAY = "+20 100 679 0182"
+
+# Company email. Chosen by the client 17 Aug 2026 after being shown that this is
+# an individual's address rather than a role address like info@ — his call.
+# The mailbox is Microsoft 365; MX and SPF were corrected the same day.
+EMAIL_ADDRESS = "mostafaremah@ehsmeds.com"
 
 # Social profiles for the floating contact button. WhatsApp is not listed —
 # it is always the first item. An empty string means the profile URL has not
@@ -486,6 +491,7 @@ def json_ld(lang, slug, body=""):
             "@type": "ContactPoint",
             "contactType": "sales",
             "telephone": PHONE_E164,
+            "email": EMAIL_ADDRESS,
             "url": f"https://wa.me/{WHATSAPP_NUMBER}",
             "availableLanguage": ["ar", "en"],
         }],
@@ -798,6 +804,8 @@ def build_page(lang, slug):
     body = body.replace("{{WA_NUMBER}}", WHATSAPP_NUMBER)
     body = body.replace("{{PHONE}}", PHONE_DISPLAY)
     body = body.replace("{{PHONE_HREF}}", f"tel:{PHONE_E164}")
+    body = body.replace("{{EMAIL}}", EMAIL_ADDRESS)
+    body = body.replace("{{EMAIL_HREF}}", f"mailto:{EMAIL_ADDRESS}")
     body = WABULK_RE.sub(
         lambda m: f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(STR[lang]['wa_bulk_prefix'] + m.group(1))}",
         body)

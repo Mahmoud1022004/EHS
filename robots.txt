@@ -1,4 +1,12 @@
 User-agent: *
 Allow: /
 
+# Never crawl the generator source or internal files
+Disallow: /_build/
+Disallow: /_to_delete/
+Disallow: /README.md
+Disallow: /render.yaml
+Disallow: /.git/
+Disallow: /CLAUDE-SECURITY-
+
 Sitemap: https://ehsmeds.com/sitemap.xml

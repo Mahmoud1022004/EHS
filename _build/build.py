@@ -23,7 +23,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehsmeds.com"
-ASSET_V = "140"  # bump when css/js change so returning visitors get fresh assets
+ASSET_V = "143"  # bump when css/js change so returning visitors get fresh assets
 
 # WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
 # Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
@@ -347,7 +347,8 @@ SD_ORG = {
         "factory_name": "EHS Factory — 10th of Ramadan City",
         "factory_street": "Industrial Zone A2, Area No. 2/5/1",
         "factory_city": "10th of Ramadan City",
-        "region": "Sharqia",
+        "region": "Sharqia",           # the factory; the Cairo office overrides this
+        "office_region": "Cairo",
         "country": "EG",
     },
     "ar": {
@@ -363,54 +364,69 @@ SD_ORG = {
         "factory_street": "المنطقة الصناعية A2، القطعة رقم 2/5/1",
         "factory_city": "مدينة العاشر من رمضان",
         "region": "الشرقية",
+        "office_region": "القاهرة",
         "country": "EG",
     },
 }
 
 # Pages that describe one specific product get Product markup.
 # category: the medical device category shown to search engines.
+# Share image per page, so a link to the factory does not preview a stocking.
+OG_DEFAULT = "ehs-leadership-portrait.jpg"
+OG_IMAGES = {
+    "index": "ehs-leadership-portrait.jpg",
+    "about": "ehs-leadership-portrait.jpg",
+    "factory": "factory-exterior.jpg",
+    "medpress": "medpress-open-closed-toe.jpg",
+    "orthopedic": "mastercast/mastercast-box.jpg",
+    "gauze-wound-care": "prevent/gauze-and-textiles-cover.jpg",
+    "masks-ppe": "masks/mask-box.jpg",
+    "size-guide": "size-guide-diagram-en.jpg",
+    "how-to-wear": "medpress-how-to-wear-steps.jpg",
+}
+
 SD_PRODUCTS = {
     "medpress-stockings": {
         "brand": "MedPress",
         "en": "MedPress Medical Compression Stockings",
         "ar": "جوارب ميدبريس الطبية الضاغطة",
-        "img": "medpress-studio-wide.jpg",
+        "img": "medpress-open-closed-toe.jpg",
     },
     "mastercast-tube-grip": {
         "brand": "MasterCast",
         "en": "MasterCast Tube Grip — Elasticated Tubular Bandage",
         "ar": "ماستركاست تيوب جريب — رباط أنبوبي مرن",
-        "img": "mastercast/tube-grip-lifestyle-forearm.jpg",
+        "img": "mastercast/tube-grip-hero.jpg",
     },
     "mastercast-cast-net": {
         "brand": "MasterCast",
         "en": "MasterCast Cast-Net — Tubular Elastic Net",
         "ar": "ماستركاست كاست-نت — شبكة أنبوبية مرنة",
-        "img": "mastercast/cast-net-applied-knee.jpg",
+        "img": "mastercast/cast-net-hero.jpg",
     },
     "mastercast-elastic-bandage": {
         "brand": "MasterCast",
         "en": "MasterCast Elastic Bandage",
         "ar": "ماستركاست الرباط المرن",
-        "img": "mastercast/elastic-bandage-lifestyle-ankle.jpg",
+        "img": "mastercast/elastic-bandage-hero.jpg",
     },
     "mastercast-collar-cuff": {
         "brand": "MasterCast",
         "en": "MasterCast Collar & Cuff — Padded Arm Support",
         "ar": "ماستركاست كولار آند كاف — دعامة ذراع مبطّنة",
-        "img": "mastercast/cast-net-applied-wrist.jpg",
+        "img": "mastercast/collar-cuff-hero.jpg",
     },
     "mastercast-skin-traction-kit": {
         "brand": "MasterCast",
         "en": "MasterCast Skin Traction Kit — Non-Adhesive",
         "ar": "ماستركاست طقم الشد الجلدي — غير لاصق",
-        "img": "mastercast/tube-grip-lifestyle-forearm.jpg",
+        "img": "mastercast/skin-traction-kit-hero.jpg",
     },
     "mastercast-stockinet": {
         "brand": "MasterCast",
         "en": "MasterCast Stockinet — 100% Cotton Tubular",
         "ar": "ماستركاست ستوكينيت — أنبوبي من القطن 100%",
-        "img": "mastercast/cast-net-lifestyle-forearm.jpg",
+        "img": "mastercast/stockinet-hero.jpg",
     },
 }
 
@@ -473,7 +489,8 @@ def json_ld(lang, slug, body=""):
             "@type": kind, "@id": f"{BASE_URL}/#{sid}", "name": name,
             "parentOrganization": {"@id": ORG_ID},
             "address": {"@type": "PostalAddress", "streetAddress": street,
-                        "addressLocality": city, "addressRegion": o["region"],
+                        "addressLocality": city,
+                        "addressRegion": o["office_region"] if sid == "office" else o["region"],
                         "addressCountry": o["country"]},
         }
 
@@ -614,7 +631,13 @@ def head(lang, slug, jsonld="", robots=""):
     en_url = f"{BASE_URL}/{'' if slug == 'index' else fname}"
     ar_url = f"{BASE_URL}/ar/{fname}"
     canonical = en_url if lang == "en" else ar_url
-    og_img = f"{BASE_URL}/assets/img/medpress-studio-wide.jpg"
+    # Share image: a product page shares its own product, not a stock photo of a
+    # different one. Kept as JPEG — social scrapers are inconsistent with WebP.
+    if slug in SD_PRODUCTS:
+        og_img = f"{BASE_URL}/assets/img/{SD_PRODUCTS[slug]['img']}"
+    else:
+        og_img = f"{BASE_URL}/assets/img/{OG_IMAGES.get(slug, OG_DEFAULT)}"
+    og_type = "product" if slug in SD_PRODUCTS else "website"
     return f"""<!doctype html>
 <html lang="{s['lang']}" dir="{s['dir']}">
 <head>
@@ -626,13 +649,18 @@ def head(lang, slug, jsonld="", robots=""):
 <link rel="alternate" hreflang="en" href="{en_url}">
 <link rel="alternate" hreflang="ar" href="{ar_url}">
 <link rel="alternate" hreflang="x-default" href="{en_url}">
-<meta property="og:type" content="website">
+<meta property="og:type" content="{og_type}">
 <meta property="og:site_name" content="EHS — Egyptian Hospital Supplies">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{canonical}">
 <meta property="og:image" content="{og_img}">
+<meta property="og:image:alt" content="{title}">
 <meta property="og:locale" content="{s['locale']}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{title}">
+<meta name="twitter:description" content="{desc}">
+<meta name="twitter:image" content="{og_img}">
 <meta name="theme-color" content="#4F7A12">
 <link rel="icon" type="image/svg+xml" href="{a}/logos/EHS-app-icon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="{a}/logos/favicon-32.png">
@@ -980,9 +1008,23 @@ def write_sitemap():
 
 
 def write_robots():
-    txt = ("User-agent: *\n"
-           "Allow: /\n\n"
-           f"Sitemap: {BASE_URL}/sitemap.xml\n")
+    """Allow the site, and explicitly refuse the build tree and internal files.
+    Belt and braces: a correct deploy contains none of these, but a robots rule
+    costs nothing and stops a crawler indexing them if one ever slips through."""
+    txt = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "\n"
+        "# Never crawl the generator source or internal files\n"
+        "Disallow: /_build/\n"
+        "Disallow: /_to_delete/\n"
+        "Disallow: /README.md\n"
+        "Disallow: /render.yaml\n"
+        "Disallow: /.git/\n"
+        "Disallow: /CLAUDE-SECURITY-\n"
+        "\n"
+        f"Sitemap: {BASE_URL}/sitemap.xml\n"
+    )
     with open(os.path.join(SITE, "robots.txt"), "w", encoding="utf-8") as f:
         f.write(txt)
 

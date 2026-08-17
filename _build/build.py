@@ -372,7 +372,7 @@ OG_IMAGES = {
     "medpress": "medpress-open-closed-toe.jpg",
     "orthopedic": "mastercast/mastercast-box.jpg",
     "gauze-wound-care": "prevent/gauze-and-textiles-cover.jpg",
-    "masks-ppe": "masks/mask-box.jpg",
+    "masks-ppe": "masks/mask-surgical-blue.jpg",
     "size-guide": "size-guide-diagram-en.jpg",
     "how-to-wear": "medpress-how-to-wear-steps.jpg",
 }

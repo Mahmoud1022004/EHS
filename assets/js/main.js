@@ -84,26 +84,41 @@
     revealEls.forEach(function (el) { el.classList.add('is-visible'); });
   }
 
-  /* Hero video: respect reduced motion, pause when off-screen */
+  /* Hero video: play it wherever the browser will allow it, pause off-screen.
+
+     This used to pause outright under prefers-reduced-motion, and because that
+     was an else-if the observer was never attached either — so on a phone with
+     Reduce Motion enabled the video could not start, then or later. The clip is
+     muted, slow and ambient rather than the flashing or parallax that setting
+     exists to suppress, so it now plays and only the page transitions honour it.
+
+     Autoplay is refused outright in iOS Low Power Mode and Android battery
+     saver; no script can override that. A user gesture does lift the block, so
+     retry once on the first tap. Until then the panel shows the poster. */
   var heroVideo = document.querySelector('.hero__video');
   if (heroVideo) {
-    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (prefersReduced.matches) {
-      heroVideo.removeAttribute('autoplay');
-      heroVideo.pause();
-    } else if ('IntersectionObserver' in window) {
+    var playHero = function () {
+      var p = heroVideo.play();
+      if (p && p.catch) p.catch(function () {});
+    };
+    if ('IntersectionObserver' in window) {
       var vio = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            var p = heroVideo.play();
-            if (p && p.catch) p.catch(function () {});
-          } else {
-            heroVideo.pause();
-          }
+          if (entry.isIntersecting) { playHero(); } else { heroVideo.pause(); }
         });
       }, { threshold: 0.1 });
       vio.observe(heroVideo);
+    } else {
+      playHero();
     }
+    var gestures = ['touchstart', 'pointerdown', 'keydown'];
+    var resumeHero = function () {
+      if (heroVideo.paused) { playHero(); }
+      gestures.forEach(function (ev) { window.removeEventListener(ev, resumeHero); });
+    };
+    gestures.forEach(function (ev) {
+      window.addEventListener(ev, resumeHero, { passive: true });
+    });
   }
 
   /* Bulk-order deep links: /professionals.html?product=X&interest=bulk#enquiry

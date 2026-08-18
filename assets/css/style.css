@@ -616,7 +616,11 @@ html[lang="ar"] .brand__sub { letter-spacing: 0; font-size: 0.78rem; }
   min-height: min(82svh, 760px);
   display: flex;
   align-items: flex-end;
-  background: var(--forest-ink);
+  /* The poster sits on the panel itself, not only on the <video>. Whenever the
+     video does not paint — autoplay refused, Low Power Mode, a phone that will
+     not stream it — the hero still shows the photograph instead of a bare
+     forest-ink rectangle. The video covers this when it does play. */
+  background: var(--forest-ink) url("../video/medpress-hero-poster.jpg") center / cover no-repeat;
   isolation: isolate;
 }
 /* Stacked at 0/1/2 rather than -2/-1/auto. The paint order is identical, but

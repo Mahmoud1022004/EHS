@@ -15,6 +15,7 @@ Placeholders available inside content files:
 Run:  python3 build.py
 """
 import json
+import datetime
 import os
 import re
 import sys
@@ -127,13 +128,13 @@ PAGES = {
 META = {
     "en": {
         "index": ("EHS — Egyptian Hospital Supplies | Engineered for better care",
-                  "EHS is an Egyptian manufacturer of medical supplies and healthcare support products. Discover MedPress medical compression stockings — graduated support for professional care and everyday movement."),
+                  "EHS manufactures medical supplies and healthcare support products in Egypt — MedPress compression stockings, the MasterCast orthopedic range and Prevent gauze."),
         "about": ("About EHS | Egyptian Hospital Supplies",
-                  "Founded in 1988, EHS combines practical medical engineering, dependable manufacturing and human comfort. Learn about the company, its leadership, values and locations."),
+                  "Founded in 1988, EHS combines practical medical engineering with dependable manufacturing. The company, its leadership, values and locations."),
         "products": ("Products | EHS — Egyptian Hospital Supplies",
                      "Since 1988 EHS has manufactured gauze and wound care, elastic bandages, MedPress compression therapy, orthopedic products, face masks and PPE."),
         "gauze-wound-care": ("Gauze, Wound Care &amp; Medical Textiles | EHS",
-                             "Sterile and non-sterile gauze, gauze rolls, swabs, laparotomy sponges and disposable medical textiles — manufactured by EHS for hospitals, operating rooms, clinics and emergency care."),
+                             "Sterile and non-sterile gauze, gauze rolls, swabs and laparotomy sponges — manufactured by EHS for hospitals, operating rooms and clinics."),
         "medical-textiles": ("Medical Textiles &amp; Disposables | EHS",
                              "Laparotomy sponges, disposable products and medical textiles for clinical environments, manufactured by EHS since 1988."),
         "orthopedic": ("MasterCast — Orthopedic Range | EHS",
@@ -147,7 +148,7 @@ META = {
         "mastercast-cast-net": ("MasterCast Cast-Net — Tubular Elastic Net | EHS",
                                 "MasterCast Cast-Net by EHS: an open diamond-pattern tubular elastic mesh designed to hold dressings securely in place. Gallery and details."),
         "mastercast-skin-traction-kit": ("MasterCast Skin Traction Kit — Non-Adhesive | EHS",
-                                   "A non-adhesive skin traction kit supporting limb alignment and immobilization — ventilated components, foam foot protection and a cotton crepe bandage. Adult and child. By EHS."),
+                                   "Non-adhesive skin traction kit for limb alignment and immobilization — ventilated components, foam foot protection and a cotton crepe bandage. By EHS."),
         "mastercast-stockinet": ("MasterCast Stockinet — 100% Cotton Tubular | EHS",
                                    "Smooth 100% cotton tubular stockinet, open at both ends, protecting skin beneath casts and rigid supports. 10 m rolls in five widths. By EHS."),
         "mastercast-collar-cuff": ("MasterCast Collar &amp; Cuff — Padded Arm Support | EHS",
@@ -494,6 +495,12 @@ def json_ld(lang, slug, body=""):
     def place(kind, name, street, city, sid):
         return {
             "@type": kind, "@id": f"{BASE_URL}/#{sid}", "name": name,
+            # coordinates only where we have them from our own published map
+            # link; the factory link resolves to a place id with no lat/long,
+            # so it deliberately carries no geo rather than a guessed one
+            **({"geo": {"@type": "GeoCoordinates",
+                        "latitude": 30.079528, "longitude": 31.3132399}}
+               if sid == "office" else {}),
             "parentOrganization": {"@id": ORG_ID},
             "address": {"@type": "PostalAddress", "streetAddress": street,
                         "addressLocality": city,
@@ -1021,9 +1028,14 @@ def write_sitemap():
     for slug in PAGES:
         en = _page_url("en", slug)
         ar = _page_url("ar", slug)
-        for url in (en, ar):
+        for lang, url in (("en", en), ("ar", ar)):
+            # lastmod comes from the source file's own timestamp, so it says
+            # when the page really changed rather than when we last built
+            src = os.path.join(ROOT, "content", lang, f"{slug}.html")
+            stamp = datetime.date.fromtimestamp(os.path.getmtime(src)).isoformat()
             lines.append("  <url>")
             lines.append(f"    <loc>{url}</loc>")
+            lines.append(f"    <lastmod>{stamp}</lastmod>")
             lines.append(f'    <xhtml:link rel="alternate" hreflang="en" href="{en}"/>')
             lines.append(f'    <xhtml:link rel="alternate" hreflang="ar" href="{ar}"/>')
             lines.append(f'    <xhtml:link rel="alternate" hreflang="x-default" href="{en}"/>')

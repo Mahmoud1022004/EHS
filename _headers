@@ -1,18 +1,30 @@
 # Cloudflare Pages response headers.
 # Mirrors the Apache .htaccess so behaviour is identical on either host.
+#
+# Rules are listed per asset folder rather than as a broad /assets/* plus
+# overrides: Pages applies EVERY matching rule, so an overlapping pair emits
+# two Cache-Control values in one response.
 
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
 
-/assets/*
+# Versioned by the ?v= stamp the build writes, so they can be cached hard.
+/assets/css/*
+  Cache-Control: public, max-age=604800
+
+/assets/js/*
   Cache-Control: public, max-age=604800
 
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Not versioned — a month, so a replaced image is picked up in reasonable time.
 /assets/img/*
+  Cache-Control: public, max-age=2592000
+
+/assets/logos/*
   Cache-Control: public, max-age=2592000
 
 /assets/video/*

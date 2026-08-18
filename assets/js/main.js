@@ -484,6 +484,21 @@
       }, 800);
     }
 
+    /* Back/forward cache. The browser freezes this page exactly as it looks
+       the moment we navigate away — which is mid-transition, blinds fully
+       closed. Restoring it hands the visitor a green screen, and because a
+       bfcache restore re-runs no script, nothing clears it: Back appears to
+       need two presses. pageshow is the only event that fires on a restore. */
+    window.addEventListener('pageshow', function (e) {
+      if (!e.persisted) return;
+      curtain.classList.remove('is-closing');
+      curtain.classList.remove('is-opening');
+      root.classList.remove('curtain-in');
+      /* a cancelled or restored navigation must not leave the flag behind,
+         or the next ordinary load opens with a curtain it never closed */
+      try { sessionStorage.removeItem('ehsCurtain'); } catch (err) {}
+    });
+
     document.querySelectorAll('.nav a, .lang-switch, .nav-cta').forEach(function (link) {
       link.addEventListener('click', function (e) {
         var href = link.getAttribute('href');

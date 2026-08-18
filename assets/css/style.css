@@ -1082,6 +1082,36 @@ html[lang="ar"] .yearscrub__year { letter-spacing: 0; font-weight: 700; }
   font-size: 0.92rem;
   white-space: nowrap;
 }
+/* A client that supplied a logo shows it instead of its name; the pill is the
+   same shape either way, so a row of logos and names still reads as one band.
+   The artwork is square-ish and on white, hence the fixed height and contain. */
+.clientmark--logo { padding: 8px 18px; }
+.clientmark--logo img {
+  height: 46px;
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
+  display: block;
+}
+@media (max-width: 700px) {
+  .clientmark--logo img { height: 38px; max-width: 120px; }
+}
+
+/* Logo beside the two authority cards. */
+.authlogo {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  padding: 8px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+.authlogo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.card--auth { display: flex; align-items: center; gap: clamp(16px, 2vw, 24px); }
+.card--auth > div { min-width: 0; }
 
 /* ---------- Feature list ---------- */
 .feature-list { list-style: none; display: grid; gap: 14px; }

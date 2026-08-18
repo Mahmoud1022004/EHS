@@ -335,6 +335,9 @@ SD_ORG = {
     "en": {
         "name": "EHS — Egyptian Hospital Supplies",
         "legal": "Egyptian Hospital Supplies",
+        "alt_names": ["Egyptian Hospital Supplies", "EHS",
+                      "EHS Egypt", "EHS Medical Supplies",
+                      "شركة مصر لإمداد المستشفيات"],
         "desc": ("Egyptian manufacturer of medical supplies and healthcare support products "
                  "since 1988 — gauze and wound care, MedPress medical compression stockings, "
                  "the MasterCast orthopedic range, face masks and PPE."),
@@ -351,6 +354,9 @@ SD_ORG = {
     "ar": {
         "name": "EHS — شركة مصر لإمداد المستشفيات",
         "legal": "شركة مصر لإمداد المستشفيات",
+        "alt_names": ["شركة مصر لإمداد المستشفيات", "EHS",
+                      "Egyptian Hospital Supplies", "EHS Egypt",
+                      "EHS Medical Supplies"],
         "desc": ("شركة مصرية لتصنيع المستلزمات الطبية ومنتجات الدعم الصحي منذ عام 1988 — "
                  "الشاش والعناية بالجروح، وجوارب ميدبريس الطبية الضاغطة، "
                  "ومجموعة ماستركاست للعظام، والكمامات ومستلزمات الوقاية."),
@@ -459,10 +465,13 @@ def _plain(html_fragment):
 
 
 def _page_url(lang, slug):
-    fname = "index.html" if slug == "index" else f"{slug}.html"
+    """The URL the edge actually serves. Cloudflare drops the .html extension,
+    so a canonical or sitemap entry ending in .html points at a redirect rather
+    than at the page — every such URL was costing a hop and muddying which
+    address search engines should treat as the real one."""
     if lang == "en":
-        return f"{BASE_URL}/" + ("" if slug == "index" else fname)
-    return f"{BASE_URL}/ar/{fname}"
+        return f"{BASE_URL}/" if slug == "index" else f"{BASE_URL}/{slug}"
+    return f"{BASE_URL}/ar/" if slug == "index" else f"{BASE_URL}/ar/{slug}"
 
 
 def _nav_label(lang, slug):
@@ -495,6 +504,10 @@ def json_ld(lang, slug, body=""):
     org = {
         "@type": ["Organization", "MedicalBusiness"], "@id": ORG_ID,
         "name": o["name"], "legalName": o["legal"], "description": o["desc"],
+        # The names people actually search for. schema.org's own property for
+        # this, so it is not keyword stuffing and it changes nothing visible —
+        # it just tells Google these strings are the same company.
+        "alternateName": o["alt_names"],
         "url": f"{BASE_URL}/", "foundingDate": FOUNDED,
         "logo": {"@type": "ImageObject", "url": f"{BASE_URL}/assets/logos/EHS-app-icon.svg"},
         "image": f"{BASE_URL}/assets/img/factory-exterior.jpg",
@@ -625,9 +638,8 @@ def head(lang, slug, jsonld="", robots=""):
     s = STR[lang]
     title, desc = META[lang][slug]
     a = "assets" if lang == "en" else "../assets"
-    fname = "index.html" if slug == "index" else f"{slug}.html"
-    en_url = f"{BASE_URL}/{'' if slug == 'index' else fname}"
-    ar_url = f"{BASE_URL}/ar/{fname}"
+    en_url = _page_url("en", slug)
+    ar_url = _page_url("ar", slug)
     canonical = en_url if lang == "en" else ar_url
     # Share image: a product page shares its own product, not a stock photo of a
     # different one. Kept as JPEG — social scrapers are inconsistent with WebP.
@@ -1007,9 +1019,8 @@ def write_sitemap():
              '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
              '        xmlns:xhtml="http://www.w3.org/1999/xhtml">']
     for slug in PAGES:
-        fname = "index.html" if slug == "index" else f"{slug}.html"
-        en = f"{BASE_URL}/" + ("" if slug == "index" else fname)
-        ar = f"{BASE_URL}/ar/{fname}"
+        en = _page_url("en", slug)
+        ar = _page_url("ar", slug)
         for url in (en, ar):
             lines.append("  <url>")
             lines.append(f"    <loc>{url}</loc>")

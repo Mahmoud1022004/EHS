@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Client band — design samples</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  body { background: var(--cream, #F9FBF4); }
+  .wrap { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 40px 0 90px; }
+  .sample { margin-block: 54px; }
+  .sample__label { display:flex; align-items:baseline; gap:12px; margin-bottom:14px; }
+  .sample__label b { font-size:1.05rem; }
+  .sample__label span { color: var(--muted); font-size:.86rem; }
+  .frame { border:1px solid var(--line); border-radius:18px; background:#fff; overflow:hidden; }
+  .clientmark--logo img { height:46px; width:auto; max-width:150px; object-fit:contain; display:block; }
+
+  /* B */
+  .rowset .marquee__track { animation-duration: 58s; }
+  .rowset .marquee__track--rev { animation-direction: reverse; animation-duration: 72s; }
+
+  /* C */
+  .wall { display:grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap:12px; padding:22px; }
+  .wall__cell { border:1px solid var(--line); border-radius:14px; background:#fff; padding:12px; text-align:center; }
+  .wall__logo { display:grid; place-items:center; height:74px; }
+  .wall__logo img { max-height:70px; max-width:100%; object-fit:contain; }
+  .wall__name { margin:8px 0 0; font-size:.72rem; font-weight:700; line-height:1.45; color:var(--muted); }
+  .wall__cell--word { display:grid; place-items:center; background:var(--mint-soft); border-style:dashed; }
+  .wall__word { margin:0; font-size:.86rem; font-weight:800; color:var(--forest); line-height:1.5; }
+
+  /* D */
+  .namestrip { padding:16px 22px 20px; color:var(--muted); font-size:.86rem; line-height:2; text-align:center; }
+  .namestrip .sep { opacity:.45; }
+
+  /* E */
+  .bare { flex:none; display:inline-flex; align-items:center; }
+  .bare img { height:54px; width:auto; object-fit:contain; filter:grayscale(1) opacity(.72); transition:filter .25s ease; }
+  .marquee:hover .bare img { filter:none; }
+  .bare--name { font-weight:800; color:#8A9683; font-size:1rem; white-space:nowrap; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 class="h2">Who we supply — five treatments</h1>
+  <p class="lead mt-16">Twelve logos and six names. Hover any moving row to pause it.</p>
+
+  <div class="sample"><div class="sample__label"><b>A — what is on the site now</b><span>one row, logos and names in the same pill</span></div>
+    <div class="frame"><div class="marquee marquee--clients" aria-hidden="true"><div class="marquee__track">
+      <div class="marquee__group"><span class="clientmark clientmark--logo"><img src="assets/img/clients/ahl_masr.webp" alt="Ahl Masr Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/al_nas.webp" alt="Al Nas Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/egyptair_hospital.webp" alt="EgyptAir Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/wadi_el_neel.webp" alt="Wadi El Nil Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/saudi_german.webp" alt="Saudi German Hospital" loading="lazy"></span>
+        <span class="clientmark">Borg Mina Hospital</span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/aoi.webp" alt="Arab Organization for Industrialization" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/suez_canal.webp" alt="Suez Canal Authority" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/al_ahli_alex.webp" alt="Al Ahly Hospital — Alexandria" loading="lazy"></span>
+        <span class="clientmark">Alexandria Heart Centre</span>
+        <span class="clientmark">Alexandria Medical Centre</span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/nile_hurghada.webp" alt="El Nile Hospital — Hurghada" loading="lazy"></span>
+        <span class="clientmark">El Gouna Hospital — Hurghada</span>
+        <span class="clientmark">Dr. Othman Hospital — Maadi</span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/attaa.webp" alt="Attaa Hospital — Port Said" loading="lazy"></span>
+        <span class="clientmark">Teachers' Hospital — Port Said</span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/yasmin_samra.webp" alt="Yasmin El Samra Foundation" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/dar_al_fouad.webp" alt="Dar Al Fouad Hospital" loading="lazy"></span></div><div class="marquee__group"><span class="clientmark clientmark--logo"><img src="assets/img/clients/ahl_masr.webp" alt="Ahl Masr Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/al_nas.webp" alt="Al Nas Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/egyptair_hospital.webp" alt="EgyptAir Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/wadi_el_neel.webp" alt="Wadi El Nil Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/saudi_german.webp" alt="Saudi German Hospital" loading="lazy"></span>
+        <span class="clientmark">Borg Mina Hospital</span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/aoi.webp" alt="Arab Organization for Industrialization" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/suez_canal.webp" alt="Suez Canal Authority" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/al_ahli_alex.webp" alt="Al Ahly Hospital — Alexandria" loading="lazy"></span>
+        <span class="clientmark">Alexandria Heart Centre</span>
+        <span class="clientmark">Alexandria Medical Centre</span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/nile_hurghada.webp" alt="El Nile Hospital — Hurghada" loading="lazy"></span>
+        <span class="clientmark">El Gouna Hospital — Hurghada</span>
+        <span class="clientmark">Dr. Othman Hospital — Maadi</span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/attaa.webp" alt="Attaa Hospital — Port Said" loading="lazy"></span>
+        <span class="clientmark">Teachers' Hospital — Port Said</span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/yasmin_samra.webp" alt="Yasmin El Samra Foundation" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/dar_al_fouad.webp" alt="Dar Al Fouad Hospital" loading="lazy"></span></div>
+    </div></div></div></div>
+
+  <div class="sample"><div class="sample__label"><b>B — two rows, opposite directions</b><span>logos above, names below, different speeds</span></div>
+    <div class="frame rowset">
+      <div class="marquee marquee--clients" aria-hidden="true"><div class="marquee__track">
+        <div class="marquee__group"><span class="clientmark clientmark--logo"><img src="assets/img/clients/ahl_masr.webp" alt="Ahl Masr Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/al_nas.webp" alt="Al Nas Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/egyptair_hospital.webp" alt="EgyptAir Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/wadi_el_neel.webp" alt="Wadi El Nil Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/saudi_german.webp" alt="Saudi German Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/aoi.webp" alt="Arab Organization for Industrialization" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/suez_canal.webp" alt="Suez Canal Authority" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/al_ahli_alex.webp" alt="Al Ahly Hospital — Alexandria" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/nile_hurghada.webp" alt="El Nile Hospital — Hurghada" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/attaa.webp" alt="Attaa Hospital — Port Said" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/yasmin_samra.webp" alt="Yasmin El Samra Foundation" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/dar_al_fouad.webp" alt="Dar Al Fouad Hospital" loading="lazy"></span></div><div class="marquee__group"><span class="clientmark clientmark--logo"><img src="assets/img/clients/ahl_masr.webp" alt="Ahl Masr Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/al_nas.webp" alt="Al Nas Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/egyptair_hospital.webp" alt="EgyptAir Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/wadi_el_neel.webp" alt="Wadi El Nil Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/saudi_german.webp" alt="Saudi German Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/aoi.webp" alt="Arab Organization for Industrialization" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/suez_canal.webp" alt="Suez Canal Authority" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/al_ahli_alex.webp" alt="Al Ahly Hospital — Alexandria" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/nile_hurghada.webp" alt="El Nile Hospital — Hurghada" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/attaa.webp" alt="Attaa Hospital — Port Said" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/yasmin_samra.webp" alt="Yasmin El Samra Foundation" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/dar_al_fouad.webp" alt="Dar Al Fouad Hospital" loading="lazy"></span></div></div></div>
+      <div class="marquee marquee--clients" aria-hidden="true" style="border-block-start:0;margin-block-start:0;"><div class="marquee__track marquee__track--rev">
+        <div class="marquee__group"><span class="clientmark">Borg Mina Hospital</span>
+        <span class="clientmark">Alexandria Heart Centre</span>
+        <span class="clientmark">Alexandria Medical Centre</span>
+        <span class="clientmark">El Gouna Hospital — Hurghada</span>
+        <span class="clientmark">Dr. Othman Hospital — Maadi</span>
+        <span class="clientmark">Teachers' Hospital — Port Said</span></div><div class="marquee__group"><span class="clientmark">Borg Mina Hospital</span>
+        <span class="clientmark">Alexandria Heart Centre</span>
+        <span class="clientmark">Alexandria Medical Centre</span>
+        <span class="clientmark">El Gouna Hospital — Hurghada</span>
+        <span class="clientmark">Dr. Othman Hospital — Maadi</span>
+        <span class="clientmark">Teachers' Hospital — Port Said</span></div></div></div>
+    </div></div>
+
+  <div class="sample"><div class="sample__label"><b>C — static wall, nothing moves</b><span>closest to the layout you sent; every client readable at once</span></div>
+    <div class="frame"><div class="wall"><div class="wall__cell"><div class="wall__logo"><img src="assets/img/clients/ahl_masr.webp" alt="Ahl Masr Hospital" loading="lazy"></div><p class="wall__name">Ahl Masr Hospital</p></div><div class="wall__cell"><div class="wall__logo"><img src="assets/img/clients/al_nas.webp" alt="Al Nas Hospital" loading="lazy"></div><p class="wall__name">Al Nas Hospital</p></div><div class="wall__cell"><div class="wall__logo"><img src="assets/img/clients/egyptair_hospital.webp" alt="EgyptAir Hospital" loading="lazy"></div><p class="wall__name">EgyptAir Hospital</p></div><div class="wall__cell"><div class="wall__logo"><img src="assets/img/clients/wadi_el_neel.webp" alt="Wadi El Nil Hospital" loading="lazy"></div><p class="wall__name">Wadi El Nil Hospital</p></div><div class="wall__cell"><div class="wall__logo"><img src="assets/img/clients/saudi_german.webp" alt="Saudi German Hospital" loading="lazy"></div><p class="wall__name">Saudi German Hospital</p></div><div class="wall__cell"><div class="wall__logo"><img src="assets/img/clients/aoi.webp" alt="Arab Organization for Industrialization" loading="lazy"></div><p class="wall__name">Arab Organization for Industrialization</p></div><div class="wall__cell"><div class="wall__logo"><img src="assets/img/clients/suez_canal.webp" alt="Suez Canal Authority" loading="lazy"></div><p class="wall__name">Suez Canal Authority</p></div><div class="wall__cell"><div class="wall__logo"><img src="assets/img/clients/al_ahli_alex.webp" alt="Al Ahly Hospital — Alexandria" loading="lazy"></div><p class="wall__name">Al Ahly Hospital — Alexandria</p></div><div class="wall__cell"><div class="wall__logo"><img src="assets/img/clients/nile_hurghada.webp" alt="El Nile Hospital — Hurghada" loading="lazy"></div><p class="wall__name">El Nile Hospital — Hurghada</p></div><div class="wall__cell"><div class="wall__logo"><img src="assets/img/clients/attaa.webp" alt="Attaa Hospital — Port Said" loading="lazy"></div><p class="wall__name">Attaa Hospital — Port Said</p></div><div class="wall__cell"><div class="wall__logo"><img src="assets/img/clients/yasmin_samra.webp" alt="Yasmin El Samra Foundation" loading="lazy"></div><p class="wall__name">Yasmin El Samra Foundation</p></div><div class="wall__cell"><div class="wall__logo"><img src="assets/img/clients/dar_al_fouad.webp" alt="Dar Al Fouad Hospital" loading="lazy"></div><p class="wall__name">Dar Al Fouad Hospital</p></div><div class="wall__cell wall__cell--word"><p class="wall__word">Borg Mina Hospital</p></div><div class="wall__cell wall__cell--word"><p class="wall__word">Alexandria Heart Centre</p></div><div class="wall__cell wall__cell--word"><p class="wall__word">Alexandria Medical Centre</p></div><div class="wall__cell wall__cell--word"><p class="wall__word">El Gouna Hospital — Hurghada</p></div><div class="wall__cell wall__cell--word"><p class="wall__word">Dr. Othman Hospital — Maadi</p></div><div class="wall__cell wall__cell--word"><p class="wall__word">Teachers' Hospital — Port Said</p></div></div></div></div>
+
+  <div class="sample"><div class="sample__label"><b>D — logos move, names sit still</b><span>the twelve logos scroll; the other six read as one quiet line</span></div>
+    <div class="frame">
+      <div class="marquee marquee--clients" aria-hidden="true"><div class="marquee__track">
+        <div class="marquee__group"><span class="clientmark clientmark--logo"><img src="assets/img/clients/ahl_masr.webp" alt="Ahl Masr Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/al_nas.webp" alt="Al Nas Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/egyptair_hospital.webp" alt="EgyptAir Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/wadi_el_neel.webp" alt="Wadi El Nil Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/saudi_german.webp" alt="Saudi German Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/aoi.webp" alt="Arab Organization for Industrialization" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/suez_canal.webp" alt="Suez Canal Authority" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/al_ahli_alex.webp" alt="Al Ahly Hospital — Alexandria" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/nile_hurghada.webp" alt="El Nile Hospital — Hurghada" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/attaa.webp" alt="Attaa Hospital — Port Said" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/yasmin_samra.webp" alt="Yasmin El Samra Foundation" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/dar_al_fouad.webp" alt="Dar Al Fouad Hospital" loading="lazy"></span></div><div class="marquee__group"><span class="clientmark clientmark--logo"><img src="assets/img/clients/ahl_masr.webp" alt="Ahl Masr Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/al_nas.webp" alt="Al Nas Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/egyptair_hospital.webp" alt="EgyptAir Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/wadi_el_neel.webp" alt="Wadi El Nil Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/saudi_german.webp" alt="Saudi German Hospital" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/aoi.webp" alt="Arab Organization for Industrialization" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/suez_canal.webp" alt="Suez Canal Authority" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/al_ahli_alex.webp" alt="Al Ahly Hospital — Alexandria" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/nile_hurghada.webp" alt="El Nile Hospital — Hurghada" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/attaa.webp" alt="Attaa Hospital — Port Said" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/yasmin_samra.webp" alt="Yasmin El Samra Foundation" loading="lazy"></span>
+        <span class="clientmark clientmark--logo"><img src="assets/img/clients/dar_al_fouad.webp" alt="Dar Al Fouad Hospital" loading="lazy"></span></div></div></div>
+      <p class="namestrip">Borg Mina Hospital <span class="sep">·</span> Alexandria Heart Centre <span class="sep">·</span> Alexandria Medical Centre <span class="sep">·</span> El Gouna Hospital — Hurghada <span class="sep">·</span> Dr. Othman Hospital — Maadi <span class="sep">·</span> Teachers' Hospital — Port Said</p>
+    </div></div>
+
+  <div class="sample"><div class="sample__label"><b>E — no pills, muted until hover</b><span>logos sit on the band itself and lift to full colour on hover</span></div>
+    <div class="frame"><div class="marquee marquee--clients" aria-hidden="true" style="border-block:0;"><div class="marquee__track">
+      <div class="marquee__group" style="gap:52px;"><span class="bare"><img src="assets/img/clients/ahl_masr.webp" alt="Ahl Masr Hospital" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/al_nas.webp" alt="Al Nas Hospital" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/egyptair_hospital.webp" alt="EgyptAir Hospital" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/wadi_el_neel.webp" alt="Wadi El Nil Hospital" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/saudi_german.webp" alt="Saudi German Hospital" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/aoi.webp" alt="Arab Organization for Industrialization" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/suez_canal.webp" alt="Suez Canal Authority" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/al_ahli_alex.webp" alt="Al Ahly Hospital — Alexandria" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/nile_hurghada.webp" alt="El Nile Hospital — Hurghada" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/attaa.webp" alt="Attaa Hospital — Port Said" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/yasmin_samra.webp" alt="Yasmin El Samra Foundation" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/dar_al_fouad.webp" alt="Dar Al Fouad Hospital" loading="lazy"></span><span class="bare bare--name">Borg Mina Hospital</span>
+        <span class="bare bare--name">Alexandria Heart Centre</span>
+        <span class="bare bare--name">Alexandria Medical Centre</span>
+        <span class="bare bare--name">El Gouna Hospital — Hurghada</span>
+        <span class="bare bare--name">Dr. Othman Hospital — Maadi</span>
+        <span class="bare bare--name">Teachers' Hospital — Port Said</span></div>
+      <div class="marquee__group" style="gap:52px;"><span class="bare"><img src="assets/img/clients/ahl_masr.webp" alt="Ahl Masr Hospital" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/al_nas.webp" alt="Al Nas Hospital" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/egyptair_hospital.webp" alt="EgyptAir Hospital" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/wadi_el_neel.webp" alt="Wadi El Nil Hospital" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/saudi_german.webp" alt="Saudi German Hospital" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/aoi.webp" alt="Arab Organization for Industrialization" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/suez_canal.webp" alt="Suez Canal Authority" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/al_ahli_alex.webp" alt="Al Ahly Hospital — Alexandria" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/nile_hurghada.webp" alt="El Nile Hospital — Hurghada" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/attaa.webp" alt="Attaa Hospital — Port Said" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/yasmin_samra.webp" alt="Yasmin El Samra Foundation" loading="lazy"></span>
+        <span class="bare"><img src="assets/img/clients/dar_al_fouad.webp" alt="Dar Al Fouad Hospital" loading="lazy"></span><span class="bare bare--name">Borg Mina Hospital</span>
+        <span class="bare bare--name">Alexandria Heart Centre</span>
+        <span class="bare bare--name">Alexandria Medical Centre</span>
+        <span class="bare bare--name">El Gouna Hospital — Hurghada</span>
+        <span class="bare bare--name">Dr. Othman Hospital — Maadi</span>
+        <span class="bare bare--name">Teachers' Hospital — Port Said</span></div>
+    </div></div></div></div>
+</div>
+</body>
+</html>

@@ -113,6 +113,7 @@ PAGES = {
     "gauze-wound-care":           {"nav": "products"},
     "orthopedic":                 {"nav": "products"},
     "masks-ppe":                  {"nav": "products"},
+    "prevent":                    {"nav": "products"},
     "medpress":           {"nav": "medpress"},
     "medpress-stockings": {"nav": "medpress"},
     "size-guide":         {"nav": "size"},
@@ -139,6 +140,8 @@ META = {
                        "Cast padding, stockinette, cast net, orthopedic cotton and splint accessories — the MasterCast orthopedic range manufactured by EHS."),
         "masks-ppe": ("Face Masks &amp; PPE | EHS",
                       "Surgical, procedure and protective face masks plus disposable medical PPE, manufactured by EHS."),
+        "prevent": ("Prevent — Gauze, Wound Care &amp; Protection | EHS",
+                    "The Prevent range by EHS — gauze and wound care, medical textiles and disposables, and face masks and protective equipment."),
         "mastercast-tube-grip": ("MasterCast Tube Grip — Elasticated Tubular Bandage | EHS",
                                  "MasterCast Tube Grip by EHS: a dense, smooth knitted tubular sleeve for even support around the arm, elbow, knee or lower leg. Gallery and details."),
         "mastercast-cast-net": ("MasterCast Cast-Net — Tubular Elastic Net | EHS",
@@ -185,6 +188,8 @@ META = {
                        "حشوات الجبس والستوكينيت وشبك الجبس وقطن العظام ومستلزمات الجبائر — مجموعة ماستركاست للعظام تصنّعها EHS."),
         "masks-ppe": ("الكمامات ومستلزمات الوقاية | EHS",
                       "كمامات جراحية وكمامات إجراءات وكمامات واقية ومستلزمات وقاية طبية أحادية الاستخدام من EHS."),
+        "prevent": ("بريفنت — الشاش والعناية بالجروح والوقاية | EHS",
+                    "مجموعة بريفنت من EHS — الشاش والعناية بالجروح، والمنسوجات الطبية والمنتجات أحادية الاستخدام، والكمامات ومستلزمات الوقاية."),
         "mastercast-tube-grip": ("ماستركاست تيوب جريب — رباط أنبوبي مرن | EHS",
                                  "ماستركاست تيوب جريب من EHS: كُمّ أنبوبي بحياكة كثيفة وناعمة لدعم متساوٍ حول الذراع أو المرفق أو الركبة أو أسفل الساق. المعرض والتفاصيل."),
         "mastercast-cast-net": ("ماستركاست كاست-نت — شبكة أنبوبية مرنة | EHS",
@@ -237,7 +242,7 @@ STR = {
                     ("products.html", "All products"),
                     ("medpress.html", "MedPress"),
                     ("orthopedic.html", "MasterCast"),
-                    ("products.html#prevent", "Prevent"),
+                    ("prevent.html", "Prevent"),
                 ]),
                 ("factory", "factory.html", "Factory"),
                 ("faq", "faq.html", "FAQ"),
@@ -284,7 +289,7 @@ STR = {
                     ("products.html", "كل المنتجات"),
                     ("medpress.html", "ميدبريس"),
                     ("orthopedic.html", "ماستركاست"),
-                    ("products.html#prevent", "بريفنت"),
+                    ("prevent.html", "بريفنت"),
                 ]),
                 ("factory", "factory.html", "المصنع"),
                 ("faq", "faq.html", "الأسئلة الشائعة"),
@@ -373,6 +378,7 @@ OG_IMAGES = {
     "orthopedic": "mastercast/mastercast-box.jpg",
     "gauze-wound-care": "prevent/gauze-and-textiles-cover.jpg",
     "masks-ppe": "masks/mask-surgical-blue.jpg",
+    "prevent": "prevent/gauze-and-textiles-cover.jpg",
     "size-guide": "size-guide-diagram-en.jpg",
     "how-to-wear": "medpress-how-to-wear-steps.jpg",
 }
@@ -423,7 +429,7 @@ SD_PRODUCTS = {
 }
 
 # Pages that list a range rather than one item.
-SD_COLLECTIONS = {"products", "medpress", "orthopedic", "gauze-wound-care", "masks-ppe"}
+SD_COLLECTIONS = {"products", "medpress", "orthopedic", "prevent", "gauze-wound-care", "masks-ppe"}
 
 # Breadcrumb parent for pages that sit under a section.
 SD_PARENT = {
@@ -432,8 +438,8 @@ SD_PARENT = {
     "mastercast-tube-grip": "orthopedic", "mastercast-cast-net": "orthopedic",
     "mastercast-elastic-bandage": "orthopedic", "mastercast-collar-cuff": "orthopedic",
     "mastercast-skin-traction-kit": "orthopedic", "mastercast-stockinet": "orthopedic",
-    "orthopedic": "products", "medpress": "products", "gauze-wound-care": "products",
-    "masks-ppe": "products", "factory": "about",
+    "orthopedic": "products", "medpress": "products", "prevent": "products",
+    "gauze-wound-care": "prevent", "masks-ppe": "prevent", "factory": "about",
 }
 
 FAQ_RE = re.compile(

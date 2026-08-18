@@ -22,6 +22,25 @@ DirectoryIndex index.html
   RewriteRule ^(gallery|leadership|timeline|loading|location|location-map)-samples\.html$ / [R=301,L]
   RewriteRule ^loading-samples-[0-9]+\.html$ / [R=301,L]
   RewriteRule ^(loader-preview|loading-concepts)\.html$ / [R=301,L]
+
+  # ---------- Extensionless URLs ----------
+  # Cloudflare serves /about, not /about.html, and every internal link is built
+  # that way. Apache needs telling. These two rules make this host behave the
+  # same, so the site is portable between the two.
+  #
+  # First, send any explicit .html request to the clean URL. Matching on
+  # THE_REQUEST (the raw request line) rather than the rewritten path is what
+  # keeps this from looping against the internal rewrite below.
+  RewriteCond %{THE_REQUEST} \s/+(.*?)index\.html[\s?] [NC]
+  RewriteRule ^ /%1 [R=301,L]
+
+  RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+  RewriteRule ^ /%1 [R=301,L]
+
+  # Then serve /about from about.html internally, without a redirect.
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}\.html -f
+  RewriteRule ^(.*)$ $1.html [L]
 </IfModule>
 
 # ---------- Error page ----------

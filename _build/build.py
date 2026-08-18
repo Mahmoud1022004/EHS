@@ -17,6 +17,7 @@ Run:  python3 build.py
 import json
 import datetime
 import os
+import posixpath
 import re
 import sys
 from urllib.parse import quote
@@ -880,6 +881,7 @@ def build_page(lang, slug):
     html = (head(lang, slug, jsonld=json_ld(lang, slug, body))
             + header_html(lang, slug) + body + footer_html(lang, slug))
     html = webp_sources(html)
+    html = _clean_links(html, lang)
     outdir = SITE if lang == "en" else os.path.join(SITE, "ar")
     os.makedirs(outdir, exist_ok=True)
     out = os.path.join(outdir, "index.html" if slug == "index" else f"{slug}.html")
@@ -896,6 +898,7 @@ REDIRECTS = {"quality.html": "factory.html",
 def write_redirects():
     count = 0
     for old, new in REDIRECTS.items():
+        new = new[: -len(".html")] if new.endswith(".html") else new
         for lang in ("en", "ar"):
             outdir = SITE if lang == "en" else os.path.join(SITE, "ar")
             canonical = f"{BASE_URL}/{new}" if lang == "en" else f"{BASE_URL}/ar/{new}"
@@ -988,6 +991,40 @@ BODY_404 = {
 }
 
 
+_LINK_RE = re.compile(r'\b(href|action)="([^"]*)"')
+
+
+def _clean_links(html, lang):
+    """Point every internal page link at the URL the edge actually serves.
+
+    Cloudflare drops the .html extension, so a link ending in .html costs the
+    visitor a 301 on every click. Rewriting here — on the finished page rather
+    than in the templates — catches nav, footer, breadcrumbs, product cards and
+    body copy in one pass, whichever data structure the slug came from.
+
+    Links come out root-absolute so they resolve identically from /, from /ar/,
+    and from a 404 served at an arbitrary depth.
+    """
+    base_dir = "/" if lang == "en" else "/ar/"
+
+    def sub(m):
+        attr, val = m.group(1), m.group(2)
+        if val.startswith(("http://", "https://", "//", "mailto:", "tel:",
+                           "#", "data:", "javascript:")):
+            return m.group(0)
+        path, hsep, frag = val.partition("#")
+        path, qsep, query = path.partition("?")
+        if not path.endswith(".html"):
+            return m.group(0)
+        if not path.startswith("/"):
+            path = posixpath.normpath(posixpath.join(base_dir, path))
+        clean = (path[: -len("index.html")] if path.endswith("/index.html")
+                 else path[: -len(".html")])
+        return f'{attr}="{clean}{qsep}{query}{hsep}{frag}"'
+
+    return _LINK_RE.sub(sub, html)
+
+
 def _absolutize(html, lang):
     """Rewrite every relative link/asset path to a root-absolute one."""
     if lang == "en":
@@ -1012,6 +1049,7 @@ def write_404():
                 + header_html(lang, "404") + body + footer_html(lang, "404"))
         html = webp_sources(html)
         html = _absolutize(html, lang)
+        html = _clean_links(html, lang)
         outdir = SITE if lang == "en" else os.path.join(SITE, "ar")
         os.makedirs(outdir, exist_ok=True)
         with open(os.path.join(outdir, "404.html"), "w", encoding="utf-8") as f:

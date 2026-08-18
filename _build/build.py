@@ -660,8 +660,9 @@ def head(lang, slug, jsonld="", robots=""):
 <meta name="twitter:description" content="{desc}">
 <meta name="twitter:image" content="{og_img}">
 <meta name="theme-color" content="#4F7A12">
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64">
 <link rel="icon" type="image/svg+xml" href="{a}/logos/EHS-app-icon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="{a}/logos/favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
 <link rel="apple-touch-icon" href="{a}/logos/apple-touch-icon.png">
 <link rel="preload" href="{a}/fonts/{'manrope-latin-800.woff2' if lang == 'en' else 'ibm-plex-sans-arabic-arabic-700.woff2'}" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{a}/fonts/fonts.css">

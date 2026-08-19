@@ -25,7 +25,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehsmeds.com"
-ASSET_V = "164"  # bump when css/js/logo change so returning visitors get fresh assets
+ASSET_V = "165"  # bump when css/js/logo change so returning visitors get fresh assets
 
 # The company's official line, given by the owner 18 Aug 2026 as the number to
 # publish everywhere, phone and WhatsApp alike: 01003211126 locally, which is
@@ -853,10 +853,64 @@ def mailto(subject, body):
             f"&amp;body={quote(body, safe='')}")
 
 
+# The two EOS quality-mark licences. Defined once because they appear both in
+# the About page's certifications section and behind the homepage toggle, and a
+# renewal must not have to be edited in two places.
+CERTS = {
+    "en": """<div class="grid grid--2 mt-32">
+      <div class="card card--flat reveal">
+        <a class="img-frame img-frame--zoom" href="{{A}}/img/certs/eos-gauze.jpg" target="_blank" rel="noopener" title="Open the full certificate">
+          <img src="{{A}}/img/certs/eos-gauze.webp" alt="EOS Quality Mark licence for absorbent medical cotton gauze, certificate number 11/96/2025" width="962" height="1368" loading="lazy">
+        </a>
+        <h3 class="h4 mt-24">Absorbent medical cotton gauze</h3>
+        <ul class="feature-list mt-16">
+          <li><span class="tick">{{ICON:check}}</span><span><strong>Egyptian Standard 4754/2005</strong></span></li>
+          <li><span class="tick">{{ICON:check}}</span><span><strong>Licence no. 11/96/2025</strong></span></li>
+        </ul>
+      </div>
+      <div class="card card--flat reveal reveal-d1">
+        <a class="img-frame img-frame--zoom" href="{{A}}/img/certs/eos-dressing.jpg" target="_blank" rel="noopener" title="Open the full certificate">
+          <img src="{{A}}/img/certs/eos-dressing.webp" alt="EOS Quality Mark licence for medical dressing, certificate number 13/98/2025" width="801" height="1166" loading="lazy">
+        </a>
+        <h3 class="h4 mt-24">Medical dressing</h3>
+        <ul class="feature-list mt-16">
+          <li><span class="tick">{{ICON:check}}</span><span><strong>Egyptian Standard 114/2014</strong></span></li>
+          <li><span class="tick">{{ICON:check}}</span><span><strong>Licence no. 13/98/2025</strong></span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="small muted mt-24 center reveal">Quality Mark licence EQM-8, granting scheme CS-6&nbsp;(EQM). Both issued 1&nbsp;June&nbsp;2025 and valid for two years, in the company&rsquo;s registered name &mdash; Misr for Hospital Supplies, Ahmed Remah Ali Ahmed &amp; Partner, Industrial Zone A2, 10th of Ramadan City.</p>""",
+    "ar": """<div class="grid grid--2 mt-32">
+      <div class="card card--flat reveal">
+        <a class="img-frame img-frame--zoom" href="{{A}}/img/certs/eos-gauze.jpg" target="_blank" rel="noopener" title="فتح الشهادة كاملة">
+          <img src="{{A}}/img/certs/eos-gauze.webp" alt="شهادة ترخيص بعلامة الجودة للشاش القطني الطبي الماص، رقم ١١/٩٦/٢٠٢٥" width="962" height="1368" loading="lazy">
+        </a>
+        <h3 class="h4 mt-24">الشاش القطني الطبي الماص</h3>
+        <ul class="feature-list mt-16">
+          <li><span class="tick">{{ICON:check}}</span><span><strong>المواصفة القياسية المصرية <span dir="ltr">4754/2005</span></strong></span></li>
+          <li><span class="tick">{{ICON:check}}</span><span><strong>ترخيص رقم <span dir="ltr">11/96/2025</span></strong></span></li>
+        </ul>
+      </div>
+      <div class="card card--flat reveal reveal-d1">
+        <a class="img-frame img-frame--zoom" href="{{A}}/img/certs/eos-dressing.jpg" target="_blank" rel="noopener" title="فتح الشهادة كاملة">
+          <img src="{{A}}/img/certs/eos-dressing.webp" alt="شهادة ترخيص بعلامة الجودة للغيار الطبي، رقم ١٣/٩٨/٢٠٢٥" width="801" height="1166" loading="lazy">
+        </a>
+        <h3 class="h4 mt-24">الغيار الطبي (درسنج)</h3>
+        <ul class="feature-list mt-16">
+          <li><span class="tick">{{ICON:check}}</span><span><strong>المواصفة القياسية المصرية <span dir="ltr">114/2014</span></strong></span></li>
+          <li><span class="tick">{{ICON:check}}</span><span><strong>ترخيص رقم <span dir="ltr">13/98/2025</span></strong></span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="small muted mt-24 center reveal">شهادة ترخيص بعلامة الجودة <span dir="ltr">EQM-8</span>، مخطط المنح <span dir="ltr">CS-6 (EQM)</span>. صدرتا في 1 يونيو 2025 وصلاحيتهما عامان، باسم الشركة المسجَّل &mdash; مصر لإمداد المستشفيات &laquo;أحمد رماح على أحمد وشريكيه&raquo;، المنطقة الصناعية A2، مدينة العاشر من رمضان.</p>""",
+}
+
+
 def build_page(lang, slug):
     src = os.path.join(ROOT, "content", lang, f"{slug}.html")
     with open(src, encoding="utf-8") as f:
         body = f.read()
+    body = body.replace("{{CERTS}}", CERTS[lang])
     a = "assets" if lang == "en" else "../assets"
     body = body.replace("{{A}}", a)
     body = body.replace("{{WA_URL}}", f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(STR[lang]['wa_prefill'])}")

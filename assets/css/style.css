@@ -607,6 +607,34 @@ html[lang="ar"] .brand__sub { letter-spacing: 0; font-size: 0.78rem; }
   .brand__name-track { animation: none !important; }
 }
 
+/* ---------- Homepage certifications toggle ---------- */
+/* Collapsed height animates via grid-template-rows 0fr -> 1fr, so the panel
+   does not need a hard-coded max-height that would clip the certificates on a
+   narrow screen. The panel carries [hidden] while closed, keeping its links out
+   of the tab order; the script clears that a frame before opening. */
+.certs-toggle { gap: 10px; }
+.certs-toggle__icon {
+  display: inline-flex;
+  align-items: center;
+  transition: transform .35s cubic-bezier(.22, 1, .36, 1);
+}
+.certs-toggle__icon svg { width: 18px; height: 18px; }
+.certs-toggle[aria-expanded="true"] .certs-toggle__icon { transform: rotate(45deg); }
+
+.certs-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .5s cubic-bezier(.22, 1, .36, 1);
+}
+.certs-panel[hidden] { display: none; }
+.certs-panel > .certs-panel__inner { overflow: hidden; min-height: 0; }
+.certs-panel.is-open { grid-template-rows: 1fr; }
+
+@media (prefers-reduced-motion: reduce) {
+  .certs-panel { transition: none; }
+  .certs-toggle__icon { transition: none; }
+}
+
 /* ---------- Hero ---------- */
 .hero { padding-block: clamp(16px, 2.5vw, 28px) clamp(56px, 7vw, 88px); }
 .hero__panel {

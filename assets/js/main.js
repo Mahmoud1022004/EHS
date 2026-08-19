@@ -84,6 +84,54 @@
     revealEls.forEach(function (el) { el.classList.add('is-visible'); });
   }
 
+
+  /* Homepage certifications toggle. Opens the certificates in place rather than
+     sending the visitor to the About page and losing their position — pressing
+     it again closes them.
+
+     [hidden] is display:none, which no transition can animate away from, so the
+     attribute is cleared one frame before the open class lands and only restored
+     once the closing transition has finished. The cards inside carry .reveal and
+     were never scrolled past while hidden, so their observer never fired; mark
+     them visible on first open or they would expand into empty space. */
+  var certsToggle = document.querySelector('[data-certs-toggle]');
+  var certsPanel = document.querySelector('[data-certs-panel]');
+  if (certsToggle && certsPanel) {
+    var certsLabel = certsToggle.querySelector('[data-certs-label]');
+    var labelClosed = certsLabel ? certsLabel.textContent : '';
+    var labelOpen = certsLabel ? (certsLabel.getAttribute('data-label-open') || labelClosed) : '';
+    var certsBusy = false;
+
+    certsToggle.addEventListener('click', function () {
+      if (certsBusy) { return; }
+      var opening = certsToggle.getAttribute('aria-expanded') !== 'true';
+      certsToggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+      if (certsLabel) { certsLabel.textContent = opening ? labelOpen : labelClosed; }
+
+      if (opening) {
+        certsPanel.hidden = false;
+        certsPanel.querySelectorAll('.reveal').forEach(function (el) {
+          el.classList.add('is-visible');
+        });
+        /* two frames: one for [hidden] to clear, one for the start height to stick */
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { certsPanel.classList.add('is-open'); });
+        });
+      } else {
+        certsBusy = true;
+        certsPanel.classList.remove('is-open');
+        var done = function () {
+          certsPanel.hidden = true;
+          certsBusy = false;
+          certsPanel.removeEventListener('transitionend', done);
+        };
+        certsPanel.addEventListener('transitionend', done);
+        /* transitionend never fires under reduced motion, so close regardless */
+        window.setTimeout(function () { if (certsBusy) { done(); } }, 700);
+      }
+    });
+  }
+
   /* Hero video: play it wherever the browser will allow it, pause off-screen.
 
      This used to pause outright under prefers-reduced-motion, and because that

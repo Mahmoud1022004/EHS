@@ -265,7 +265,15 @@
         </div>
     </div>
     <div class="btn-row mt-32 reveal" style="justify-content:center;">
-      <a class="btn" href="about.html#certifications">View our certifications <span class="btn__arrow">{{ICON:arrow}}</span></a>
+      <button class="btn certs-toggle" type="button" data-certs-toggle aria-expanded="false" aria-controls="home-certs">
+        <span data-certs-label data-label-open="Hide certifications">View our certifications</span>
+        <span class="certs-toggle__icon" aria-hidden="true">{{ICON:plus}}</span>
+      </button>
+    </div>
+    <div class="certs-panel" id="home-certs" data-certs-panel hidden>
+      <div class="certs-panel__inner">
+        {{CERTS}}
+      </div>
     </div>
   </div>
 </section>

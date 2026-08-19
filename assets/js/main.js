@@ -132,41 +132,67 @@
     });
   }
 
-  /* Hero video: play it wherever the browser will allow it, pause off-screen.
-
-     This used to pause outright under prefers-reduced-motion, and because that
-     was an else-if the observer was never attached either — so on a phone with
-     Reduce Motion enabled the video could not start, then or later. The clip is
-     muted, slow and ambient rather than the flashing or parallax that setting
-     exists to suppress, so it now plays and only the page transitions honour it.
+  /* Hero video: keep trying until it actually plays.
 
      Autoplay is refused outright in iOS Low Power Mode and Android battery
-     saver; no script can override that. A user gesture does lift the block, so
-     retry once on the first tap. Until then the panel shows the poster. */
+     saver, and no script overrides that — but any user gesture lifts the block,
+     as does the page being re-shown or restored. So rather than one attempt at
+     load and one on the first tap, every one of those becomes a retry hook and
+     they stay attached: a single tap in the wrong moment should not be the only
+     chance the video gets. attempt() costs a property read once it is playing.
+
+     The off-screen pause is the one deliberate stop, so it sets onScreen false
+     and the pause handler leaves it alone. Anything else that pauses the video
+     while it is still in view was not us, and gets one retry. */
   var heroVideo = document.querySelector('.hero__video');
   if (heroVideo) {
-    var playHero = function () {
+    var onScreen = true;
+    var nudges = 0;
+
+    var attempt = function () {
+      if (!onScreen || !heroVideo.paused) { return; }
       var p = heroVideo.play();
-      if (p && p.catch) p.catch(function () {});
+      if (p && p.catch) { p.catch(function () {}); }
     };
+
+    heroVideo.addEventListener('playing', function () { nudges = 0; });
+
     if ('IntersectionObserver' in window) {
       var vio = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
-          if (entry.isIntersecting) { playHero(); } else { heroVideo.pause(); }
+          onScreen = entry.isIntersecting;
+          if (onScreen) { attempt(); } else { heroVideo.pause(); }
         });
       }, { threshold: 0.1 });
       vio.observe(heroVideo);
-    } else {
-      playHero();
     }
-    var gestures = ['touchstart', 'pointerdown', 'keydown'];
-    var resumeHero = function () {
-      if (heroVideo.paused) { playHero(); }
-      gestures.forEach(function (ev) { window.removeEventListener(ev, resumeHero); });
-    };
-    gestures.forEach(function (ev) {
-      window.addEventListener(ev, resumeHero, { passive: true });
+
+    ['pointerdown', 'touchstart', 'touchend', 'click', 'keydown', 'scroll', 'wheel']
+      .forEach(function (ev) {
+        window.addEventListener(ev, attempt, { passive: true });
+      });
+
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) { attempt(); }
     });
+    window.addEventListener('pageshow', attempt);
+    window.addEventListener('focus', attempt);
+
+    /* Paused by something other than the observer, or the source dropped
+       mid-buffer. Bounded so a browser that keeps refusing is not retried
+       forever; the counter resets the moment it does play. */
+    heroVideo.addEventListener('pause', function () {
+      if (onScreen && nudges < 12) { nudges++; window.setTimeout(attempt, 400); }
+    });
+    heroVideo.addEventListener('stalled', attempt);
+    heroVideo.addEventListener('suspend', attempt);
+    heroVideo.addEventListener('error', function () {
+      if (nudges >= 12) { return; }
+      nudges++;
+      window.setTimeout(function () { heroVideo.load(); attempt(); }, 1500);
+    });
+
+    attempt();
   }
 
   /* Bulk-order deep links: /professionals.html?product=X&interest=bulk#enquiry

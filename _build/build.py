@@ -27,16 +27,14 @@ SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehsmeds.com"
 ASSET_V = "164"  # bump when css/js/logo change so returning visitors get fresh assets
 
-# WhatsApp enquiry line: Eng. Mostafa Ahmed Remah, General Manager.
-# Supplied by the client 15 Aug 2026 as the number to use "for now" — confirm
-# it is still the right destination before the public launch. International
-# format, digits only: +20 100 679 0182.
-WHATSAPP_NUMBER = "201006790182"
+# The company's official line, given by the owner 18 Aug 2026 as the number to
+# publish everywhere, phone and WhatsApp alike: 01003211126 locally, which is
+# +20 100 321 1126 once the Egyptian country code replaces the leading zero.
+# WhatsApp wants it digits-only with no plus and no leading zero.
+WHATSAPP_NUMBER = "201003211126"
 
-# Company phone. Confirmed for publication by the company owner 17 Aug 2026.
-# The email address is still not cleared, so it stays unpublished.
-PHONE_E164 = "+201006790182"
-PHONE_DISPLAY = "+20 100 679 0182"
+PHONE_E164 = "+201003211126"
+PHONE_DISPLAY = "+20 100 321 1126"
 
 # Company email. Chosen by the client 17 Aug 2026 after being shown that this is
 # an individual's address rather than a role address like info@ — his call.

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 520" role="img" aria-label="Egyptian Hospital Supplies primary logo">
-  <g transform="translate(30 95) scale(.72)" fill="#4C9B24">
+  <g transform="translate(30 95) scale(.72)" fill="#138443">
     <path d="M410 103C374 48 306 20 220 20C110 20 20 110 20 220C20 330 110 420 220 420C306 420 374 392 410 337L332 287C310 320 270 340 220 340C154 340 100 286 100 220C100 154 154 100 220 100C270 100 310 120 332 153Z"/>
     <rect x="66" y="186" width="344" height="68" rx="4"/>
     <path d="M440 20H528V180H622V20H710V420H622V260H528V420H440Z"/>
     <g transform="translate(35 0)"><path d="M1082 92C1034 41 967 18 891 22C794 27 731 78 730 151C729 233 804 257 881 272C944 284 989 294 988 330C987 361 951 379 900 379C844 379 797 358 758 317L698 379C749 424 816 440 894 440C1007 440 1078 391 1080 318C1082 230 1003 204 915 187C857 176 820 165 820 135C820 108 850 87 897 85C943 83 986 101 1021 132Z"/></g>
   </g>
-  <line x1="850" y1="112" x2="850" y2="408" stroke="#DCEFD9" stroke-width="5"/>
+  <line x1="850" y1="112" x2="850" y2="408" stroke="#D5EEE0" stroke-width="5"/>
   <text x="920" y="225" fill="#1F2A25" font-family="DejaVu Sans, Arial, sans-serif" font-size="70" font-weight="700" letter-spacing="1">EGYPTIAN HOSPITAL</text>
-  <text x="920" y="320" fill="#176B45" font-family="DejaVu Sans, Arial, sans-serif" font-size="76" font-weight="700" letter-spacing="5">SUPPLIES</text>
+  <text x="920" y="320" fill="#138443" font-family="DejaVu Sans, Arial, sans-serif" font-size="76" font-weight="700" letter-spacing="5">SUPPLIES</text>
 </svg>

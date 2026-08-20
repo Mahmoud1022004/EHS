@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1140 440" role="img" aria-label="EHS monogram">
-  <g fill="#4C9B24">
+  <g fill="#138443">
     <path d="M410 103C374 48 306 20 220 20C110 20 20 110 20 220C20 330 110 420 220 420C306 420 374 392 410 337L332 287C310 320 270 340 220 340C154 340 100 286 100 220C100 154 154 100 220 100C270 100 310 120 332 153Z"/>
     <rect x="66" y="186" width="344" height="68" rx="4"/>
     <path d="M440 20H528V180H622V20H710V420H622V260H528V420H440Z"/>

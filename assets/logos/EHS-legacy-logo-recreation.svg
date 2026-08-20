@@ -10,7 +10,7 @@
     Clean vector reconstruction of the supplied EHS monogram.
     Change the value below to recolor the entire mark.
   -->
-  <g fill="#4C9B24">
+  <g fill="#138443">
     <!-- Rounded geometric E -->
     <path d="
       M 410 103

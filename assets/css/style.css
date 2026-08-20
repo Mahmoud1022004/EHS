@@ -18,6 +18,11 @@
   --forest-deep: #0C522A;  /* hover / pressed */
   --forest-ink: #092716;   /* deep surfaces: footer, loader, dark bands (white on it, 15.99:1) */
   --heritage: #138443;     /* bright accent = the brandmark green itself */
+  --brand-on-dark: #81DAA7; /* the brand hue lifted far enough to clear both deep
+                              surfaces: 9.53:1 on the footer, 3.59:1 on the lighter
+                              forest band, where the brand green managed 3.36 / 1.4.
+                              The -white logo files carry #4DCB83, tuned to the one
+                              background they ever sit on. */
   --mint: #D5EEE0;         /* light tint for chips, icon wells */
   --mint-soft: #EEF9F3;    /* softest tint for bands */
   --paper: #F9FBF4;
@@ -73,6 +78,11 @@ h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
 ul, ol { padding: 0; }
 button { font: inherit; cursor: pointer; }
 :focus-visible { outline: 3px solid var(--heritage); outline-offset: 2px; border-radius: 4px; }
+/* On the deep green surfaces the brand green ring all but disappears (3.36:1),
+   so lift it there — a keyboard user has to be able to see where they are. */
+.footer :focus-visible,
+.band--forest :focus-visible,
+.cta-panel :focus-visible { outline-color: var(--brand-on-dark); }
 
 ::selection { background: var(--mint); color: var(--forest-ink); }
 

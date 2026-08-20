@@ -25,7 +25,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehsmeds.com"
-ASSET_V = "166"  # bump when css/js/logo change so returning visitors get fresh assets
+ASSET_V = "167"  # bump when css/js/logo change so returning visitors get fresh assets
 
 # The company's official line, given by the owner 18 Aug 2026 as the number to
 # publish everywhere, phone and WhatsApp alike: 01003211126 locally, which is
@@ -679,7 +679,7 @@ def head(lang, slug, jsonld="", robots=""):
 <meta name="twitter:title" content="{title}">
 <meta name="twitter:description" content="{desc}">
 <meta name="twitter:image" content="{og_img}">
-<meta name="theme-color" content="#4F7A12">
+<meta name="theme-color" content="#10723A">
 <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64">
 <link rel="icon" type="image/svg+xml" href="{a}/logos/EHS-app-icon.svg">
 <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">

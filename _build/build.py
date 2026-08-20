@@ -25,7 +25,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehsmeds.com"
-ASSET_V = "168"  # bump when css/js/logo change so returning visitors get fresh assets
+ASSET_V = "169"  # bump when css/js/logo change so returning visitors get fresh assets
 
 # The company's official line, given by the owner 18 Aug 2026 as the number to
 # publish everywhere, phone and WhatsApp alike: 01003211126 locally, which is
@@ -680,10 +680,10 @@ def head(lang, slug, jsonld="", robots=""):
 <meta name="twitter:description" content="{desc}">
 <meta name="twitter:image" content="{og_img}">
 <meta name="theme-color" content="#10723A">
-<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64">
-<link rel="icon" type="image/svg+xml" href="{a}/logos/EHS-app-icon.svg">
-<link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
-<link rel="apple-touch-icon" href="{a}/logos/apple-touch-icon.png">
+<link rel="icon" href="/favicon.ico?v={ASSET_V}" sizes="16x16 32x32 48x48 64x64">
+<link rel="icon" type="image/svg+xml" href="{a}/logos/EHS-app-icon.svg?v={ASSET_V}">
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon.png?v={ASSET_V}">
+<link rel="apple-touch-icon" href="{a}/logos/apple-touch-icon.png?v={ASSET_V}">
 <link rel="preload" href="{a}/fonts/{'manrope-latin-800.woff2' if lang == 'en' else 'ibm-plex-sans-arabic-arabic-700.woff2'}" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{a}/fonts/fonts.css">
 <link rel="stylesheet" href="{a}/css/style.css?v={ASSET_V}">
@@ -739,7 +739,7 @@ def header_html(lang, slug):
   <div class="container container--wide header__inner">
     <a class="brand" href="index.html" aria-label="EHS — {s['brand_name']}">
       <img class="brand__lockup" src="{a}/logos/EHS-logo.svg?v={ASSET_V}" alt="EHS — {s['brand_name']}" width="762" height="114">
-      <img class="brand__markonly" src="{a}/logos/EHS-mark.svg" alt="" aria-hidden="true" width="190" height="84">
+      <img class="brand__markonly" src="{a}/logos/EHS-mark.svg?v={ASSET_V}" alt="" aria-hidden="true" width="190" height="84">
       <span class="brand__text">
         <span class="brand__name"><span class="brand__name-track"><span>{s['brand_name']}</span><span aria-hidden="true">{s['brand_name']}</span></span></span>
         <span class="brand__sub">{s['brand_sub']}</span>

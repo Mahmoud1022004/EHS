@@ -1,5 +1,4 @@
 # Cloudflare Pages response headers.
-# Mirrors the Apache .htaccess so behaviour is identical on either host.
 #
 # Rules are listed per asset folder rather than as a broad /assets/* plus
 # overrides: Pages applies EVERY matching rule, so an overlapping pair emits

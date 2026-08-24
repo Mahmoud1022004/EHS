@@ -970,7 +970,7 @@ def write_redirects():
 
 
 # ------------------------------------------------------------------- 404 page
-# Apache serves this file for any unknown URL (see .htaccess ErrorDocument).
+# The edge serves this file for any unknown URL.
 # Because the browser's address bar still shows the URL the visitor typed,
 # every link and asset path on this one page has to be absolute — relative
 # paths would resolve against the missing URL and the page would load unstyled.
@@ -1150,7 +1150,6 @@ def write_robots():
         "Disallow: /_build/\n"
         "Disallow: /_to_delete/\n"
         "Disallow: /README.md\n"
-        "Disallow: /render.yaml\n"
         "Disallow: /.git/\n"
         "Disallow: /CLAUDE-SECURITY-\n"
         "\n"

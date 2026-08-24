@@ -5,7 +5,6 @@ Allow: /
 Disallow: /_build/
 Disallow: /_to_delete/
 Disallow: /README.md
-Disallow: /render.yaml
 Disallow: /.git/
 Disallow: /CLAUDE-SECURITY-
 

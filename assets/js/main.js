@@ -85,52 +85,51 @@
   }
 
 
-  /* Homepage certifications toggle. Opens the certificates in place rather than
-     sending the visitor to the About page and losing their position — pressing
-     it again closes them.
+  /* Disclosure panels: a button that expands its panel in place rather than
+     sending the visitor to another page and losing their position. Each button
+     names its panel through aria-controls, so a page can carry several.
 
      [hidden] is display:none, which no transition can animate away from, so the
      attribute is cleared one frame before the open class lands and only restored
-     once the closing transition has finished. The cards inside carry .reveal and
-     were never scrolled past while hidden, so their observer never fired; mark
-     them visible on first open or they would expand into empty space. */
-  var certsToggle = document.querySelector('[data-certs-toggle]');
-  var certsPanel = document.querySelector('[data-certs-panel]');
-  if (certsToggle && certsPanel) {
-    var certsLabel = certsToggle.querySelector('[data-certs-label]');
-    var labelClosed = certsLabel ? certsLabel.textContent : '';
-    var labelOpen = certsLabel ? (certsLabel.getAttribute('data-label-open') || labelClosed) : '';
-    var certsBusy = false;
+     once the closing transition has finished. Content inside carries .reveal and
+     was never scrolled past while hidden, so its observer never fired; mark it
+     visible on open or the panel expands into empty space. */
+  document.querySelectorAll('[data-disclose]').forEach(function (toggle) {
+    var panel = document.getElementById(toggle.getAttribute('aria-controls'));
+    if (!panel) { return; }
+    var label = toggle.querySelector('[data-disclose-label]');
+    var closedText = label ? label.textContent : '';
+    var openText = label ? (label.getAttribute('data-label-open') || closedText) : '';
+    var busy = false;
 
-    certsToggle.addEventListener('click', function () {
-      if (certsBusy) { return; }
-      var opening = certsToggle.getAttribute('aria-expanded') !== 'true';
-      certsToggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
-      if (certsLabel) { certsLabel.textContent = opening ? labelOpen : labelClosed; }
+    toggle.addEventListener('click', function () {
+      if (busy) { return; }
+      var opening = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+      if (label) { label.textContent = opening ? openText : closedText; }
 
       if (opening) {
-        certsPanel.hidden = false;
-        certsPanel.querySelectorAll('.reveal').forEach(function (el) {
+        panel.hidden = false;
+        panel.querySelectorAll('.reveal').forEach(function (el) {
           el.classList.add('is-visible');
         });
-        /* two frames: one for [hidden] to clear, one for the start height to stick */
         requestAnimationFrame(function () {
-          requestAnimationFrame(function () { certsPanel.classList.add('is-open'); });
+          requestAnimationFrame(function () { panel.classList.add('is-open'); });
         });
       } else {
-        certsBusy = true;
-        certsPanel.classList.remove('is-open');
+        busy = true;
+        panel.classList.remove('is-open');
         var done = function () {
-          certsPanel.hidden = true;
-          certsBusy = false;
-          certsPanel.removeEventListener('transitionend', done);
+          panel.hidden = true;
+          busy = false;
+          panel.removeEventListener('transitionend', done);
         };
-        certsPanel.addEventListener('transitionend', done);
+        panel.addEventListener('transitionend', done);
         /* transitionend never fires under reduced motion, so close regardless */
-        window.setTimeout(function () { if (certsBusy) { done(); } }, 700);
+        window.setTimeout(function () { if (busy) { done(); } }, 700);
       }
     });
-  }
+  });
 
   /* Hero video: keep trying until it actually plays.
 

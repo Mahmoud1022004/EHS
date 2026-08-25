@@ -154,12 +154,17 @@
 <section class="section--tight">
   <div class="container">
     <div class="section-head section-head--center reveal">
-      <span class="eyebrow">من نورّد لهم</span>
+      <button class="eyebrow disclose__btn" type="button" data-disclose aria-expanded="false" aria-controls="home-clients">
+        <span data-disclose-label data-label-open="إخفاء القائمة">من نورّد لهم</span>
+        <span class="disclose__icon" aria-hidden="true">{{ICON:plus}}</span>
+      </button>
       <h2 class="h2">مستشفيات وجهات صحية نخدمها.</h2>
       <p class="lead">من المستشفيات الخاصة إلى الجهات القومية، في مختلف أنحاء مصر.</p>
     </div>
   </div>
   <div class="container">
+    <div class="disclose" id="home-clients" hidden>
+      <div class="disclose__inner">
     <div class="clientwall reveal">
       <div class="clientwall__cell">
         <div class="clientwall__logo"><img src="{{A}}/img/clients/ahl_masr.webp" alt="مؤسسة أهل مصر" width="360" height="360" loading="lazy"></div>
@@ -246,8 +251,6 @@
         <p class="clientwall__name">مركز صن رايز للخصوبة</p>
       </div>
     </div>
-  </div>
-  <div class="container">
     <div class="grid grid--2 mt-32">
         <div class="card card--flat card--auth reveal">
           <span class="authlogo"><img src="{{A}}/img/clients/upa.webp" alt="الهيئة المصرية للشراء الموحد" width="360" height="360" loading="lazy"></span>
@@ -264,14 +267,18 @@
         </div>
         </div>
     </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
     <div class="btn-row mt-32 reveal" style="justify-content:center;">
-      <button class="btn certs-toggle" type="button" data-certs-toggle aria-expanded="false" aria-controls="home-certs">
-        <span data-certs-label data-label-open="إخفاء الاعتمادات">اطّلع على اعتماداتنا</span>
-        <span class="certs-toggle__icon" aria-hidden="true">{{ICON:plus}}</span>
+      <button class="btn disclose__btn" type="button" data-disclose aria-expanded="false" aria-controls="home-certs">
+        <span data-disclose-label data-label-open="إخفاء الاعتمادات">اطّلع على اعتماداتنا</span>
+        <span class="disclose__icon" aria-hidden="true">{{ICON:plus}}</span>
       </button>
     </div>
-    <div class="certs-panel" id="home-certs" data-certs-panel hidden>
-      <div class="certs-panel__inner">
+    <div class="disclose" id="home-certs" hidden>
+      <div class="disclose__inner">
         {{CERTS}}
       </div>
     </div>

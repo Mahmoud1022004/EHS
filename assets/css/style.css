@@ -618,32 +618,44 @@ html[lang="ar"] .brand__sub { letter-spacing: 0; font-size: 0.78rem; }
   .brand__name-track { animation: none !important; }
 }
 
-/* ---------- Homepage certifications toggle ---------- */
+/* ---------- Disclosure: a button that expands a panel in place ---------- */
 /* Collapsed height animates via grid-template-rows 0fr -> 1fr, so the panel
    does not need a hard-coded max-height that would clip the certificates on a
    narrow screen. The panel carries [hidden] while closed, keeping its links out
    of the tab order; the script clears that a frame before opening. */
-.certs-toggle { gap: 10px; }
-.certs-toggle__icon {
+.disclose__btn { gap: 10px; }
+/* The section's own eyebrow doubling as its disclosure control. Inherits the
+   pill from .eyebrow and only adds what a button needs: a pointer, no UA
+   chrome, and room for the icon. */
+button.eyebrow.disclose__btn {
+  gap: 12px;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .25s ease, transform .25s ease;
+}
+button.eyebrow.disclose__btn:hover { background: var(--brand-hover); transform: translateY(-1px); }
+button.eyebrow.disclose__btn .disclose__icon svg { width: 15px; height: 15px; }
+.disclose__icon {
   display: inline-flex;
   align-items: center;
   transition: transform .35s cubic-bezier(.22, 1, .36, 1);
 }
-.certs-toggle__icon svg { width: 18px; height: 18px; }
-.certs-toggle[aria-expanded="true"] .certs-toggle__icon { transform: rotate(45deg); }
+.disclose__icon svg { width: 18px; height: 18px; }
+.disclose__btn[aria-expanded="true"] .disclose__icon { transform: rotate(45deg); }
 
-.certs-panel {
+.disclose {
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows .5s cubic-bezier(.22, 1, .36, 1);
 }
-.certs-panel[hidden] { display: none; }
-.certs-panel > .certs-panel__inner { overflow: hidden; min-height: 0; }
-.certs-panel.is-open { grid-template-rows: 1fr; }
+.disclose[hidden] { display: none; }
+.disclose > .disclose__inner { overflow: hidden; min-height: 0; }
+.disclose.is-open { grid-template-rows: 1fr; }
 
 @media (prefers-reduced-motion: reduce) {
-  .certs-panel { transition: none; }
-  .certs-toggle__icon { transition: none; }
+  .disclose { transition: none; }
+  .disclose__icon { transition: none; }
 }
 
 /* ---------- Hero ---------- */

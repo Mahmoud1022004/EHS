@@ -25,7 +25,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehsmeds.com"
-ASSET_V = "170"  # bump when css/js/logo change so returning visitors get fresh assets
+ASSET_V = "172"  # bump when css/js/logo change so returning visitors get fresh assets
 
 # The company's official line, given by the owner 18 Aug 2026 as the number to
 # publish everywhere, phone and WhatsApp alike: 01003211126 locally, which is

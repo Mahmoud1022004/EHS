@@ -25,7 +25,7 @@ from urllib.parse import quote
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.dirname(ROOT)
 BASE_URL = "https://ehsmeds.com"
-ASSET_V = "173"  # bump when css/js/logo change so returning visitors get fresh assets
+ASSET_V = "174"  # bump when css/js/logo change so returning visitors get fresh assets
 
 # The company's official line, given by the owner 18 Aug 2026 as the number to
 # publish everywhere, phone and WhatsApp alike: 01003211126 locally, which is
@@ -913,6 +913,7 @@ def build_page(lang, slug):
     body = body.replace("{{CERTS}}", CERTS[lang])
     a = "assets" if lang == "en" else "../assets"
     body = body.replace("{{A}}", a)
+    body = body.replace("{{V}}", ASSET_V)
     body = body.replace("{{WA_URL}}", f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(STR[lang]['wa_prefill'])}")
     body = body.replace("{{WA_NUMBER}}", WHATSAPP_NUMBER)
     body = body.replace("{{PHONE}}", PHONE_DISPLAY)

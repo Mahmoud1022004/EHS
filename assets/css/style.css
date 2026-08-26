@@ -685,6 +685,9 @@ button.eyebrow.disclose__btn .disclose__icon svg { width: 15px; height: 15px; }
   height: 100%;
   object-fit: cover;
   z-index: 0;
+  /* Decoration, not a player: no context menu, no long-press sheet, no way to
+     reach a pause control, and taps fall through to whatever is above it. */
+  pointer-events: none;
 }
 .hero__scrim {
   position: absolute;

@@ -140,28 +140,26 @@
      they stay attached: a single tap in the wrong moment should not be the only
      chance the video gets. attempt() costs a property read once it is playing.
 
-     The off-screen pause is the one deliberate stop, so it sets onScreen false
-     and the pause handler leaves it alone. Anything else that pauses the video
-     while it is still in view was not us, and gets one retry. */
+     Nothing here ever pauses it. The clip runs the whole time the page is open,
+     so any pause came from outside and gets a retry — bounded, and the counter
+     resets the moment it plays again. */
   var heroVideo = document.querySelector('.hero__video');
   if (heroVideo) {
-    var onScreen = true;
     var nudges = 0;
 
     var attempt = function () {
-      if (!onScreen || !heroVideo.paused) { return; }
+      if (!heroVideo.paused) { return; }
       var p = heroVideo.play();
       if (p && p.catch) { p.catch(function () {}); }
     };
 
     heroVideo.addEventListener('playing', function () { nudges = 0; });
 
+    /* The browser still suspends playback while the TAB is hidden, which costs
+       nothing since nobody is looking; visibilitychange below picks it back up. */
     if ('IntersectionObserver' in window) {
       var vio = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          onScreen = entry.isIntersecting;
-          if (onScreen) { attempt(); } else { heroVideo.pause(); }
-        });
+        entries.forEach(function (entry) { if (entry.isIntersecting) { attempt(); } });
       }, { threshold: 0.1 });
       vio.observe(heroVideo);
     }
@@ -181,7 +179,7 @@
        mid-buffer. Bounded so a browser that keeps refusing is not retried
        forever; the counter resets the moment it does play. */
     heroVideo.addEventListener('pause', function () {
-      if (onScreen && nudges < 12) { nudges++; window.setTimeout(attempt, 400); }
+      if (nudges < 12) { nudges++; window.setTimeout(attempt, 400); }
     });
     heroVideo.addEventListener('stalled', attempt);
     heroVideo.addEventListener('suspend', attempt);

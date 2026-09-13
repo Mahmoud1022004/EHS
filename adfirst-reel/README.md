@@ -71,18 +71,28 @@ same file.
 
 ## Getting an MP4
 
-This machine has no network and no general-purpose ffmpeg — only the VP8/WebM
-build that ships with Playwright — so the deliverable is WebM. Any normal
-ffmpeg will transcode it for Instagram/TikTok:
+The render box has no H.264 encoder at all — only the VP8/WebM ffmpeg that
+ships with Playwright, and Chromium's WebCodecs offers just VP8/VP9/AV1 — so
+the checked-in master is WebM. This transcodes it to the H.264 MP4 that
+Instagram, TikTok and iOS want:
 
 ```sh
-ffmpeg -i adfirst-reel-1080x1920.webm \
-  -c:v libx264 -profile:v high -pix_fmt yuv420p \
-  -crf 18 -preset slow -movflags +faststart \
+ffmpeg -y -i adfirst-reel-1080x1920.webm \
+  -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 \
+  -map 0:v:0 -map 1:a:0 \
+  -c:v libx264 -profile:v high -level 4.0 -pix_fmt yuv420p \
+  -crf 18 -preset slow -x264-params "keyint=60:min-keyint=30" \
+  -c:a aac -b:a 128k -shortest -movflags +faststart \
   adfirst-reel-1080x1920.mp4
 ```
 
-Re-rendering straight to H.264 is a one-line change to the `ff` args in
-`render.mjs` once a full ffmpeg is on the path.
+Both files are `yuv420p`, so the transcode doesn't re-convert colour and the
+brand cyan comes through untouched. Output runs ~3.6 MB at ~1.9 Mbps.
 
-There is no audio track; drop a music bed on in the edit.
+The silent AAC track is deliberate: the film has no sound, and a number of
+platforms mis-handle or reject video-only uploads. Replacing it with a music
+bed is a one-line change — swap the `anullsrc` input for the audio file and
+drop `-shortest` if the bed should run to its own length.
+
+Re-rendering straight to H.264 is a one-line change to the `ff` args in
+`render.mjs` wherever a full ffmpeg is on the path.

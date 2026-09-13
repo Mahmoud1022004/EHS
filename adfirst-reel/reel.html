@@ -139,13 +139,22 @@ html,body{height:100%;background:#121212;overflow:hidden}
 }
 .stmt .w.accent{color:var(--cyan)}
 
-/* tagline under the closing lockup */
+/* endcard under the closing lockup */
 .tagline{
   position:absolute;left:0;right:0;
   text-align:center;
   font-size:32px;font-weight:700;text-transform:uppercase;
   color:rgba(245,245,245,.82);
   opacity:0;will-change:opacity,letter-spacing;
+}
+/* The handle stays lowercase — it's an address you'd type, and the change of
+   case gives the endcard a second level after all the caps above it. */
+.handle{
+  position:absolute;left:0;right:0;
+  text-align:center;
+  font-size:28px;font-weight:600;letter-spacing:.12em;
+  color:var(--cyan);
+  opacity:0;will-change:opacity,transform;
 }
 
 /* ------------------------------------------------------------ transitions -- */
@@ -181,6 +190,7 @@ html,body{height:100%;background:#121212;overflow:hidden}
       </div>
 
       <div class="tagline" id="tagline"></div>
+      <div class="handle" id="handle"></div>
 
       <div class="scene" id="s3"></div>
       <div class="scene" id="s4"></div>
@@ -212,6 +222,7 @@ const COPY = {
   statement:   [['BUILT', 'FOR'], ['BRANDS', 'THAT'], ['REFUSE', 'TO'], ['BLEND', 'IN.']],
   accentFrom:  6,               // index in the flattened word list where cyan starts
   tagline:     'Put your brand first',
+  handle:      '@adfirstmarketing',
 };
 
 const DURATION = 15.0;          // seconds
@@ -254,6 +265,12 @@ const MARK_H  = px(B.word.y1 - B.bar.y0 + 1);
 
 const MARK_X  = (STAGE_W - MARK_W) / 2;
 const MARK_Y  = (STAGE_H - MARK_H) / 2;
+
+/* The closing lockup rides high so the mark, tagline and handle sit as one
+   centred group, rather than a logo with captions hung underneath it. */
+const LOCK_SHIFT  = -118;
+const TAGLINE_TOP = MARK_Y + MARK_H + LOCK_SHIFT + 130;
+const HANDLE_TOP  = TAGLINE_TOP + 74;
 
 const mark = $('mark');
 Object.assign(mark.style, { width: MARK_W + 'px', height: MARK_H + 'px',
@@ -375,6 +392,8 @@ COPY.statement.forEach(lineWords => {
 
 const tagline = $('tagline');
 tagline.textContent = COPY.tagline;
+const handle = $('handle');
+handle.textContent = COPY.handle;
 
 /* ------------------------------------------------------------- timeline -- */
 const T = {
@@ -483,18 +502,23 @@ function render(t) {
       g.holder.style.opacity = clamp(p * 2.4).toFixed(3);
     });
 
-    // The closing lockup sits high to leave room for the tagline.
-    mark.style.transform = closing ? 'translateY(-58px)' : 'translateY(0)';
+    mark.style.transform = closing ? `translateY(${LOCK_SHIFT}px)` : 'translateY(0)';
   }
 
-  // --------------------------------------------------------------- tagline --
+  // --------------------------------------------------------------- endcard --
   if (closing) {
-    const p = prog(t, T.wipe4 + 1.72, T.wipe4 + 2.45);
-    tagline.style.top = (MARK_Y + MARK_H + 92) + 'px';
+    const p = prog(t, T.wipe4 + 1.58, T.wipe4 + 2.28);
+    tagline.style.top = TAGLINE_TOP + 'px';
     tagline.style.opacity = outCubic(p).toFixed(3);
     tagline.style.letterSpacing = mix(0.10, 0.42, outExpo(p)).toFixed(4) + 'em';
+
+    const h = prog(t, T.wipe4 + 1.95, T.wipe4 + 2.55);
+    handle.style.top = HANDLE_TOP + 'px';
+    handle.style.opacity = outCubic(h).toFixed(3);
+    handle.style.transform = `translateY(${((1 - outExpo(h)) * 14).toFixed(2)}px)`;
   } else {
     tagline.style.opacity = '0';
+    handle.style.opacity = '0';
   }
 
   // ------------------------------------------------------------- scene 3 --

@@ -689,6 +689,17 @@ button.eyebrow.disclose__btn .disclose__icon svg { width: 15px; height: 15px; }
      reach a pause control, and taps fall through to whatever is above it. */
   pointer-events: none;
 }
+/* iOS draws a large play glyph over any video it refused to autoplay. It is
+   unreachable here (pointer-events: none) so it only reads as broken — hide it.
+   The poster on .hero__panel shows through instead. */
+.hero__video::-webkit-media-controls,
+.hero__video::-webkit-media-controls-panel,
+.hero__video::-webkit-media-controls-start-playback-button,
+.hero__video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none;
+  opacity: 0;
+}
 .hero__scrim {
   position: absolute;
   inset: 0;

@@ -142,15 +142,54 @@
 
      Nothing here ever pauses it. The clip runs the whole time the page is open,
      so any pause came from outside and gets a retry — bounded, and the counter
-     resets the moment it plays again. */
+     resets the moment it plays again.
+
+     Low Power Mode is the case retries cannot fix: iOS refuses <video> autoplay
+     until a tap, and exposes no way to detect that the mode is on. But Safari
+     renders an H.264 MP4 inside <img> (WebKit, Safari 11.1+), and an image is not
+     a media element, so that policy does not apply to it. So when play() is
+     refused with NotAllowedError, probe the same file as an image. If this
+     browser can draw it — only Safari can — swap the <video> for an <img> of the
+     same URL: identical bytes, identical quality, already in the HTTP cache.
+     Browsers that cannot render MP4 in <img> fire onerror, keep the poster, and
+     keep the tap-to-play retries. A visitor whose video autoplays normally never
+     reaches any of this. */
   var heroVideo = document.querySelector('.hero__video');
   if (heroVideo) {
     var nudges = 0;
+    var swapped = false;
+    var probed = false;
+
+    var swapToImage = function () {
+      if (swapped || probed) { return; }
+      probed = true;
+      var src = heroVideo.currentSrc || heroVideo.getAttribute('src');
+      if (!src) { return; }
+      var probe = new Image();
+      probe.onload = function () {
+        if (swapped || !heroVideo.paused) { return; }   /* it started after all */
+        var img = document.createElement('img');
+        img.className = heroVideo.className;
+        img.src = src;
+        img.alt = '';
+        img.setAttribute('aria-hidden', 'true');
+        img.setAttribute('decoding', 'async');
+        heroVideo.replaceWith(img);
+        swapped = true;
+      };
+      probe.src = src;
+    };
 
     var attempt = function () {
-      if (!heroVideo.paused) { return; }
+      if (swapped || !heroVideo.paused) { return; }
       var p = heroVideo.play();
-      if (p && p.catch) { p.catch(function () {}); }
+      if (p && p.catch) {
+        p.catch(function (err) {
+          /* NotAllowedError is the autoplay refusal. AbortError and friends are
+             a play() interrupted by a load or pause — not a policy, so no swap. */
+          if (err && err.name === 'NotAllowedError') { swapToImage(); }
+        });
+      }
     };
 
     heroVideo.addEventListener('playing', function () { nudges = 0; });
